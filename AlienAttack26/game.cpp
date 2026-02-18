@@ -9,6 +9,13 @@
 
 int main()
 {
+	vector<Alien*> aliens;
+	Alien* zorg = new Alien();
+	zorg->setPosition(100, 100);
+	aliens.push_back(zorg);
+	int alienCount = 0;
+	Vector2f alienDirection;
+	float length;
 	// Create the window for graphics. 
 	//  The "aliens" is the text in the title bar on the window. 
 	RenderWindow window(VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Aliens!");
@@ -24,16 +31,17 @@ int main()
 	// load textures from file into memory. This doesn't display anything yet.
 	// Notice we do this *before* going into animation loop.
 
-	// create the ship texture variable, load the image file. 
-	Texture shipTexture;
-	if (!shipTexture.loadFromFile("ship.png"))
-	{
-		cout << "Unable to load ship texture!" << endl;
-		exit(EXIT_FAILURE);
-	}
+	// create the ship texture variable, load the image file.
 	// create sprite and load the ship texture in it
-	Sprite ship(shipTexture); 
-  
+	Texture shipTexture = loadTexture(DEFAULT_SHIP_TEXTURE);
+	Texture missileTexture = loadTexture(DEFAULT_MISSILE_TEXTURE);
+
+	Sprite ship(shipTexture); // create the ship sprite using the texture loaded from file.
+	Sprite missile(missileTexture); // create the missile sprite using the texture loaded from file.
+
+	ship.setOrigin(getSpriteCenter(ship));
+	missile.setOrigin(getSpriteCenter(missile));
+
 	// initial position of the ship will be approx middle of screen
 	float shipX = window.getSize().x / 2.0f;
 	float shipY = window.getSize().y / 2.0f;
@@ -90,6 +98,12 @@ int main()
 				// if the key that was pressed was a space, fire a missile. 
 				if (keyPressed->scancode == sf::Keyboard::Scancode::Space)
 				{
+					if (!isMissileInFlight) // only fire if no missile is currently in flight
+					{
+						isMissileInFlight = true;
+						missile.setPosition(ship.getPosition());
+						missile.setRotation(ship.getRotation());
+					}
 					// Time to fire the missile. Set it's position above the ship.
 					// You can create a Vector Variable to store an X-Y position.
 					//   Vector2f missileLocation = ship.getposition(); 
@@ -101,7 +115,6 @@ int main()
 					//  missile.move({10, -10}); 
 
 					// set the missile boolean to be TRUE!
-					isMissileInFlight = true;
 				}   
 			}
 		}
@@ -119,7 +132,7 @@ int main()
 		// call the function that will move this ship.
 		// the "moveship(..)" function checks for arrow keys pressed 
 		//    and changes the ships x and y coordinates to move it on the screen.
-		moveShip(ship);
+		updateShip(ship);
 
 		// After checking for ship movement, draw the ship on top of background 
 		// (the ship from previous frame was erased when we drew background)
@@ -128,6 +141,30 @@ int main()
 		if (isMissileInFlight)
 		{   
 			
+			float rads = missile.getRotation().asRadians();
+			double x = cos(rads);
+			double y = sin(rads);
+			if (abs(x) == 1) {
+				missile.move(Vector2f(y, x) * -DISTANCE);
+			}
+			else if (abs(x) != 1 && abs(y) != 1) {
+				if (to_string(x * -1) == to_string(y)) {
+					missile.move(Vector2f(x, y * -1) * -DISTANCE);
+				}
+				else if (to_string(x) == to_string(y)) {
+					missile.move(Vector2f(x, y * -1) * DISTANCE);
+				}
+			}
+			else {
+				missile.move(Vector2f(y, x) * DISTANCE);
+			}
+
+			if (isSpriteOffScreen(missile)) {
+				isMissileInFlight = false;
+			}
+			else {
+				window.draw(missile);
+			}
 			// move it "up" the screen by decreasing 'y' using missile.move({deltax, deltay});
 			// in later work you will check to see if the missile hit anything.
 			// Don't forget to draw the missile in its new position in the if statement below 
@@ -138,9 +175,31 @@ int main()
 			// if it's moved off the top, set the boolean to false!
 			// if the missile has not gone off the top of the screen, draw it!
 			// this is the default now, but the statement below should be inside an if block.
-			isMissileInFlight = false; 
 				
 		}
+
+		for (Alien* alien : aliens) {
+			alienDirection =  alien->alienSprite->getPosition() - ship.getPosition();
+			length = std::sqrt(alienDirection.x * alienDirection.x + alienDirection.y * alienDirection.y);
+			if (length != 0) {
+				alienDirection /= length;
+			}
+			alien->alienSprite->move(alienDirection * -DISTANCE);
+			window.draw(*(alien->alienSprite));
+			if (isMissileInFlight && checkCollision(missile, *(alien->alienSprite))) {
+				isMissileInFlight = false;
+				alien->die();
+				cout << "You hit the alien! \n";
+				aliens.erase(remove(aliens.begin(), aliens.end(), alien), aliens.end());
+			}
+			if (checkCollision(ship, *(alien->alienSprite))) {
+				aliens.erase(remove(aliens.begin(), aliens.end(), alien), aliens.end());
+				alien->die();
+				cout << "You got hit! \n";
+			}
+
+		}
+
 
 		// end the current frame; this makes everything that we have 
 		// already "drawn" actually shows up on the screen
