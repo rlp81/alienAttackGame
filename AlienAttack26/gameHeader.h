@@ -14,6 +14,7 @@ using namespace std;
 // these two lines are specific to the SFML graphics library. 
 #include <SFML/Graphics.hpp>
 #include "alien.h"
+#include "pixie.h"
 using namespace sf;
 
 // Constants for the game 

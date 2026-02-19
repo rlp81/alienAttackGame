@@ -154,6 +154,17 @@ Texture loadTexture(const string& fileName)
 	return texture;
 }
 
+Texture* loadTextureAsPointer(const string& fileName)
+{
+	Texture* texture = new Texture();
+	if (!texture->loadFromFile(fileName))
+	{
+		cout << "Unable to load texture from file: " << fileName << endl;
+		exit(EXIT_FAILURE);
+	}
+	return texture;
+}
+
 bool checkCollision(const Sprite& sprite1, const Sprite& sprite2) {
 	if (!(&sprite1 && &sprite2) || &sprite1 == &sprite2) {
 		return false;

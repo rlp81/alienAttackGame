@@ -188,19 +188,17 @@ int main()
 			window.draw(*(alien->alienSprite));
 			if (isMissileInFlight && checkCollision(missile, *(alien->alienSprite))) {
 				isMissileInFlight = false;
-				alien->setHealth(alien->getHealth()-10);
+				//alien->setHealth(alien->getHealth()-10);
 				cout << "You hit the alien! \n";
 			}
 			if (checkCollision(ship, *(alien->alienSprite))) {
-				alien->die();
+				//alien->die();
 				cout << "You got hit! \n";
 			}
 			for (Alien* alien1 : aliens) {
 				if (alien == alien1) {
 					continue;
 				}
-				if (!alien1) { continue; }
-				if (!alien) { break; }
 				if (checkCollision(*(alien->alienSprite), *(alien1->alienSprite))) {
 					if (alien1->getHealth() > 0) {
 						int newHealth = alien1->getHealth() + alien->getHealth();
@@ -213,12 +211,12 @@ int main()
 				}
 			}
 			if (alien->getHealth() <= 0) {
-				aliens.erase(remove(aliens.begin(), aliens.end(), alien), aliens.end());
-				alien->die();
+				//aliens.erase(remove(aliens.begin(), aliens.end(), alien), aliens.end());
+				//alien->die();
 			}
 		}
 
-		if (Alien::alienCount <= 3) {
+		if (Alien::alienCount <= 0) {
 			newAlien();
 		}
 
