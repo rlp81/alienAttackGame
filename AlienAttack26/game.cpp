@@ -10,6 +10,7 @@ vector<Alien*> aliens;
 
 int main()
 {
+	PlayerPixie playerPixie;
 	newAlien();
 	Vector2f alienDirection;
 	float length;
