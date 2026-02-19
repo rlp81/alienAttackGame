@@ -18,11 +18,13 @@ using namespace sf;
 
 // Constants for the game 
 const float DISTANCE = 5.0f; // When the ship moves it moves 5 pixels at a time. 
+const float MISSILE_SPEED = 10.0f; // When the missile moves it moves 10 pixels at a time.
 const int WINDOW_WIDTH = 800; // window is 800 pixels wide
 const int WINDOW_HEIGHT = 600;// window is 600 pixels vertically "high"
 const string DEFAULT_ENEMY_TEXTURE = "enemy.bmp";
 const string DEFAULT_SHIP_TEXTURE = "newShip.bmp";
 const string DEFAULT_MISSILE_TEXTURE = "missile.png";
+extern vector<Alien*> aliens;
 
 
 // Game Functions
@@ -34,3 +36,4 @@ bool isSpriteOffScreen(const Sprite& sprite);
 Vector2f getSpriteCenter(const Sprite& sprite);
 Texture loadTexture(const string& fileName);
 bool checkCollision(const Sprite& sprite1, const Sprite& sprite2);
+void newAlien();

@@ -6,14 +6,11 @@
  *  AUTHOR: Initial work in this program was completed by Prof. Andy Harbert
  *          Prof. Pat Smith has made modifications (December 2021, 2024 upgrade to 3.0)
  */   
+vector<Alien*> aliens;
 
 int main()
 {
-	vector<Alien*> aliens;
-	Alien* zorg = new Alien();
-	zorg->setPosition(100, 100);
-	aliens.push_back(zorg);
-	int alienCount = 0;
+	newAlien();
 	Vector2f alienDirection;
 	float length;
 	// Create the window for graphics. 
@@ -145,18 +142,18 @@ int main()
 			double x = cos(rads);
 			double y = sin(rads);
 			if (abs(x) == 1) {
-				missile.move(Vector2f(y, x) * -DISTANCE);
+				missile.move(Vector2f(y, x) * -MISSILE_SPEED);
 			}
 			else if (abs(x) != 1 && abs(y) != 1) {
 				if (to_string(x * -1) == to_string(y)) {
-					missile.move(Vector2f(x, y * -1) * -DISTANCE);
+					missile.move(Vector2f(x, y * -1) * -MISSILE_SPEED);
 				}
 				else if (to_string(x) == to_string(y)) {
-					missile.move(Vector2f(x, y * -1) * DISTANCE);
+					missile.move(Vector2f(x, y * -1) * MISSILE_SPEED);
 				}
 			}
 			else {
-				missile.move(Vector2f(y, x) * DISTANCE);
+				missile.move(Vector2f(y, x) * MISSILE_SPEED);
 			}
 
 			if (isSpriteOffScreen(missile)) {
@@ -179,25 +176,50 @@ int main()
 		}
 
 		for (Alien* alien : aliens) {
+			if (!alien) {
+				continue;
+			}
 			alienDirection =  alien->alienSprite->getPosition() - ship.getPosition();
 			length = std::sqrt(alienDirection.x * alienDirection.x + alienDirection.y * alienDirection.y);
 			if (length != 0) {
 				alienDirection /= length;
 			}
-			alien->alienSprite->move(alienDirection * -DISTANCE);
+			alien->alienSprite->move(alienDirection * -alien->getSpeed());
 			window.draw(*(alien->alienSprite));
 			if (isMissileInFlight && checkCollision(missile, *(alien->alienSprite))) {
 				isMissileInFlight = false;
-				alien->die();
+				alien->setHealth(alien->getHealth()-10);
 				cout << "You hit the alien! \n";
-				aliens.erase(remove(aliens.begin(), aliens.end(), alien), aliens.end());
 			}
 			if (checkCollision(ship, *(alien->alienSprite))) {
-				aliens.erase(remove(aliens.begin(), aliens.end(), alien), aliens.end());
 				alien->die();
 				cout << "You got hit! \n";
 			}
+			for (Alien* alien1 : aliens) {
+				if (alien == alien1) {
+					continue;
+				}
+				if (!alien1) { continue; }
+				if (!alien) { break; }
+				if (checkCollision(*(alien->alienSprite), *(alien1->alienSprite))) {
+					if (alien1->getHealth() > 0) {
+						int newHealth = alien1->getHealth() + alien->getHealth();
+						Vector2f newScale = alien->alienSprite->getScale() + alien1->alienSprite->getScale();
+						alien1->die();
+						alien->setHealth(newHealth);
+						cout << "Aliens merged! \n";
+						alien->alienSprite->setScale(newScale);
+					}
+				}
+			}
+			if (alien->getHealth() <= 0) {
+				aliens.erase(remove(aliens.begin(), aliens.end(), alien), aliens.end());
+				alien->die();
+			}
+		}
 
+		if (Alien::alienCount <= 3) {
+			newAlien();
 		}
 
 

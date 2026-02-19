@@ -155,6 +155,10 @@ Texture loadTexture(const string& fileName)
 }
 
 bool checkCollision(const Sprite& sprite1, const Sprite& sprite2) {
+	if (!(&sprite1 && &sprite2) || &sprite1 == &sprite2) {
+		return false;
+	}
+	
 	FloatRect sBounds1 = sprite1.getGlobalBounds();
 	FloatRect sBounds2 = sprite2.getGlobalBounds();
 	bool result = false;
@@ -163,4 +167,10 @@ bool checkCollision(const Sprite& sprite1, const Sprite& sprite2) {
 		result = true;
 	}
 	return result;
+}
+
+void newAlien() {
+	Alien* newAlien = new Alien("Blorg");
+	newAlien->setPosition(rand() % WINDOW_WIDTH, rand() % WINDOW_HEIGHT);
+	aliens.push_back(newAlien);
 }
