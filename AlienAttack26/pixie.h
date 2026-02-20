@@ -14,8 +14,9 @@ private:
 	friend class PlayerPixie;
 	friend class EnemyPixie;
 	friend class MissilePixie;
+	friend class BackgroundPixie;
 	static int pixieCount;
-	static vector<std::unique_ptr<Pixie>> pixies;
+	static vector<std::shared_ptr<Pixie>> pixies;
 	static vector<int> deletedPixies;
 	sf::Texture* texture;
 	sf::Sprite* sprite;
@@ -25,10 +26,13 @@ private:
 	float speed;
 	bool active;
 public:
+	static shared_ptr<Pixie> create(int type, const std::string& textureFile);
+	static shared_ptr<Pixie> create(int type, const std::string& textureFile, bool useOriginalOrigin);
 	Pixie() = delete;
 	Pixie(int type, const std::string& textureFile);
 	Pixie(int type, const std::string& textureFile, bool useOriginalOrigin);
-	~Pixie();
+	//~Pixie();
+	virtual ~Pixie() = default;
 	bool isOffScreen() const;
 	void draw(sf::RenderWindow& window);
 	int getPixieType() const { return pixieType; }
@@ -99,12 +103,13 @@ private:
 	float direction;
 	int lastMissileFrame;
 	//vector<MissilePixie*> missiles;
-	vector<unique_ptr<MissilePixie>> missiles;
+	vector<int> missiles;
 public:
 	PlayerPixie();
 	void shootMissile();
 	void update();
 	void updateMissiles();
+	static shared_ptr<PlayerPixie> create();
 };
 
 class EnemyPixie : public Pixie {};
@@ -118,7 +123,9 @@ public:
 	virtual ~MissilePixie() = default;
 	void update();
 	bool checkCollision();
+	static shared_ptr<MissilePixie> getMissileByID(int id);
 	void remove();
+	static shared_ptr<MissilePixie> create(PlayerPixie* owner);
 };
 
 
@@ -126,5 +133,10 @@ class BackgroundPixie : public Pixie {
 public:
 	BackgroundPixie(const std::string& textureFile) : Pixie(0, textureFile, true) {
 		setScale(DEFAULT_PIXIE_SCALE, DEFAULT_PIXIE_SCALE);
+	}
+	static shared_ptr<BackgroundPixie> create(string textureFile) {
+		auto pixie = make_shared<BackgroundPixie>(textureFile);
+		pixies.push_back(pixie);
+		return pixie;
 	}
 };

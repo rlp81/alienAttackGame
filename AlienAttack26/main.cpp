@@ -3,10 +3,10 @@
 int main() {
 	RenderWindow window(VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Aliens!");
 	window.setFramerateLimit(60);
-	BackgroundPixie background(DEFAULT_BACKGROUND_TEXTURE);
-	background.setPosition({ 0, 0 });
+	shared_ptr<BackgroundPixie> background = BackgroundPixie::create(DEFAULT_BACKGROUND_TEXTURE);
+	background->setPosition({ 0, 0 });
 
-	PlayerPixie playerPixie;
+	shared_ptr<PlayerPixie> playerPixie = PlayerPixie::create();
 	while (window.isOpen()) {
 		currentFrame++;
 		while (const std::optional event = window.pollEvent()){
@@ -15,7 +15,7 @@ int main() {
 			}
 		}
 
-		playerPixie.update();
+		playerPixie->update();
 		window.clear();
 		Pixie::drawAll(window);
 		window.display();

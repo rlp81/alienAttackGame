@@ -1,7 +1,7 @@
 #include "gameHeader.h"
 int Pixie::nextPixieID = 0;
 int Pixie::pixieCount = 0;
-vector<std::unique_ptr<Pixie>> Pixie::pixies;
+vector<std::shared_ptr <Pixie>> Pixie::pixies;
 vector<int> Pixie::deletedPixies;
 
 Pixie::Pixie(int type, const std::string& textureFile) {
@@ -16,7 +16,6 @@ Pixie::Pixie(int type, const std::string& textureFile) {
 	sprite->setScale({ DEFAULT_PIXIE_SCALE,DEFAULT_PIXIE_SCALE });
 	pixieID = nextPixieID++;
 	active = true;
-	pixies.push_back(std::make_unique<Pixie>(*this));
 }
 
 Pixie::Pixie(int type, const std::string& textureFile, bool useOriginalOrigin) {
@@ -33,7 +32,6 @@ Pixie::Pixie(int type, const std::string& textureFile, bool useOriginalOrigin) {
 	sprite->setScale({ DEFAULT_PIXIE_SCALE,DEFAULT_PIXIE_SCALE });
 	pixieID = nextPixieID++;
 	active = true;
-	pixies.push_back(std::make_unique<Pixie>(*this));
 }
 
 bool Pixie::checkIfActive() {
@@ -49,27 +47,45 @@ bool Pixie::checkIfActive() {
 }
 
 void Pixie::draw(sf::RenderWindow& window) {
-	if (sprite&&checkIfActive()) {
-		cout << "Pixie ID: " << pixieID << " is being drawn.\n";
+	if (sprite) {
 		window.draw(*sprite);
 	}
 }
 
-Pixie::~Pixie() {
+/*Pixie::~Pixie() {
 	pixieCount--;
-	if (!active) {
+	if (active == false) {
 		return;
 	}
 	active = false;
 	cout << "Destroying Pixie\n";
-	if (texture) {
-//		delete texture;
-	//	texture = nullptr;
+	if (texture != nullptr) {
+		delete texture;
+		texture = nullptr;
 	}
-	if (sprite) {
-		//delete sprite;
-		//sprite = nullptr;
+	if (sprite != nullptr) {
+		delete sprite;
+		sprite = nullptr;
 	}
+}*/
+
+shared_ptr<MissilePixie> MissilePixie::create(PlayerPixie* owner) {
+	auto missile = make_shared<MissilePixie>(owner);
+	pixies.push_back(missile);
+	owner->missiles.push_back(missile->getPixieID());
+	return missile;
+}
+
+shared_ptr<Pixie> Pixie::create(int type, const std::string& textureFile) {
+	auto pixie = make_shared<Pixie>(type, textureFile);
+	pixies.push_back(pixie);
+	return pixie;
+}
+
+shared_ptr<Pixie> Pixie::create(int type, const std::string& textureFile, bool useOriginalOrigin) {
+	auto pixie = make_shared<Pixie>(type, textureFile, useOriginalOrigin);
+	pixies.push_back(pixie);
+	return pixie;
 }
 
 bool Pixie::isOffScreen() const {
@@ -102,6 +118,12 @@ PlayerPixie::PlayerPixie() : Pixie(1, DEFAULT_SHIP_TEXTURE) {
 	lastMissileFrame = -1;
 }
 
+shared_ptr<PlayerPixie> PlayerPixie::create() {
+	auto player = make_shared<PlayerPixie>();
+	pixies.push_back(player);
+	return player;
+}
+
 void PlayerPixie::shootMissile() {
 	if (!(currentFrame >= DEFAULT_FRAMES_TILL__NEXT_MISSILE + lastMissileFrame || lastMissileFrame == -1)) {
 		return;
@@ -113,7 +135,7 @@ void PlayerPixie::shootMissile() {
 	if (ammo > 0) {
 		cout << "Shooting missile! Ammo left: " << ammo << endl;
 		lastMissileFrame = currentFrame;
-		MissilePixie* missile = new MissilePixie(this);
+		MissilePixie::create(this);
 		activeMissileCount++;
 		ammo--;
 	}
@@ -160,7 +182,7 @@ MissilePixie::MissilePixie(PlayerPixie* owner) : Pixie(2, DEFAULT_MISSILE_TEXTUR
 	this->setPosition(owner->getPosition());
 	direction = owner->direction;
 	this->setRotation(degrees(direction));
-	owner->missiles.push_back(unique_ptr<MissilePixie>(this));
+	cout << "Fired\n";
 }
 
 bool MissilePixie::checkCollision() {
@@ -249,34 +271,58 @@ void PlayerPixie::update()
 }
 
 void PlayerPixie::updateMissiles() {
-	for (const auto& missile : missiles) {
+
+	for (int id : missiles) {
+		shared_ptr<MissilePixie> missile = MissilePixie::getMissileByID(id);
 		if (missile)
 		{ 
-			missile->update(); 
-			if (missile->isOffScreen()) {
-				cout << pixies.size() << endl;
+			bool off = missile->isOffScreen();
+			if (off) {
 				deletedPixies.push_back(missile->getPixieID());
 				size_t index = missile->getPixieID();
-				missiles.erase(std::remove(missiles.begin(), missiles.end(), missile), missiles.end());
-				pixies.erase(pixies.begin()+index);
-				//pixies.erase(std::remove(pixies.begin(), pixies.end(), &missile), pixies.end());
-				//delete &missile;
-				cout << pixies.size() << endl;
+				auto* targetRawPtr = &missile;
+				missiles.erase(std::remove(missiles.begin(), missiles.end(), id), missiles.end());
+				/*missiles.erase(
+					std::remove_if(missiles.begin(), missiles.end(),
+						[targetRawPtr](const std::shared_ptr<MissilePixie>& p) {
+							return p.get() == targetRawPtr;
+						}),
+					missiles.end()
+				);*/
+				auto it = std::find(pixies.begin(), pixies.end(), missile);
+				if (it != pixies.end()) {
+					pixies.erase(it);
+				}
+				//pixies[index].reset();
 				this->activeMissileCount--;
+			}
+			else {
+				missile->update();
 			}
 		}
 		else {
-			missiles.erase(std::remove(missiles.begin(), missiles.end(), missile), missiles.end());
+			missiles.erase(std::remove(missiles.begin(), missiles.end(), id), missiles.end());
 		}
 	}
 }
 
-void Pixie::drawAll(RenderWindow& window) {
-	for (const auto& pixie : pixies) {
-		if (pixie->isOffScreen()) {
-			continue;
+shared_ptr<MissilePixie> MissilePixie::getMissileByID(int id) {
+	for (const auto& pixie : Pixie::pixies) {
+		if (pixie->getPixieID() == id) {
+			return std::dynamic_pointer_cast<MissilePixie>(pixie);
 		}
-		pixie->draw(window);
+	}
+	return nullptr;
+}
+
+void Pixie::drawAll(RenderWindow& window) {
+	for (size_t runInd = 0; runInd < pixies.size(); runInd++) {
+		if (pixies[runInd].get()) {
+			if (pixies[runInd].get()->isOffScreen()) {
+				continue;
+			}
+			pixies[runInd].get()->draw(window);
+		}
 	}
 }
 
