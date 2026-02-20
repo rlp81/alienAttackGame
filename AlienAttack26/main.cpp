@@ -3,7 +3,7 @@
 int main() {
 	RenderWindow window(VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Aliens!");
 	window.setFramerateLimit(60);
-	BackgroundPixie background("stars.jpg");
+	BackgroundPixie background(DEFAULT_BACKGROUND_TEXTURE);
 	background.setPosition({ 0, 0 });
 
 	PlayerPixie playerPixie;

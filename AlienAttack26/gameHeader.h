@@ -25,8 +25,9 @@ const float MISSILE_SPEED = 10.0f; // When the missile moves it moves 10 pixels 
 const int WINDOW_WIDTH = 800; // window is 800 pixels wide
 const int WINDOW_HEIGHT = 600;// window is 600 pixels vertically "high"
 const string DEFAULT_ENEMY_TEXTURE = "enemy.bmp";
-const string DEFAULT_SHIP_TEXTURE = "newShip.bmp";
+const string DEFAULT_SHIP_TEXTURE = "ship.bmp";
 const string DEFAULT_MISSILE_TEXTURE = "missile.png";
+const string DEFAULT_BACKGROUND_TEXTURE = "stars.jpg";
 extern int currentFrame;
 
 
