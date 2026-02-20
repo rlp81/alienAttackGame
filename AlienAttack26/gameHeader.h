@@ -28,6 +28,8 @@ const string DEFAULT_ENEMY_TEXTURE = "enemy.bmp";
 const string DEFAULT_SHIP_TEXTURE = "ship.bmp";
 const string DEFAULT_MISSILE_TEXTURE = "missile.png";
 const string DEFAULT_BACKGROUND_TEXTURE = "stars.jpg";
+const int DUMP_PIXIES_EVERY = 120;
+extern int lastPixieDumpFrame;
 extern int currentFrame;
 
 

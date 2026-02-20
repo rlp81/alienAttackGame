@@ -50,6 +50,7 @@ bool Pixie::checkIfActive() {
 
 void Pixie::draw(sf::RenderWindow& window) {
 	if (sprite&&checkIfActive()) {
+		cout << "Pixie ID: " << pixieID << " is being drawn.\n";
 		window.draw(*sprite);
 	}
 }
@@ -62,12 +63,12 @@ Pixie::~Pixie() {
 	active = false;
 	cout << "Destroying Pixie\n";
 	if (texture) {
-		delete texture;
-		texture = nullptr;
+//		delete texture;
+	//	texture = nullptr;
 	}
 	if (sprite) {
-		delete sprite;
-		sprite = nullptr;
+		//delete sprite;
+		//sprite = nullptr;
 	}
 }
 
@@ -146,12 +147,19 @@ void::MissilePixie::update() {
 	}
 }
 
+void MissilePixie::remove() {
+	/*deletedPixies.push_back(this->getPixieID());
+	owner->missiles.erase(std::remove(owner->missiles.begin(), owner->missiles.end(), this), owner->missiles.end());
+	pixies.erase(std::remove(pixies.begin(), pixies.end(), this), pixies.end());
+	owner->activeMissileCount--;*/
+}
+
 MissilePixie::MissilePixie(PlayerPixie* owner) : Pixie(2, DEFAULT_MISSILE_TEXTURE) {
 	setSpeed(DEFAULT_MISSILE_SPEED);
 	this->owner = owner;
 	this->setPosition(owner->getPosition());
-	this->direction = owner->getRotation();
-	this->setRotation(direction);
+	direction = owner->direction;
+	this->setRotation(degrees(direction));
 	owner->missiles.push_back(unique_ptr<MissilePixie>(this));
 }
 
@@ -236,6 +244,7 @@ void PlayerPixie::update()
 		angle = yRotation;
 	}
 	this->setRotation(degrees(angle));
+	this->direction = angle;
 	updateMissiles();
 }
 
@@ -245,9 +254,14 @@ void PlayerPixie::updateMissiles() {
 		{ 
 			missile->update(); 
 			if (missile->isOffScreen()) {
+				cout << pixies.size() << endl;
 				deletedPixies.push_back(missile->getPixieID());
+				size_t index = missile->getPixieID();
 				missiles.erase(std::remove(missiles.begin(), missiles.end(), missile), missiles.end());
-				pixies.erase(std::remove(pixies.begin(), pixies.end(), missile), pixies.end());
+				pixies.erase(pixies.begin()+index);
+				//pixies.erase(std::remove(pixies.begin(), pixies.end(), &missile), pixies.end());
+				//delete &missile;
+				cout << pixies.size() << endl;
 				this->activeMissileCount--;
 			}
 		}
@@ -263,5 +277,14 @@ void Pixie::drawAll(RenderWindow& window) {
 			continue;
 		}
 		pixie->draw(window);
+	}
+}
+
+void Pixie::deleteOld() {
+	if (lastPixieDumpFrame + DUMP_PIXIES_EVERY < currentFrame) {
+		if (deletedPixies.size() > 2) {
+			deletedPixies.erase(deletedPixies.begin(), deletedPixies.end() - 2);
+		}
+		lastPixieDumpFrame = currentFrame;
 	}
 }

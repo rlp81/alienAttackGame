@@ -87,6 +87,7 @@ public:
 		}
 	}
 	static void drawAll(sf::RenderWindow& window);
+	static void deleteOld();
 };
 
 class PlayerPixie : public Pixie {
@@ -95,6 +96,7 @@ private:
 	int ammo;
 	int health;
 	int activeMissileCount;
+	float direction;
 	int lastMissileFrame;
 	//vector<MissilePixie*> missiles;
 	vector<unique_ptr<MissilePixie>> missiles;
@@ -110,12 +112,13 @@ class EnemyPixie : public Pixie {};
 class MissilePixie : public Pixie {
 private:
 	PlayerPixie* owner;
-	sf::Angle direction;
+	float direction;
 public:
 	MissilePixie(PlayerPixie* owner);
 	virtual ~MissilePixie() = default;
 	void update();
 	bool checkCollision();
+	void remove();
 };
 
 

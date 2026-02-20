@@ -19,5 +19,6 @@ int main() {
 		window.clear();
 		Pixie::drawAll(window);
 		window.display();
+		Pixie::deleteOld();
 	}
 }
