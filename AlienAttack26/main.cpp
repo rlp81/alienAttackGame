@@ -14,6 +14,7 @@ int main() {
 				window.close();
 			}
 		}
+
 		playerPixie.update();
 		window.clear();
 		Pixie::drawAll(window);

@@ -15,8 +15,6 @@ private:
 	friend class EnemyPixie;
 	friend class MissilePixie;
 	static int pixieCount;
-	//static vector<Pixie*> pixies;
-	static vector<Pixie*> deleted;
 	static vector<std::unique_ptr<Pixie>> pixies;
 	sf::Texture* texture;
 	sf::Sprite* sprite;
@@ -88,7 +86,6 @@ public:
 		}
 	}
 	static void drawAll(sf::RenderWindow& window);
-	static void clearDeleted();
 };
 
 class PlayerPixie : public Pixie {

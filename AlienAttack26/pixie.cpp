@@ -2,7 +2,6 @@
 int Pixie::nextPixieID = 0;
 int Pixie::pixieCount = 0;
 vector<std::unique_ptr<Pixie>> Pixie::pixies;
-vector<Pixie*> Pixie::deleted;
 
 Pixie::Pixie(int type, const std::string& textureFile) {
 	pixieType = type;
@@ -244,22 +243,7 @@ void PlayerPixie::updateMissiles() {
 			if (missile->isOffScreen()) {
 				missiles.erase(std::remove(missiles.begin(), missiles.end(), missile), missiles.end());
 				pixies.erase(std::remove(pixies.begin(), pixies.end(), missile), pixies.end());
-				/*missiles.erase(
-					std::remove_if(missiles.begin(), missiles.end(),
-						[](const std::unique_ptr<MissilePixie>& ptr) {
-							return true;
-						}),
-					missiles.end()
-				);
-				Pixie::pixies.erase(
-					std::remove_if(Pixie::pixies.begin(), Pixie::pixies.end(),
-						[](const std::unique_ptr<MissilePixie>& ptr) {
-							return true;
-						}),
-					Pixie::pixies.end()
-				);*/
 				this->activeMissileCount--;
-				//missiles.erase(std::remove(missiles.begin(), missiles.end(), missile), missiles.end());
 			}
 		}
 		else {
@@ -275,12 +259,4 @@ void Pixie::drawAll(RenderWindow& window) {
 		}
 		pixie->draw(window);
 	}
-}
-
-void Pixie::clearDeleted() {
-	for (auto it = deleted.begin(); it != deleted.end(); ) {
-		delete* it;
-		it = deleted.erase(it);
-	}
-	deleted.clear();
 }
