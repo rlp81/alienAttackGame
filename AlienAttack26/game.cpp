@@ -6,10 +6,10 @@
  *  AUTHOR: Initial work in this program was completed by Prof. Andy Harbert
  *          Prof. Pat Smith has made modifications (December 2021, 2024 upgrade to 3.0)
  */   
-vector<Alien*> aliens;
 
-int main()
+int oldmain()
 {
+	vector<Alien*> aliens;
 	PlayerPixie playerPixie;
 	newAlien();
 	Vector2f alienDirection;

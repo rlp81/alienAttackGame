@@ -78,6 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>c:\SFML-3.0.2\include</AdditionalIncludeDirectories>
       <AdditionalOptions>/std:c++17</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,14 +132,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="alien.h" />
     <ClInclude Include="gameHeader.h" />
     <ClInclude Include="pixie.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="alien.cpp" />
-    <ClCompile Include="game.cpp" />
     <ClCompile Include="gameFunctions.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="pixie.cpp" />
   </ItemGroup>
   <ItemGroup>

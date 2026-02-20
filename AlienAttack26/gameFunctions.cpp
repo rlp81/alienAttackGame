@@ -1,4 +1,5 @@
 #include "gameHeader.h"
+int currentFrame = 0;
 /*
 *  gameFunctions.cpp
 *     - The functions for the game program are in this file. 
@@ -180,8 +181,8 @@ bool checkCollision(const Sprite& sprite1, const Sprite& sprite2) {
 	return result;
 }
 
-void newAlien() {
+/*void newAlien() {
 	Alien* newAlien = new Alien("Blorg");
 	newAlien->setPosition(rand() % WINDOW_WIDTH, rand() % WINDOW_HEIGHT);
-	aliens.push_back(newAlien);
-}
+	//aliens.push_back(newAlien);
+}*/

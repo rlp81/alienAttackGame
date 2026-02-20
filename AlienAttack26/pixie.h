@@ -5,8 +5,9 @@ const float DEFAULT_PIXIE_SPEED = 5.0f;
 const float DEFAULT_PIXIE_SCALE = 1.5f;
 const int DEFAULT_PIXIE_HEALTH = 10;
 const int DEFAULT_PLAYER_AMMO = 99;
-const int DEFAULT_MISSILE_SPEED = 6.0f;
-
+const float DEFAULT_MISSILE_SPEED = 6.0f;
+const int DEFAULT_FRAMES_TILL__NEXT_MISSILE = 90;
+const int MAX_ACTIVE_MISSILES = 3;
 
 class Pixie {
 private:
@@ -14,17 +15,21 @@ private:
 	friend class EnemyPixie;
 	friend class MissilePixie;
 	static int pixieCount;
-	static vector<Pixie*> pixies;
+	//static vector<Pixie*> pixies;
+	static vector<Pixie*> deleted;
+	static vector<std::unique_ptr<Pixie>> pixies;
 	sf::Texture* texture;
 	sf::Sprite* sprite;
 	int pixieType;
 	static int nextPixieID;
 	int pixieID;
 	float speed;
+	bool active;
 public:
 	Pixie() = delete;
 	Pixie(int type, const std::string& textureFile);
-	virtual ~Pixie() = default;
+	Pixie(int type, const std::string& textureFile, bool useOriginalOrigin);
+	~Pixie();
 	bool isOffScreen() const;
 	void draw(sf::RenderWindow& window);
 	int getPixieType() const { return pixieType; }
@@ -32,6 +37,7 @@ public:
 	static int getPixieCount() { return pixieCount; }
 	float getSpeed() const { return speed; }
 	void setSpeed(float newSpeed) { speed = newSpeed; }
+	bool checkIfActive();
 	void setPosition(float x, float y) {
 		if (sprite) {
 			sprite->setPosition({ x, y });
@@ -81,6 +87,8 @@ public:
 			sprite->setRotation(angle);
 		}
 	}
+	static void drawAll(sf::RenderWindow& window);
+	static void clearDeleted();
 };
 
 class PlayerPixie : public Pixie {
@@ -89,21 +97,33 @@ private:
 	int ammo;
 	int health;
 	int activeMissileCount;
-	vector<MissilePixie*> missiles;
+	int lastMissileFrame;
+	//vector<MissilePixie*> missiles;
+	vector<unique_ptr<MissilePixie>> missiles;
 public:
 	PlayerPixie();
 	void shootMissile();
 	void update();
-	void updateMissiles(RenderWindow& window);
+	void updateMissiles();
 };
+
 class EnemyPixie : public Pixie {};
+
 class MissilePixie : public Pixie {
 private:
 	PlayerPixie* owner;
-	Angle direction;
+	sf::Angle direction;
 public:
 	MissilePixie(PlayerPixie* owner);
 	virtual ~MissilePixie() = default;
 	void update();
 	bool checkCollision();
+};
+
+
+class BackgroundPixie : public Pixie {
+public:
+	BackgroundPixie(const std::string& textureFile) : Pixie(0, textureFile, true) {
+		setScale(DEFAULT_PIXIE_SCALE, DEFAULT_PIXIE_SCALE);
+	}
 };

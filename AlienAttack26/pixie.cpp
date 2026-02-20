@@ -1,5 +1,8 @@
 #include "gameHeader.h"
 int Pixie::nextPixieID = 0;
+int Pixie::pixieCount = 0;
+vector<std::unique_ptr<Pixie>> Pixie::pixies;
+vector<Pixie*> Pixie::deleted;
 
 Pixie::Pixie(int type, const std::string& textureFile) {
 	pixieType = type;
@@ -12,16 +15,49 @@ Pixie::Pixie(int type, const std::string& textureFile) {
 	sprite->setOrigin(getSpriteCenter(*sprite));
 	sprite->setScale({ DEFAULT_PIXIE_SCALE,DEFAULT_PIXIE_SCALE });
 	pixieID = nextPixieID++;
-	this->pixies.push_back(this);
+	active = true;
+	pixies.push_back(std::make_unique<Pixie>(*this));
+}
+
+Pixie::Pixie(int type, const std::string& textureFile, bool useOriginalOrigin) {
+	pixieType = type;
+	texture = new sf::Texture();
+	if (!texture->loadFromFile(textureFile)) {
+		std::cerr << "Failed to load texture from file: " << textureFile << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	sprite = new sf::Sprite(*texture);
+	if (!useOriginalOrigin) {
+		sprite->setOrigin(getSpriteCenter(*sprite));
+	}
+	sprite->setScale({ DEFAULT_PIXIE_SCALE,DEFAULT_PIXIE_SCALE });
+	pixieID = nextPixieID++;
+	active = true;
+	pixies.push_back(std::make_unique<Pixie>(*this));
+}
+
+bool Pixie::checkIfActive() {
+	for (const auto& pixie : pixies) {
+		if (pixie->getPixieID() == pixieID) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Pixie::draw(sf::RenderWindow& window) {
-	if (sprite) {
+	if (sprite&&checkIfActive()) {
 		window.draw(*sprite);
 	}
 }
 
 Pixie::~Pixie() {
+	pixieCount--;
+	if (!active) {
+		return;
+	}
+	active = false;
+	cout << "Destroying Pixie\n";
 	if (texture) {
 		delete texture;
 		texture = nullptr;
@@ -30,13 +66,17 @@ Pixie::~Pixie() {
 		delete sprite;
 		sprite = nullptr;
 	}
-	pixieCount--;
 }
 
 bool Pixie::isOffScreen() const {
-	if (sprite) {
-		Vector2f pos = sprite->getPosition();
-		return pos.x < 0 || pos.x > WINDOW_WIDTH || pos.y < 0 || pos.y > WINDOW_HEIGHT;
+	if (this->sprite) {
+		try {
+			Vector2f pos = sprite->getPosition();
+			return pos.x < 0 || pos.x > WINDOW_WIDTH || pos.y < 0 || pos.y > WINDOW_HEIGHT;
+		}
+		catch (const std::exception& e) {
+			return true;
+		}
 	}
 	return true;
 }
@@ -55,12 +95,21 @@ PlayerPixie::PlayerPixie() : Pixie(1, DEFAULT_SHIP_TEXTURE) {
 	ammo = DEFAULT_PLAYER_AMMO;
 	health = DEFAULT_PIXIE_HEALTH;
 	activeMissileCount = 0;
+	lastMissileFrame = -1;
 }
 
 void PlayerPixie::shootMissile() {
+	if (!(currentFrame >= DEFAULT_FRAMES_TILL__NEXT_MISSILE + lastMissileFrame || lastMissileFrame == -1)) {
+		return;
+	}
+	if (activeMissileCount >= MAX_ACTIVE_MISSILES) {
+		std::cout << "Maximum active missiles reached!" << std::endl;
+		return;
+	}
 	if (ammo > 0) {
+		cout << "Shooting missile! Ammo left: " << ammo << endl;
+		lastMissileFrame = currentFrame;
 		MissilePixie* missile = new MissilePixie(this);
-		missiles.push_back(missile);
 		activeMissileCount++;
 		ammo--;
 	}
@@ -88,14 +137,6 @@ void::MissilePixie::update() {
 		else {
 			this->move(Vector2f(y, x) * MISSILE_SPEED);
 		}
-
-		if (this->isOffScreen()) {
-			owner->activeMissileCount--;
-			delete this;
-		}
-		else {
-			this->setPosition(owner->getPosition());
-		}
 	}
 	else {
 		std::cerr << "Owner not set for MissilePixie!" << std::endl;
@@ -106,13 +147,14 @@ MissilePixie::MissilePixie(PlayerPixie* owner) : Pixie(2, DEFAULT_MISSILE_TEXTUR
 	setSpeed(DEFAULT_MISSILE_SPEED);
 	this->owner = owner;
 	this->setPosition(owner->getPosition());
-	direction = owner->getRotation();
+	this->direction = owner->getRotation();
 	this->setRotation(direction);
+	owner->missiles.push_back(unique_ptr<MissilePixie>(this));
 }
 
 bool MissilePixie::checkCollision() {
-	for (Pixie* pixie : Pixie::pixies) {
-		if (this != pixie && pixie->getPixieID() != owner->getPixieID()) {
+	for (const auto& pixie : Pixie::pixies) {
+		if (this->getPixieID() != pixie->getPixieID() && pixie->getPixieID() != owner->getPixieID()) {
 			if (this->isCollidingWith(*pixie)) {
 				return true;
 			}
@@ -158,6 +200,10 @@ void PlayerPixie::update()
 		this->move({ 0.0, DISTANCE });
 		this->setRotation(degrees(180));
 	}
+	
+	if (Keyboard::isKeyPressed(Keyboard::Key::Space)) {
+		this->shootMissile();
+	}
 
 	if (xRotation != 0) {
 		switch (yRotation) {
@@ -187,33 +233,54 @@ void PlayerPixie::update()
 		angle = yRotation;
 	}
 	this->setRotation(degrees(angle));
-
-	// *** add code (more if/else blocks) to move ship up/dow
-	// 
-	// What do you want to do when you reach the edge of the screen? 
-	//   You might just move the ship back, simulate hitting a "wall"
-	//   You might also wrap around (change from some value greater than
-	//   the width of the window back to zero, or from some x value less
-	//   than zero to something like 795, near the far right edge? 
-	//  Or you could do nothing? 
-	// This statement gets the ship's x location. If you decide you want 
-	//   to do something with the problem of the ship moving off screen
-	//   you can use this:
-	//
-	//        ship.setPosition(float x, float y); 
-	// 
-	//   You pass the setPosition method the x and y value you want 
-	//     to set the ship at. 
-
-	// If you're having trouble, using this command will display the
-	// position of the ship every time you enter this function!
-	// 
-	//cout << ship.getPosition().x << ", " << ship.getPosition().y << endl; 
+	updateMissiles();
 }
 
-void PlayerPixie::updateMissiles(RenderWindow& window) {
-	for (MissilePixie* missile : missiles) {
-		missile->update();
-		missile->draw(window);
+void PlayerPixie::updateMissiles() {
+	for (const auto& missile : missiles) {
+		if (missile)
+		{ 
+			missile->update(); 
+			if (missile->isOffScreen()) {
+				missiles.erase(std::remove(missiles.begin(), missiles.end(), missile), missiles.end());
+				pixies.erase(std::remove(pixies.begin(), pixies.end(), missile), pixies.end());
+				/*missiles.erase(
+					std::remove_if(missiles.begin(), missiles.end(),
+						[](const std::unique_ptr<MissilePixie>& ptr) {
+							return true;
+						}),
+					missiles.end()
+				);
+				Pixie::pixies.erase(
+					std::remove_if(Pixie::pixies.begin(), Pixie::pixies.end(),
+						[](const std::unique_ptr<MissilePixie>& ptr) {
+							return true;
+						}),
+					Pixie::pixies.end()
+				);*/
+				this->activeMissileCount--;
+				//missiles.erase(std::remove(missiles.begin(), missiles.end(), missile), missiles.end());
+			}
+		}
+		else {
+			missiles.erase(std::remove(missiles.begin(), missiles.end(), missile), missiles.end());
+		}
 	}
+}
+
+void Pixie::drawAll(RenderWindow& window) {
+	for (const auto& pixie : pixies) {
+		if (pixie->isOffScreen()) {
+			continue;
+		}
+		pixie->draw(window);
+	}
+}
+
+void Pixie::clearDeleted() {
+	for (auto it = deleted.begin(); it != deleted.end(); ) {
+		delete* it;
+		it = deleted.erase(it);
+	}
+	deleted.clear();
 }

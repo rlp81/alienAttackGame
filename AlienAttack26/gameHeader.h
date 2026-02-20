@@ -13,9 +13,11 @@
 using namespace std;
 // these two lines are specific to the SFML graphics library. 
 #include <SFML/Graphics.hpp>
-#include "alien.h"
+//#include "alien.h"
 #include "pixie.h"
+#include <memory>
 using namespace sf;
+enable_shared_from_this<Pixie>;
 
 // Constants for the game 
 const float DISTANCE = 5.0f; // When the ship moves it moves 5 pixels at a time. 
@@ -25,7 +27,7 @@ const int WINDOW_HEIGHT = 600;// window is 600 pixels vertically "high"
 const string DEFAULT_ENEMY_TEXTURE = "enemy.bmp";
 const string DEFAULT_SHIP_TEXTURE = "newShip.bmp";
 const string DEFAULT_MISSILE_TEXTURE = "missile.png";
-extern vector<Alien*> aliens;
+extern int currentFrame;
 
 
 // Game Functions
@@ -37,4 +39,4 @@ bool isSpriteOffScreen(const Sprite& sprite);
 Vector2f getSpriteCenter(const Sprite& sprite);
 Texture loadTexture(const string& fileName);
 bool checkCollision(const Sprite& sprite1, const Sprite& sprite2);
-void newAlien();
+//void newAlien();
