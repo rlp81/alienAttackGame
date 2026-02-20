@@ -16,6 +16,7 @@ private:
 	friend class MissilePixie;
 	static int pixieCount;
 	static vector<std::unique_ptr<Pixie>> pixies;
+	static vector<int> deletedPixies;
 	sf::Texture* texture;
 	sf::Sprite* sprite;
 	int pixieType;
