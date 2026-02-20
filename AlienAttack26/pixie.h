@@ -17,7 +17,6 @@ private:
 	friend class BackgroundPixie;
 	static int pixieCount;
 	static vector<std::shared_ptr<Pixie>> pixies;
-	static vector<int> deletedPixies;
 	sf::Texture* texture;
 	sf::Sprite* sprite;
 	int pixieType;
@@ -40,7 +39,6 @@ public:
 	static int getPixieCount() { return pixieCount; }
 	float getSpeed() const { return speed; }
 	void setSpeed(float newSpeed) { speed = newSpeed; }
-	bool checkIfActive();
 	void setPosition(float x, float y) {
 		if (sprite) {
 			sprite->setPosition({ x, y });

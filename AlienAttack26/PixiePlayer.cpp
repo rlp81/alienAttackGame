@@ -128,7 +128,6 @@ void PlayerPixie::updateMissiles() {
 		{
 			bool off = missile->isOffScreen();
 			if (off) {
-				deletedPixies.push_back(missile->getPixieID());
 				size_t index = missile->getPixieID();
 				auto* targetRawPtr = &missile;
 				missiles.erase(std::remove(missiles.begin(), missiles.end(), id), missiles.end());

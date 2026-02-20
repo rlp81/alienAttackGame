@@ -2,7 +2,6 @@
 int Pixie::nextPixieID = 0;
 int Pixie::pixieCount = 0;
 vector<std::shared_ptr <Pixie>> Pixie::pixies;
-vector<int> Pixie::deletedPixies;
 
 Pixie::Pixie(int type, const std::string& textureFile) {
 	pixieType = type;
@@ -34,17 +33,6 @@ Pixie::Pixie(int type, const std::string& textureFile, bool useOriginalOrigin) {
 	active = true;
 }
 
-bool Pixie::checkIfActive() {
-	for (const auto& pixie : pixies) {
-		if (pixie->getPixieID() == pixieID) {
-			if (find(deletedPixies.begin(), deletedPixies.end(), pixieID) != deletedPixies.end()) {
-				return false;
-			}
-			return true;
-		}
-	}
-	return false;
-}
 
 void Pixie::draw(sf::RenderWindow& window) {
 	if (sprite) {
@@ -112,14 +100,5 @@ void Pixie::drawAll(RenderWindow& window) {
 			}
 			pixies[runInd].get()->draw(window);
 		}
-	}
-}
-
-void Pixie::deleteOld() {
-	if (lastPixieDumpFrame + DUMP_PIXIES_EVERY < currentFrame) {
-		if (deletedPixies.size() > 2) {
-			deletedPixies.erase(deletedPixies.begin(), deletedPixies.end() - 2);
-		}
-		lastPixieDumpFrame = currentFrame;
 	}
 }
