@@ -94,49 +94,5 @@ public:
 	static void deleteOld();
 };
 
-class PlayerPixie : public Pixie {
-private:
-	friend class MissilePixie;
-	int ammo;
-	int health;
-	int activeMissileCount;
-	float direction;
-	int lastMissileFrame;
-	//vector<MissilePixie*> missiles;
-	vector<int> missiles;
-public:
-	PlayerPixie();
-	void shootMissile();
-	void update();
-	void updateMissiles();
-	static shared_ptr<PlayerPixie> create();
-};
-
-class EnemyPixie : public Pixie {};
-
-class MissilePixie : public Pixie {
-private:
-	PlayerPixie* owner;
-	float direction;
-public:
-	MissilePixie(PlayerPixie* owner);
-	virtual ~MissilePixie() = default;
-	void update();
-	bool checkCollision();
-	static shared_ptr<MissilePixie> getMissileByID(int id);
-	void remove();
-	static shared_ptr<MissilePixie> create(PlayerPixie* owner);
-};
 
 
-class BackgroundPixie : public Pixie {
-public:
-	BackgroundPixie(const std::string& textureFile) : Pixie(0, textureFile, true) {
-		setScale(DEFAULT_PIXIE_SCALE, DEFAULT_PIXIE_SCALE);
-	}
-	static shared_ptr<BackgroundPixie> create(string textureFile) {
-		auto pixie = make_shared<BackgroundPixie>(textureFile);
-		pixies.push_back(pixie);
-		return pixie;
-	}
-};

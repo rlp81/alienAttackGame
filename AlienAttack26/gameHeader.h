@@ -16,6 +16,10 @@ using namespace std;
 //#include "alien.h"
 #include "pixie.h"
 #include <memory>
+#include "PixieBackground.h"
+#include "PixieEnemy.h"
+#include "PixieMissile.h"
+#include "PixiePlayer.h"
 using namespace sf;
 enable_shared_from_this<Pixie>;
 

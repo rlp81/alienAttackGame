@@ -24,12 +24,36 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PixieMissile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PixiePlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PixieBackground.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PixieEnemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pixie.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixiePlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixieMissile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixieBackground.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixieEnemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

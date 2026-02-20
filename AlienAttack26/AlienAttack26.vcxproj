@@ -134,11 +134,19 @@
   <ItemGroup>
     <ClInclude Include="gameHeader.h" />
     <ClInclude Include="pixie.h" />
+    <ClInclude Include="PixieBackground.h" />
+    <ClInclude Include="PixieEnemy.h" />
+    <ClInclude Include="PixieMissile.h" />
+    <ClInclude Include="PixiePlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameFunctions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pixie.cpp" />
+    <ClCompile Include="PixieBackground.cpp" />
+    <ClCompile Include="PixieEnemy.cpp" />
+    <ClCompile Include="PixieMissile.cpp" />
+    <ClCompile Include="PixiePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="alien.bmp" />
