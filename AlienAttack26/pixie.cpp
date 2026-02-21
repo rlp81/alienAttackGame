@@ -40,24 +40,6 @@ void Pixie::draw(sf::RenderWindow& window) {
 	}
 }
 
-/*Pixie::~Pixie() {
-	pixieCount--;
-	if (active == false) {
-		return;
-	}
-	active = false;
-	cout << "Destroying Pixie\n";
-	if (texture != nullptr) {
-		delete texture;
-		texture = nullptr;
-	}
-	if (sprite != nullptr) {
-		delete sprite;
-		sprite = nullptr;
-	}
-}*/
-
-
 shared_ptr<Pixie> Pixie::create(int type, const std::string& textureFile) {
 	auto pixie = make_shared<Pixie>(type, textureFile);
 	pixies.push_back(pixie);

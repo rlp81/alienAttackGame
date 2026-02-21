@@ -89,8 +89,4 @@ public:
 		}
 	}
 	static void drawAll(sf::RenderWindow& window);
-	static void deleteOld();
 };
-
-
-

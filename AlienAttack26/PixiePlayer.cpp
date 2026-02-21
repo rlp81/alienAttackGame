@@ -131,18 +131,10 @@ void PlayerPixie::updateMissiles() {
 				size_t index = missile->getPixieID();
 				auto* targetRawPtr = &missile;
 				missiles.erase(std::remove(missiles.begin(), missiles.end(), id), missiles.end());
-				/*missiles.erase(
-					std::remove_if(missiles.begin(), missiles.end(),
-						[targetRawPtr](const std::shared_ptr<MissilePixie>& p) {
-							return p.get() == targetRawPtr;
-						}),
-					missiles.end()
-				);*/
 				auto it = std::find(pixies.begin(), pixies.end(), missile);
 				if (it != pixies.end()) {
 					pixies.erase(it);
 				}
-				//pixies[index].reset();
 				this->activeMissileCount--;
 			}
 			else {
