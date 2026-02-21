@@ -84,3 +84,18 @@ void Pixie::drawAll(RenderWindow& window) {
 		}
 	}
 }
+
+shared_ptr<Pixie> Pixie::getPixieByID(int ID) {
+	for (shared_ptr<Pixie> pixie : Pixie::pixies) {
+		if (pixie->pixieID == ID) {
+			return pixie;
+		}
+	}
+	return nullptr;
+}
+
+float Pixie::getDirectionTo(const Pixie& other) {
+	if (!sprite || !other.sprite) return 0.0f;
+	Vector2f direction = other.sprite->getPosition() - sprite->getPosition();
+	return atan2(direction.y, direction.x);
+}

@@ -39,6 +39,7 @@ public:
 	static int getPixieCount() { return pixieCount; }
 	float getSpeed() const { return speed; }
 	void setSpeed(float newSpeed) { speed = newSpeed; }
+	static shared_ptr<Pixie> getPixieByID(int ID);
 	void setPosition(float x, float y) {
 		if (sprite) {
 			sprite->setPosition({ x, y });
@@ -67,6 +68,7 @@ public:
 		}
 	}
 	bool isCollidingWith(const Pixie& other) const;
+	float getDirectionTo(const Pixie& other);
 	void move(float dx, float dy) {
 		if (sprite) {
 			sprite->move({ dx, dy });

@@ -7,6 +7,10 @@ int main() {
 	background->setPosition({ 0, 0 });
 
 	shared_ptr<PlayerPixie> playerPixie = PlayerPixie::create();
+	playerPixie->setPosition({ WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f });
+
+	shared_ptr<EnemyPixie> enemyPixie = EnemyPixie::create(playerPixie->getPixieID());
+
 	while (window.isOpen()) {
 		currentFrame++;
 		while (const std::optional event = window.pollEvent()){
@@ -16,6 +20,7 @@ int main() {
 		}
 
 		playerPixie->update();
+		enemyPixie->update();
 		window.clear();
 		Pixie::drawAll(window);
 		window.display();

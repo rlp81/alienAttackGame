@@ -12,6 +12,7 @@ PlayerPixie::PlayerPixie() : Pixie(1, DEFAULT_SHIP_TEXTURE) {
 shared_ptr<PlayerPixie> PlayerPixie::create() {
 	auto player = make_shared<PlayerPixie>();
 	pixies.push_back(player);
+	playerID = player->getPixieID();
 	return player;
 }
 

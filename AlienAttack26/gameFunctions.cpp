@@ -1,6 +1,7 @@
 #include "gameHeader.h"
 int currentFrame = 0;
 int lastPixieDumpFrame = 0;
+int playerID = -1;
 /*
 *  gameFunctions.cpp
 *     - The functions for the game program are in this file. 

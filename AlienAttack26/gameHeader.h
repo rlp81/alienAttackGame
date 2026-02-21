@@ -35,6 +35,8 @@ const string DEFAULT_BACKGROUND_TEXTURE = "stars.jpg";
 const int DUMP_PIXIES_EVERY = 120;
 extern int lastPixieDumpFrame;
 extern int currentFrame;
+extern int playerScore;
+extern int playerID;
 
 
 // Game Functions
