@@ -47,9 +47,7 @@ void EnemyPixie::followTarget(shared_ptr<Pixie> target) {
 void EnemyPixie::orbit(float radius) {
 	if (target) {
 		float rads = target->getDirectionTo(*this);
-		cout << rads << endl;
 		float degs = rads * 180 / 3.14159265f;
-		cout << degs << endl;
 		rads = degrees(degs + 90).asRadians();
 		float offsetX = std::cos(rads) * speed;
 		float offsetY = std::sin(rads) * speed;
