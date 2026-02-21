@@ -26,13 +26,13 @@ void::MissilePixie::update() {
 }
 
 void MissilePixie::remove() {
-	/*deletedPixies.push_back(this->getPixieID());
-	owner->missiles.erase(std::remove(owner->missiles.begin(), owner->missiles.end(), this), owner->missiles.end());
-	pixies.erase(std::remove(pixies.begin(), pixies.end(), this), pixies.end());
-	owner->activeMissileCount--;*/
+	int id = this->getPixieID();
+	owner->missiles.erase(std::remove(owner->missiles.begin(), owner->missiles.end(), id), owner->missiles.end());
+	Pixie::removePixieByID(id);
+	owner->activeMissileCount--;
 }
 
-MissilePixie::MissilePixie(PlayerPixie* owner) : Pixie(2, DEFAULT_MISSILE_TEXTURE) {
+MissilePixie::MissilePixie(ShipPixie* owner) : Pixie(2, DEFAULT_MISSILE_TEXTURE) {
 	setSpeed(DEFAULT_MISSILE_SPEED);
 	this->owner = owner;
 	this->setPosition(owner->getPosition());
@@ -52,9 +52,30 @@ shared_ptr<MissilePixie> MissilePixie::getMissileByID(int id) {
 	return nullptr;
 }
 
-shared_ptr<MissilePixie> MissilePixie::create(PlayerPixie* owner) {
+shared_ptr<MissilePixie> MissilePixie::create(ShipPixie* owner) {
 	auto missile = make_shared<MissilePixie>(owner);
 	pixies.push_back(missile);
 	owner->missiles.push_back(missile->getPixieID());
 	return missile;
+}
+
+void MissilePixie::checkForCollisions() {
+	{
+		for (const auto& pixie : Pixie::pixies) {
+			if (this->getPixieID() != pixie->getPixieID() && pixie->getPixieID() != owner->getPixieID() && pixie->pixieType != 0) {
+				if (this->isCollidingWith(*pixie)) {
+					this->remove();
+					if (pixie->pixieType == 3) {
+						shared_ptr<EnemyPixie> enemy = std::dynamic_pointer_cast<EnemyPixie>(pixie);
+						if (enemy) {
+							if (bool died = enemy->damagePixie(damage)) {
+								playerScore += 100;
+							}
+						}
+					}
+					break;
+				}
+			}
+		}
+	}
 }

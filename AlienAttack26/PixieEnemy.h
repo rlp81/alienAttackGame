@@ -1,10 +1,8 @@
 #pragma once
 #include "gameHeader.h" 
 
-class EnemyPixie : public Pixie {
+class EnemyPixie : public ShipPixie {
 private:
-	double health;
-	double damage;
 	string faction;
 	int enemyType;
 	int movePattern;

@@ -1,6 +1,6 @@
 #include "gameHeader.h"
 
-EnemyPixie::EnemyPixie() : Pixie(3, DEFAULT_ENEMY_TEXTURE) {
+EnemyPixie::EnemyPixie() : ShipPixie(3, DEFAULT_ENEMY_TEXTURE) {
 	health = DEFAULT_PIXIE_HEALTH;
 	damage = 3.4;
 	faction = "Glorps";
@@ -9,6 +9,7 @@ EnemyPixie::EnemyPixie() : Pixie(3, DEFAULT_ENEMY_TEXTURE) {
 	followPadding = 50;
 	target = nullptr;
 	speed = DEFAULT_PIXIE_SPEED * 0.75f;
+	activeMissileCount = 0;
 }
 
 shared_ptr<EnemyPixie> EnemyPixie::create() {

@@ -15,6 +15,7 @@ using namespace std;
 #include <SFML/Graphics.hpp>
 //#include "alien.h"
 #include "pixie.h"
+#include "PixieShip.h"
 #include <memory>
 #include "PixieBackground.h"
 #include "PixieEnemy.h"

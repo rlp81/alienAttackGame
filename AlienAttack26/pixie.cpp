@@ -99,3 +99,10 @@ float Pixie::getDirectionTo(const Pixie& other) {
 	Vector2f direction = other.sprite->getPosition() - sprite->getPosition();
 	return atan2(direction.y, direction.x);
 }
+
+void Pixie::removePixieByID(int ID) {
+	auto it = std::find(pixies.begin(), pixies.end(), Pixie::getPixieByID(ID));
+	if (it != pixies.end()) {
+		pixies.erase(it);
+	}
+}

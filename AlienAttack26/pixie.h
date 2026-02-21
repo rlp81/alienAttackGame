@@ -11,6 +11,7 @@ const int MAX_ACTIVE_MISSILES = 3;
 
 class Pixie {
 private:
+	friend class ShipPixie;
 	friend class PlayerPixie;
 	friend class EnemyPixie;
 	friend class MissilePixie;
@@ -40,6 +41,7 @@ public:
 	float getSpeed() const { return speed; }
 	void setSpeed(float newSpeed) { speed = newSpeed; }
 	static shared_ptr<Pixie> getPixieByID(int ID);
+	static void removePixieByID(int ID);
 	void setPosition(float x, float y) {
 		if (sprite) {
 			sprite->setPosition({ x, y });

@@ -3,14 +3,16 @@
 
 class MissilePixie : public Pixie {
 private:
-	PlayerPixie* owner;
+	ShipPixie* owner;
 	float direction;
+	float damage;
 public:
-	MissilePixie(PlayerPixie* owner);
+	MissilePixie(ShipPixie* owner);
 	virtual ~MissilePixie() = default;
 	void update();
 	bool checkCollision();
 	static shared_ptr<MissilePixie> getMissileByID(int id);
 	void remove();
-	static shared_ptr<MissilePixie> create(PlayerPixie* owner);
+	static shared_ptr<MissilePixie> create(ShipPixie* owner);
+	void checkForCollisions();
 };

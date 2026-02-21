@@ -1,12 +1,10 @@
 #include "gameHeader.h"
 
-PlayerPixie::PlayerPixie() : Pixie(1, DEFAULT_SHIP_TEXTURE) {
+PlayerPixie::PlayerPixie() : ShipPixie(1, DEFAULT_SHIP_TEXTURE) {
 	setSpeed(DEFAULT_PIXIE_SPEED);
 	setScale(DEFAULT_PIXIE_SCALE, DEFAULT_PIXIE_SCALE);
 	ammo = DEFAULT_PLAYER_AMMO;
 	health = DEFAULT_PIXIE_HEALTH;
-	activeMissileCount = 0;
-	lastMissileFrame = -1;
 }
 
 shared_ptr<PlayerPixie> PlayerPixie::create() {
@@ -14,26 +12,6 @@ shared_ptr<PlayerPixie> PlayerPixie::create() {
 	pixies.push_back(player);
 	playerID = player->getPixieID();
 	return player;
-}
-
-void PlayerPixie::shootMissile() {
-	if (!(currentFrame >= DEFAULT_FRAMES_TILL__NEXT_MISSILE + lastMissileFrame || lastMissileFrame == -1)) {
-		return;
-	}
-	if (activeMissileCount >= MAX_ACTIVE_MISSILES) {
-		std::cout << "Maximum active missiles reached!" << std::endl;
-		return;
-	}
-	if (ammo > 0) {
-		cout << "Shooting missile! Ammo left: " << ammo << endl;
-		lastMissileFrame = currentFrame;
-		MissilePixie::create(this);
-		activeMissileCount++;
-		ammo--;
-	}
-	else {
-		std::cout << "Out of ammo!" << std::endl;
-	}
 }
 
 bool MissilePixie::checkCollision() {
@@ -119,31 +97,4 @@ void PlayerPixie::update()
 	this->setRotation(degrees(angle));
 	this->direction = angle;
 	updateMissiles();
-}
-
-void PlayerPixie::updateMissiles() {
-
-	for (int id : missiles) {
-		shared_ptr<MissilePixie> missile = MissilePixie::getMissileByID(id);
-		if (missile)
-		{
-			bool off = missile->isOffScreen();
-			if (off) {
-				size_t index = missile->getPixieID();
-				auto* targetRawPtr = &missile;
-				missiles.erase(std::remove(missiles.begin(), missiles.end(), id), missiles.end());
-				auto it = std::find(pixies.begin(), pixies.end(), missile);
-				if (it != pixies.end()) {
-					pixies.erase(it);
-				}
-				this->activeMissileCount--;
-			}
-			else {
-				missile->update();
-			}
-		}
-		else {
-			missiles.erase(std::remove(missiles.begin(), missiles.end(), id), missiles.end());
-		}
-	}
 }
