@@ -154,9 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="alien.bmp" />
-    <Image Include="explosionf1.bmp" />
-    <Image Include="explosionf2.bmp" />
-    <Image Include="explosionf3.bmp" />
+    <Image Include="explosionf1.png" />
+    <Image Include="explosionf2.png" />
+    <Image Include="explosionf3.png" />
     <Image Include="missile.bmp" />
     <Image Include="missile.png" />
     <Image Include="ship.png" />

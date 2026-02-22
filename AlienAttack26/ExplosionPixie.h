@@ -2,8 +2,8 @@
 #include "gameHeader.h"
 
 const string DEFAULT_EXPLOSION_TEXTURE = "explosionf";
-const int EXPLOSION_FRAMES = 18;
-const int NEXT_EVERY_FRAME = 6;
+const int EXPLOSION_FRAMES = 48;
+const int NEXT_EVERY_FRAME = 8;
 class ExplosionPixie : public Pixie {
 private:
 	vector<string> textureFiles;
@@ -13,6 +13,7 @@ private:
 	float posY;
 	int spriteNum;
 	int textureNums;
+	int increment;
 	float scaleIncrement;
 	float currentScale;
 	string baseTextureFile;

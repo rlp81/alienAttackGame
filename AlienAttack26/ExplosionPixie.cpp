@@ -6,10 +6,11 @@ ExplosionPixie::ExplosionPixie(const string& baseTextureFile, int textureNums) :
 	lastFrame = currentFrame+EXPLOSION_FRAMES;
 	startFrame = currentFrame;
 	this->baseTextureFile = baseTextureFile;
-	spriteNum = 1;
+	spriteNum = 0;
 	sprite = nullptr;
 	scaleIncrement = 0.1f;
 	currentScale = 1.0f;
+	increment = 1;
 }
 
 ExplosionPixie::ExplosionPixie(const string& baseTextureFile, int textureNums, sf::Vector2f& position) : Pixie(4) {
@@ -19,9 +20,10 @@ ExplosionPixie::ExplosionPixie(const string& baseTextureFile, int textureNums, s
 	startFrame = currentFrame;
 	this->baseTextureFile = baseTextureFile;
 	this->textureNums = textureNums;
-	spriteNum = 1;
+	spriteNum = 0;
 	scaleIncrement = 0.1f;
 	currentScale = 1.0f;
+	increment = 1;
 }
 
 
@@ -55,7 +57,17 @@ void ExplosionPixie::update() {
 	else {
 		int frame = (currentFrame - startFrame);
 		if (frame % NEXT_EVERY_FRAME == 0) {
-			string textureFile = baseTextureFile + to_string(spriteNum) + ".bmp";
+			spriteNum += increment;
+			if (spriteNum >= textureNums) {
+				increment = -1;
+				scaleIncrement *= -1;
+				spriteNum = 3;
+			}
+			if (spriteNum <= 0) {
+				this->removePixieByID(this->getPixieID());
+				return;
+			}
+			string textureFile = baseTextureFile + to_string(spriteNum) + ".png";
 			texture = new Texture();
 			if (!texture->loadFromFile(textureFile)) {
 				std::cerr << "Failed to load texture from file: " << textureFile << std::endl;
@@ -67,10 +79,6 @@ void ExplosionPixie::update() {
 			sprite = new Sprite(*texture);
 			sprite->setOrigin(getSpriteCenter(*sprite));
 			sprite->setPosition({ posX, posY });
-			spriteNum++;
-			if (spriteNum > textureNums) {
-				Pixie::removePixieByID(this->getPixieID());
-			}
 		}
 	}
 	if (spriteNum <= textureNums) {

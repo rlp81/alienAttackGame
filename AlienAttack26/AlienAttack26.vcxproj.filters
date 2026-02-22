@@ -85,13 +85,13 @@
     <Image Include="ship.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="explosionf1.bmp">
+    <Image Include="explosionf1.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="explosionf2.bmp">
+    <Image Include="explosionf2.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="explosionf3.bmp">
+    <Image Include="explosionf3.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
