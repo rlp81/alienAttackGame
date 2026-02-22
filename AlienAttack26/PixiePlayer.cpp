@@ -5,6 +5,8 @@ PlayerPixie::PlayerPixie() : ShipPixie(1, DEFAULT_SHIP_TEXTURE) {
 	setScale(DEFAULT_PIXIE_SCALE, DEFAULT_PIXIE_SCALE);
 	ammo = DEFAULT_PLAYER_AMMO;
 	health = DEFAULT_PIXIE_HEALTH;
+	damage = 10;
+	direction = 0;
 }
 
 shared_ptr<PlayerPixie> PlayerPixie::create() {
@@ -32,7 +34,6 @@ void PlayerPixie::update()
 	 */
 	int xRotation = 0;
 	int yRotation = 0;
-	int angle = 0;
 
 	/*
 	 *  This first If-then-else-if Block handles
@@ -70,31 +71,31 @@ void PlayerPixie::update()
 	if (xRotation != 0) {
 		switch (yRotation) {
 		case -90:
-			angle = -45;
+			direction = -45;
 			if (xRotation < 0)
-				angle = -135;
+				direction = -135;
 			break;
 		case 90:
-			angle = 45;
+			direction = 45;
 			if (xRotation < 0)
-				angle = 135;
+				direction = 135;
 			break;
 		default:
 			switch (xRotation)
 			{
 			case(-1):
-				angle = 180;
+				direction = 180;
 				break;
-			default:
-				angle = 0;
+			case(1):
+				direction = 0;
 				break;
 			}
 		}
 	}
 	else {
-		angle = yRotation;
+		if (yRotation != 0)
+			direction = yRotation;
 	}
-	this->setRotation(degrees(angle));
-	this->direction = angle;
+	this->setRotation(degrees(direction));
 	updateMissiles();
 }

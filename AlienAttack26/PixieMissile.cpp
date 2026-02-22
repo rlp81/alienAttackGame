@@ -1,28 +1,30 @@
 #include "gameHeader.h"
 
 void::MissilePixie::update() {
-	if (owner) {
-		float rads = this->getRotation().asRadians();
-		double x = cos(rads);
-		double y = sin(rads);
-		if (abs(x) == 1) {
-			this->move(Vector2f(y, x) * -MISSILE_SPEED);
+	/*float rads = this->getRotation().asRadians();
+	double x = cos(rads);
+	double y = sin(rads);
+	if (abs(x) == 1) {
+		this->move(Vector2f(y, x) * -MISSILE_SPEED);
+	}
+	else if (abs(x) != 1 && abs(y) != 1) {
+		if (to_string(x * -1) == to_string(y)) {
+			this->move(Vector2f(x, y * -1) * -MISSILE_SPEED);
 		}
-		else if (abs(x) != 1 && abs(y) != 1) {
-			if (to_string(x * -1) == to_string(y)) {
-				this->move(Vector2f(x, y * -1) * -MISSILE_SPEED);
-			}
-			else if (to_string(x) == to_string(y)) {
-				this->move(Vector2f(x, y * -1) * MISSILE_SPEED);
-			}
-		}
-		else {
-			this->move(Vector2f(y, x) * MISSILE_SPEED);
+		else if (to_string(x) == to_string(y)) {
+			this->move(Vector2f(x, y * -1) * MISSILE_SPEED);
 		}
 	}
 	else {
-		std::cerr << "Owner not set for MissilePixie!" << std::endl;
-	}
+		this->move(Vector2f(y, x) * MISSILE_SPEED);
+	}*/
+
+	float rads = this->getRotation().asRadians();
+	float degs = rads * 180 / 3.14159265f;
+	rads = degrees(degs+90).asRadians();
+	float offsetX = std::cos(rads) * -speed;
+	float offsetY = std::sin(rads) * -speed;
+	this->move(offsetX, offsetY);
 }
 
 void MissilePixie::remove() {
@@ -36,12 +38,25 @@ MissilePixie::MissilePixie(ShipPixie* owner) : Pixie(2, DEFAULT_MISSILE_TEXTURE)
 	setSpeed(DEFAULT_MISSILE_SPEED);
 	this->owner = owner;
 	this->setPosition(owner->getPosition());
-	direction = owner->direction;
-	this->setRotation(degrees(direction));
-	cout << "Fired\n";
+	this->setRotation(owner->getRotation());
+	this->damage = owner->damage;
 }
 
+MissilePixie::MissilePixie(ShipPixie* owner, float angle) : Pixie(2, DEFAULT_MISSILE_TEXTURE) {
+	setSpeed(DEFAULT_MISSILE_SPEED);
+	this->owner = owner;
+	this->setPosition(owner->getPosition());
+	direction = angle;
+	this->setRotation(degrees(direction));
+	this->damage = owner->damage;
+}
 
+shared_ptr<MissilePixie> MissilePixie::create(ShipPixie* owner, float angle) {
+	auto missile = make_shared<MissilePixie>(owner, angle);
+	pixies.push_back(missile);
+	owner->missiles.push_back(missile->getPixieID());
+	return missile;
+}
 
 shared_ptr<MissilePixie> MissilePixie::getMissileByID(int id) {
 	for (const auto& pixie : Pixie::pixies) {

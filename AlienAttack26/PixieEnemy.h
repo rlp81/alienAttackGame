@@ -17,6 +17,7 @@ public:
 	void orbit(float radius);
 	void orbit(float radius, shared_ptr<Pixie> target);
 	void followTarget();
+	void shootMissile();
 	void followTarget(shared_ptr<Pixie> target);
 	void update();
 };

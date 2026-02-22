@@ -56,6 +56,27 @@ void EnemyPixie::orbit(float radius) {
 	}
 }
 
+void EnemyPixie::shootMissile() {
+	if (!(currentFrame >= DEFAULT_FRAMES_TILL__NEXT_MISSILE + lastMissileFrame || lastMissileFrame == -1)) {
+		return;
+	}
+	if (activeMissileCount >= MAX_ACTIVE_MISSILES) {
+		std::cout << "Maximum active missiles reached!" << std::endl;
+		return;
+	}
+	if (ammo > 0) {
+		cout << "Shooting missile! Ammo left: " << ammo << endl;
+		lastMissileFrame = currentFrame;
+		shared_ptr<MissilePixie> missile = MissilePixie::create(this);
+		
+		activeMissileCount++;
+		ammo--;
+	}
+	else {
+		std::cout << "Out of ammo!" << std::endl;
+	}
+}
+
 void EnemyPixie::update() {
 	switch (movePattern)
 	{
@@ -65,5 +86,15 @@ void EnemyPixie::update() {
 		default:
 			followTarget();
 			break;
+	}
+	if (target) {
+		float rads = target->getDirectionTo(*this);
+		float degs = rads * 180 / 3.14159265f - 90;
+		this->setRotation(degrees(degs));
+		shootMissile();
+		updateMissiles();
+	}
+	else {
+		this->setRotation(degrees(0));
 	}
 }

@@ -12,6 +12,7 @@ void ShipPixie::updateMissiles() {
 			}
 			else {
 				missile->update();
+				missile->checkForCollisions();
 			}
 		}
 		else {
@@ -25,11 +26,9 @@ void ShipPixie::shootMissile() {
 		return;
 	}
 	if (activeMissileCount >= MAX_ACTIVE_MISSILES) {
-		std::cout << "Maximum active missiles reached!" << std::endl;
 		return;
 	}
 	if (ammo > 0) {
-		cout << "Shooting missile! Ammo left: " << ammo << endl;
 		lastMissileFrame = currentFrame;
 		MissilePixie::create(this);
 		activeMissileCount++;
@@ -43,6 +42,7 @@ void ShipPixie::shootMissile() {
 ShipPixie::ShipPixie(int type, const std::string& textureFile) : Pixie(type, textureFile) {
 	activeMissileCount = 0;
 	lastMissileFrame = -1;
+	ammo = 100;
 }
 
 bool ShipPixie::damagePixie(double amount) {
