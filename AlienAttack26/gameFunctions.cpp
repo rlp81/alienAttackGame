@@ -1,5 +1,4 @@
 #include "gameHeader.h"
-int currentFrame = 0;
 int lastPixieDumpFrame = 0;
 int playerID = -1;
 int playerScore = 0;

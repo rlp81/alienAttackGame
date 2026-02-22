@@ -76,11 +76,15 @@ shared_ptr<MissilePixie> MissilePixie::create(ShipPixie* owner) {
 
 void MissilePixie::checkForCollisions() {
 	{
+		if (Pixie::getPixieByID(owner->getPixieID()) == nullptr) {
+			return;
+		}
 		for (const auto& pixie : Pixie::pixies) {
+			int pixieType = pixie->getPixieType();
 			if (this->getPixieID() != pixie->getPixieID() && pixie->getPixieID() != owner->getPixieID() && pixie->pixieType != 0) {
 				if (this->isCollidingWith(*pixie)) {
-					this->remove();
-					if (pixie->pixieType == 3) {
+					shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition());
+					if (pixieType == 3) {
 						shared_ptr<EnemyPixie> enemy = std::dynamic_pointer_cast<EnemyPixie>(pixie);
 						if (enemy) {
 							if (bool died = enemy->damagePixie(damage)) {
@@ -88,6 +92,7 @@ void MissilePixie::checkForCollisions() {
 							}
 						}
 					}
+					this->remove();
 					break;
 				}
 			}

@@ -1,5 +1,8 @@
 #include "gameHeader.h"
 
+
+int currentFrame = 0;
+
 int main() {
 	RenderWindow window(VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Aliens!");
 	window.setFramerateLimit(60);
@@ -21,6 +24,7 @@ int main() {
 
 		playerPixie->update();
 		enemyPixie->update();
+		ExplosionPixie::updateAll();
 		window.clear();
 		Pixie::drawAll(window);
 		window.display();

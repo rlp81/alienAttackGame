@@ -3,6 +3,15 @@ int Pixie::nextPixieID = 0;
 int Pixie::pixieCount = 0;
 vector<std::shared_ptr <Pixie>> Pixie::pixies;
 
+
+Pixie::Pixie(int type) {
+	pixieType = type;
+	pixieID = nextPixieID++;
+	active = true;
+	sprite = nullptr;
+	texture = nullptr;
+}
+
 Pixie::Pixie(int type, const std::string& textureFile) {
 	pixieType = type;
 	texture = new sf::Texture();
@@ -77,10 +86,11 @@ bool Pixie::isCollidingWith(const Pixie& other) const {
 void Pixie::drawAll(RenderWindow& window) {
 	for (size_t runInd = 0; runInd < pixies.size(); runInd++) {
 		if (pixies[runInd].get()) {
-			if (pixies[runInd].get()->isOffScreen()) {
+			shared_ptr<Pixie> pixie = pixies[runInd];
+			if (pixie->isOffScreen()) {
 				continue;
 			}
-			pixies[runInd].get()->draw(window);
+			pixie->draw(window);
 		}
 	}
 }

@@ -39,6 +39,9 @@
     <ClCompile Include="PixieShip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ExplosionPixie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameHeader.h">
@@ -62,6 +65,9 @@
     <ClInclude Include="PixieShip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ExplosionPixie.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="alien.bmp">
@@ -77,6 +83,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="ship.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="explosionf1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="explosionf2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="explosionf3.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

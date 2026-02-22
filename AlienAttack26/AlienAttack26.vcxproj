@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ExplosionPixie.h" />
     <ClInclude Include="gameHeader.h" />
     <ClInclude Include="pixie.h" />
     <ClInclude Include="PixieBackground.h" />
@@ -141,6 +142,7 @@
     <ClInclude Include="PixieShip.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ExplosionPixie.cpp" />
     <ClCompile Include="gameFunctions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pixie.cpp" />
@@ -152,6 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="alien.bmp" />
+    <Image Include="explosionf1.bmp" />
+    <Image Include="explosionf2.bmp" />
+    <Image Include="explosionf3.bmp" />
     <Image Include="missile.bmp" />
     <Image Include="missile.png" />
     <Image Include="ship.png" />

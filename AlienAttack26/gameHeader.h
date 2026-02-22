@@ -21,6 +21,7 @@ using namespace std;
 #include "PixieEnemy.h"
 #include "PixieMissile.h"
 #include "PixiePlayer.h"
+#include "ExplosionPixie.h"
 using namespace sf;
 enable_shared_from_this<Pixie>;
 

@@ -16,6 +16,7 @@ private:
 	friend class EnemyPixie;
 	friend class MissilePixie;
 	friend class BackgroundPixie;
+	friend class ExplosionPixie;
 	static int pixieCount;
 	static vector<std::shared_ptr<Pixie>> pixies;
 	sf::Texture* texture;
@@ -29,6 +30,7 @@ public:
 	static shared_ptr<Pixie> create(int type, const std::string& textureFile);
 	static shared_ptr<Pixie> create(int type, const std::string& textureFile, bool useOriginalOrigin);
 	Pixie() = delete;
+	Pixie(int type);
 	Pixie(int type, const std::string& textureFile);
 	Pixie(int type, const std::string& textureFile, bool useOriginalOrigin);
 	//~Pixie();
