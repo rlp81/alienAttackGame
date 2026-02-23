@@ -68,6 +68,9 @@
     <ClInclude Include="ExplosionPixie.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Swarm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="alien.bmp">

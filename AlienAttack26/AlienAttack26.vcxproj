@@ -140,6 +140,7 @@
     <ClInclude Include="PixieMissile.h" />
     <ClInclude Include="PixiePlayer.h" />
     <ClInclude Include="PixieShip.h" />
+    <ClInclude Include="Swarm.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ExplosionPixie.cpp" />

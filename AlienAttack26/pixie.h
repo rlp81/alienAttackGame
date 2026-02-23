@@ -17,6 +17,7 @@ private:
 	friend class MissilePixie;
 	friend class BackgroundPixie;
 	friend class ExplosionPixie;
+	friend class Swarm;
 	static int pixieCount;
 	static vector<std::shared_ptr<Pixie>> pixies;
 	sf::Texture* texture;

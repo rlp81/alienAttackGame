@@ -10,6 +10,7 @@ EnemyPixie::EnemyPixie() : ShipPixie(3, DEFAULT_ENEMY_TEXTURE) {
 	target = nullptr;
 	speed = DEFAULT_PIXIE_SPEED * 0.75f;
 	activeMissileCount = 0;
+	canFireMissile = true;
 }
 
 shared_ptr<EnemyPixie> EnemyPixie::create() {
@@ -57,6 +58,7 @@ void EnemyPixie::orbit(float radius) {
 }
 
 void EnemyPixie::shootMissile() {
+	if (!canFireMissile) { return; }
 	if (!(currentFrame >= DEFAULT_FRAMES_TILL__NEXT_MISSILE + lastMissileFrame || lastMissileFrame == -1)) {
 		return;
 	}
