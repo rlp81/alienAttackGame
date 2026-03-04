@@ -45,6 +45,7 @@ public:
 	void setSpeed(float newSpeed) { speed = newSpeed; }
 	static shared_ptr<Pixie> getPixieByID(int ID);
 	static void removePixieByID(int ID);
+	static int pixieAtPosition(Vector2f pos);
 	void setPosition(float x, float y) {
 		if (sprite) {
 			sprite->setPosition({ x, y });

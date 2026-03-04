@@ -140,6 +140,7 @@
     <ClInclude Include="PixieMissile.h" />
     <ClInclude Include="PixiePlayer.h" />
     <ClInclude Include="PixieShip.h" />
+    <ClInclude Include="RayCast.h" />
     <ClInclude Include="Swarm.h" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +153,8 @@
     <ClCompile Include="PixieMissile.cpp" />
     <ClCompile Include="PixiePlayer.cpp" />
     <ClCompile Include="PixieShip.cpp" />
+    <ClCompile Include="RayCast.cpp" />
+    <ClCompile Include="SwarmFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="alien.bmp" />

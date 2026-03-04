@@ -1,4 +1,5 @@
 #include "gameHeader.h"
+vector<int> EnemyPixie::enemies;
 
 EnemyPixie::EnemyPixie() : ShipPixie(3, DEFAULT_ENEMY_TEXTURE) {
 	health = DEFAULT_PIXIE_HEALTH;
@@ -8,13 +9,15 @@ EnemyPixie::EnemyPixie() : ShipPixie(3, DEFAULT_ENEMY_TEXTURE) {
 	movePattern = 0;
 	followPadding = 50;
 	target = nullptr;
+	targetType = 0;
 	speed = DEFAULT_PIXIE_SPEED * 0.75f;
 	activeMissileCount = 0;
-	canFireMissile = true;
+	canFireMissile = false;
 }
 
 shared_ptr<EnemyPixie> EnemyPixie::create() {
 	auto enemy = make_shared<EnemyPixie>();
+	enemies.push_back(enemy->pixieID);
 	pixies.push_back(enemy);
 	return enemy;
 }
@@ -28,14 +31,24 @@ shared_ptr<EnemyPixie> EnemyPixie::create(int targetID) {
 }
 
 void EnemyPixie::followTarget() {
-	Vector2f alienDirection = this->getPosition() - target->getPosition();
+
+	Vector2f alienDirection;
+	if (targetType == 2 && leader) {
+		alienDirection = this->getPosition() - leader->getPosition();
+	}
+	else if (targetType == 1 && target){
+		alienDirection = this->getPosition() - target->getPosition();
+	}
+	else {
+		return;
+	}
 	float length = alienDirection.length();
 
 	if (length != 0) {
 		alienDirection /= length;
 	}
 	if (length < followPadding + (this->sprite->getGlobalBounds().size.x / 2) || length < followPadding + (this->sprite->getGlobalBounds().size.y / 2)) {
-		return this->orbit(followPadding);
+		return this->orbit();
 	}
 
 	this->move(alienDirection * -this->speed);
@@ -43,18 +56,23 @@ void EnemyPixie::followTarget() {
 
 void EnemyPixie::followTarget(shared_ptr<Pixie> target) {
 	this->target = target;
+	targetType = 1;
 	followTarget();
 }
 
-void EnemyPixie::orbit(float radius) {
-	if (target) {
-		float rads = target->getDirectionTo(*this);
-		float degs = rads * 180 / 3.14159265f;
-		rads = degrees(degs + 90).asRadians();
-		float offsetX = std::cos(rads) * speed;
-		float offsetY = std::sin(rads) * speed;
-		this->move(offsetX, offsetY);
+void EnemyPixie::orbit() {
+	float rads;
+	if (targetType == 1 && target) {
+		rads = target->getDirectionTo(*this);
 	}
+	else if (targetType == 2 && leader) {
+		rads = leader->getDirectionTo(*this);	
+	}
+	float degs = rads * 180 / 3.14159265f;
+	rads = degrees(degs + 90).asRadians();
+	float offsetX = std::cos(rads) * speed;
+	float offsetY = std::sin(rads) * speed;
+	this->move(offsetX, offsetY);
 }
 
 void EnemyPixie::shootMissile() {

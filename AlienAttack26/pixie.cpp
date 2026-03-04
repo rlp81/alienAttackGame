@@ -46,6 +46,7 @@ Pixie::Pixie(int type, const std::string& textureFile, bool useOriginalOrigin) {
 void Pixie::draw(sf::RenderWindow& window) {
 	if (sprite) {
 		window.draw(*sprite);
+		window.draw(*sprite);
 	}
 }
 
@@ -115,4 +116,15 @@ void Pixie::removePixieByID(int ID) {
 	if (it != pixies.end()) {
 		pixies.erase(it);
 	}
+
+}
+
+int Pixie::pixieAtPosition(Vector2f pos) {
+	for (shared_ptr<Pixie> pixie : Pixie::pixies) {
+		if (pixie->pixieType == 0) { continue; }
+		if (pixie->sprite->getGlobalBounds().contains(pos)) {
+			return pixie->pixieID;
+		}
+	} 
+	return -1;
 }

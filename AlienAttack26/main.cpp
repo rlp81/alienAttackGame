@@ -12,8 +12,19 @@ int main() {
 	shared_ptr<PlayerPixie> playerPixie = PlayerPixie::create();
 	playerPixie->setPosition({ WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f });
 
-	shared_ptr<EnemyPixie> enemyPixie = EnemyPixie::create(playerPixie->getPixieID());
+	vector<int> swarmMembers;
+	shared_ptr<EnemyPixie> leader = EnemyPixie::create(playerPixie->getPixieID());
+	leader->setPosition(300, 300);
 
+	shared_ptr<EnemyPixie> enemy;
+	swarmMembers.push_back(leader->getPixieID());
+	for (int i = 0; i < 20; i++) {
+		enemy = EnemyPixie::create(playerPixie->getPixieID());
+		swarmMembers.push_back(enemy->getPixieID());
+
+	}
+
+	Swarm swarm = Swarm(leader->getPixieID(), swarmMembers);
 	while (window.isOpen()) {
 		currentFrame++;
 		while (const std::optional event = window.pollEvent()){
@@ -21,9 +32,9 @@ int main() {
 				window.close();
 			}
 		}
-
+		 
 		playerPixie->update();
-		enemyPixie->update();
+		swarm.updateSwarm();
 		ExplosionPixie::updateAll();
 		window.clear();
 		Pixie::drawAll(window);

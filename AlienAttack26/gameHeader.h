@@ -23,6 +23,7 @@ using namespace std;
 #include "PixiePlayer.h"
 #include "ExplosionPixie.h"
 #include "Swarm.h"
+#include "RayCast.h"
 using namespace sf;
 enable_shared_from_this<Pixie>;
 
