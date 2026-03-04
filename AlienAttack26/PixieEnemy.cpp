@@ -85,12 +85,15 @@ void EnemyPixie::shootMissile() {
 		return;
 	}
 	if (ammo > 0) {
-		cout << "Shooting missile! Ammo left: " << ammo << endl;
-		lastMissileFrame = currentFrame;
-		shared_ptr<MissilePixie> missile = MissilePixie::create(this);
-		
-		activeMissileCount++;
-		ammo--;
+		RayCast ray = RayCast(this->getPosition(), this->getRotation());
+		if (ray.isHit() && ray.getResultID() == target->getPixieID()) {
+			cout << "Shooting missile! Ammo left: " << ammo << endl;
+			lastMissileFrame = currentFrame;
+			shared_ptr<MissilePixie> missile = MissilePixie::create(this);
+
+			activeMissileCount++;
+			ammo--;
+		}
 	}
 	else {
 		std::cout << "Out of ammo!" << std::endl;

@@ -13,6 +13,7 @@
 using namespace std;
 // these two lines are specific to the SFML graphics library. 
 #include <SFML/Graphics.hpp>
+using namespace sf;
 //#include "alien.h"
 #include "pixie.h"
 #include "PixieShip.h"
@@ -24,7 +25,6 @@ using namespace std;
 #include "ExplosionPixie.h"
 #include "Swarm.h"
 #include "RayCast.h"
-using namespace sf;
 enable_shared_from_this<Pixie>;
 
 // Constants for the game 

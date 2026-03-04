@@ -23,6 +23,7 @@ int main() {
 		swarmMembers.push_back(enemy->getPixieID());
 
 	}
+	RayCast ray = RayCast(playerPixie->getPosition(), degrees(90));
 
 	Swarm swarm = Swarm(leader->getPixieID(), swarmMembers);
 	while (window.isOpen()) {
