@@ -8,6 +8,7 @@ private:
 	int enemyType;
 	int movePattern;
 	int targetType;
+	int orbitDirection;
 	shared_ptr<Pixie> target;
 	shared_ptr<Pixie> leader;
 	int followPadding;
@@ -25,6 +26,7 @@ public:
 	void orbit(float radius, shared_ptr<Pixie> target);
 	void followTarget();
 	void shootMissile();
+	void changeOrbitDirection() { orbitDirection *= -1; }
 	void followTarget(shared_ptr<Pixie> target);
 	void update();
 };

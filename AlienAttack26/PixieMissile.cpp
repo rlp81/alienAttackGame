@@ -88,7 +88,9 @@ void MissilePixie::checkForCollisions() {
 						shared_ptr<EnemyPixie> enemy = std::dynamic_pointer_cast<EnemyPixie>(pixie);
 						if (enemy) {
 							if (bool died = enemy->damagePixie(damage)) {
-								playerScore += 100;
+								if (this->owner->getPixieType() == 1) {
+									playerScore += 100;
+								}
 							}
 						}
 					}

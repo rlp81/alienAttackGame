@@ -2,20 +2,22 @@
 
 RayCast::RayCast(Vector2f origin, Angle direction) {
 	this->origin = origin;
-	cout << "RayCast origin: " << origin.x << ", " << origin.y << endl;
 	this->direction = direction;
 	this->position = origin;
+	resultId = -1;
 	speed = 1.5;
+	traveled = 0;
 	hit = false;
 	offScreen = false;
-	float rads = direction.asRadians();
+	float degs = direction.asDegrees() - 90;
+	float rads = degrees(degs).asRadians();
 	float offsetX = cos(rads) * speed;
 	float offsetY = sin(rads) * speed;
 	int foundID;
 	while (hit == false && offScreen == false) {
 		position.x += offsetX;
 		position.y += offsetY;
-		cout << "RayCast position: " << position.x << ", " << position.y << endl;
+		traveled += offsetX + offsetY;
 		foundID = Pixie::pixieAtPosition(position);
 		if (foundID != -1) {
 			resultId = foundID;
@@ -31,20 +33,22 @@ RayCast::RayCast(Vector2f origin, Angle direction) {
 
 RayCast::RayCast(Vector2f origin, Angle direction, vector<int>& ignoreList) {
 	this->origin = origin;
-	cout << "RayCast origin: " << origin.x << ", " << origin.y << endl;
 	this->direction = direction;
 	this->position = origin;
-	speed = 1.5;
+	resultId = -1;
+	speed = 1;
+	traveled = 0;
 	hit = false;
 	offScreen = false;
-	float rads = direction.asRadians();
-	float offsetX = cos(rads) * speed;
-	float offsetY = sin(rads) * speed;
+	float degs = direction.asDegrees()-90;
+	float rads = degrees(degs).asRadians();
+	float offsetX = cos(rads);
+	float offsetY = sin(rads);
 	int foundID;
 	while (hit == false && offScreen == false) {
 		position.x += offsetX;
 		position.y += offsetY;
-		cout << "RayCast position: " << position.x << ", " << position.y << endl;
+		traveled += offsetX + offsetY;
 		foundID = Pixie::pixieAtPosition(position);
 		if (foundID != -1) {
 			for (int id : ignoreList) {

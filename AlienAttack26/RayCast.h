@@ -8,6 +8,7 @@ private:
 	sf::Angle direction;
 	int resultId;
 	int speed;
+	float traveled;
 	vector<int> ignoreList;
 	bool hit;
 	bool offScreen;

@@ -122,6 +122,7 @@ void Pixie::removePixieByID(int ID) {
 int Pixie::pixieAtPosition(Vector2f pos) {
 	for (shared_ptr<Pixie> pixie : Pixie::pixies) {
 		if (pixie->pixieType == 0) { continue; }
+		if (!pixie->sprite || pixie->sprite == nullptr || pixie->sprite == NULL) { continue; }
 		if (pixie->sprite->getGlobalBounds().contains(pos)) {
 			return pixie->pixieID;
 		}

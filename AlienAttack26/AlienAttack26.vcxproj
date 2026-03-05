@@ -165,6 +165,7 @@
     <Image Include="missile.png" />
     <Image Include="ship.png" />
     <Image Include="stars.jpg" />
+    <Image Include="trail.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

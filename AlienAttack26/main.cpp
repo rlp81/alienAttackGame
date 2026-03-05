@@ -18,12 +18,13 @@ int main() {
 
 	shared_ptr<EnemyPixie> enemy;
 	swarmMembers.push_back(leader->getPixieID());
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 6; i++) {
 		enemy = EnemyPixie::create(playerPixie->getPixieID());
+		if (i % 2 == 0) {
+			enemy->changeOrbitDirection();
+		}
 		swarmMembers.push_back(enemy->getPixieID());
-
 	}
-	RayCast ray = RayCast(playerPixie->getPosition(), degrees(90));
 
 	Swarm swarm = Swarm(leader->getPixieID(), swarmMembers);
 	while (window.isOpen()) {

@@ -3,7 +3,7 @@
 
 //TODO: Create enemy Swarm class functions and logic
 const int DEFAULT_PADDING = 10;
-const int PADDING_INCREMENT = 10;
+const int PADDING_INCREMENT = 20;
 
 class Swarm {
 private:

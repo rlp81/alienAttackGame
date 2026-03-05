@@ -106,5 +106,8 @@
     <Image Include="explosionf3.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="trail.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

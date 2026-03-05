@@ -6,13 +6,14 @@ EnemyPixie::EnemyPixie() : ShipPixie(3, DEFAULT_ENEMY_TEXTURE) {
 	damage = 3.4;
 	faction = "Glorps";
 	enemyType = 0;
+	orbitDirection = 1;
 	movePattern = 0;
 	followPadding = 50;
 	target = nullptr;
 	targetType = 0;
 	speed = DEFAULT_PIXIE_SPEED * 0.75f;
 	activeMissileCount = 0;
-	canFireMissile = false;
+	canFireMissile = true;
 }
 
 shared_ptr<EnemyPixie> EnemyPixie::create() {
@@ -69,7 +70,7 @@ void EnemyPixie::orbit() {
 		rads = leader->getDirectionTo(*this);	
 	}
 	float degs = rads * 180 / 3.14159265f;
-	rads = degrees(degs + 90).asRadians();
+	rads = degrees(degs + (90*orbitDirection)).asRadians();
 	float offsetX = std::cos(rads) * speed;
 	float offsetY = std::sin(rads) * speed;
 	this->move(offsetX, offsetY);
@@ -85,7 +86,8 @@ void EnemyPixie::shootMissile() {
 		return;
 	}
 	if (ammo > 0) {
-		RayCast ray = RayCast(this->getPosition(), this->getRotation());
+		vector<int> ignoreList = { this->pixieID };
+		RayCast ray = RayCast(this->getPosition(), this->getRotation(), ignoreList);
 		if (ray.isHit() && ray.getResultID() == target->getPixieID()) {
 			cout << "Shooting missile! Ammo left: " << ammo << endl;
 			lastMissileFrame = currentFrame;

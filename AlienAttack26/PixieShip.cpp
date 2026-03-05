@@ -41,7 +41,7 @@ void ShipPixie::shootMissile() {
 
 ShipPixie::ShipPixie(int type, const std::string& textureFile) : Pixie(type, textureFile) {
 	activeMissileCount = 0;
-	lastMissileFrame = -1;
+	lastMissileFrame = currentFrame+30;
 	ammo = 100;
 }
 
