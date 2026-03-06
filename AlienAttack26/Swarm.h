@@ -14,6 +14,8 @@ private:
 public:
 	Swarm() = delete;
 	Swarm(int contollerID, vector<int> &members);
+	int findNewLeader(int lastLeader);
+	void changeLeader();
 	void updateSwarm();
 	
 };

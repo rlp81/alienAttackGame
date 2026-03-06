@@ -34,7 +34,7 @@ public:
 	Pixie(int type);
 	Pixie(int type, const std::string& textureFile);
 	Pixie(int type, const std::string& textureFile, bool useOriginalOrigin);
-	//~Pixie();
+	//virtual ~Pixie();
 	virtual ~Pixie() = default;
 	bool isOffScreen() const;
 	void draw(sf::RenderWindow& window);

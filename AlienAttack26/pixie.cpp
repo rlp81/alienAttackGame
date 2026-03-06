@@ -42,6 +42,11 @@ Pixie::Pixie(int type, const std::string& textureFile, bool useOriginalOrigin) {
 	active = true;
 }
 
+/*Pixie::~Pixie() {
+	cout << "Destroying Pixie ID: " << pixieID << endl;
+	delete this->sprite;
+	delete this->texture;
+}*/
 
 void Pixie::draw(sf::RenderWindow& window) {
 	if (sprite) {

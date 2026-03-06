@@ -80,6 +80,9 @@ void MissilePixie::checkForCollisions() {
 			return;
 		}
 		for (const auto& pixie : Pixie::pixies) {
+			if (pixie == nullptr || pixie->sprite == nullptr || pixie == NULL || pixie->sprite == NULL) {
+				continue;
+			}
 			int pixieType = pixie->getPixieType();
 			if (this->getPixieID() != pixie->getPixieID() && pixie->getPixieID() != owner->getPixieID() && pixie->pixieType != 0) {
 				if (this->isCollidingWith(*pixie)) {
