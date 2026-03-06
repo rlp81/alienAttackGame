@@ -7,12 +7,13 @@ Swarm::Swarm(int controllerID, vector<int> &members) {
 }
 
 void Swarm::changeLeader() {
-	shared_ptr<Pixie> controller = Pixie::getPixieByID(controllerID);
+	//shared_ptr<Pixie> controller = Pixie::getPixieByID(controllerID);
 	int padding = DEFAULT_PADDING;
 	for (int memberId : members) {
 		if (memberId != controllerID) {
 			shared_ptr<EnemyPixie> member = dynamic_pointer_cast<EnemyPixie>(Pixie::getPixieByID(memberId));
-			member->leader = controller;
+			if (member == nullptr) { continue; }
+			member->leader = controllerID;
 			member->targetType = 2;
 			member->followPadding = padding;
 			padding += PADDING_INCREMENT;

@@ -34,8 +34,9 @@ shared_ptr<EnemyPixie> EnemyPixie::create(int targetID) {
 void EnemyPixie::followTarget() {
 
 	Vector2f alienDirection;
-	if (targetType == 2 && leader) {
-		alienDirection = this->getPosition() - leader->getPosition();
+	shared_ptr<Pixie> lead = Pixie::getPixieByID(leader);
+	if (targetType == 2 && lead) {
+		alienDirection = this->getPosition() - lead->getPosition();
 	}
 	else if (targetType == 1 && target){
 		alienDirection = this->getPosition() - target->getPosition();
@@ -63,11 +64,12 @@ void EnemyPixie::followTarget(shared_ptr<Pixie> target) {
 
 void EnemyPixie::orbit() {
 	float rads;
+	shared_ptr<Pixie> lead = Pixie::getPixieByID(leader);
 	if (targetType == 1 && target) {
 		rads = target->getDirectionTo(*this);
 	}
-	else if (targetType == 2 && leader) {
-		rads = leader->getDirectionTo(*this);	
+	else if (targetType == 2 && lead) {
+		rads = lead->getDirectionTo(*this);
 	}
 	float degs = rads * 180 / 3.14159265f;
 	rads = degrees(degs + (90*orbitDirection)).asRadians();

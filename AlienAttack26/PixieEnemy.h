@@ -10,7 +10,7 @@ private:
 	int targetType;
 	int orbitDirection;
 	shared_ptr<Pixie> target;
-	shared_ptr<Pixie> leader;
+	int leader;
 	int followPadding;
 	bool canFireMissile;
 public:
