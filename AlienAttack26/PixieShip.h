@@ -1,24 +1,40 @@
 #pragma once
 #include "gameHeader.h"
+/*
+* pixie.h
+* Description: Header file for the ShipPixie Class and it's related constants
+* Author: Cole Lehl
+*/
 
+// Pixie Ship Class, The main class for intelligent Pixies i.e. player controlled or enemies
 class ShipPixie : public Pixie {
 private:
-	friend class MissilePixie;
+	// Friend children; Pixies are designed to act as though they are all part of the same class
 	friend class PlayerPixie;
 	friend class EnemyPixie;
-	double health;
-	double damage;
-	int activeMissileCount;
-	int lastMissileFrame;
-	int ammo;
-	float direction;
-	vector<int> missiles;
+
+	// Friend Missile Pixie; Integrates directly with Ship Pixie and it's children
+	friend class MissilePixie;
+	
+	// Variables
+	double health; // Health of the Pixie Ship
+	double damage; // Damage the Pixie Ship can do with it's attacks
+	int activeMissileCount; // Amount of ship's missiles are active
+	int lastMissileFrame; // Last frame the Ship fired a missile
+	int ammo; // Amount of ammo the Pixie has
+	float direction; // Direction the Ship is pointing
+	vector<int> missiles; // Vector of the ShipPixie's active missile IDs 
 public:
-	ShipPixie() = delete;
+	// Constructors
+	ShipPixie() = delete; // Delete the default constructor, all Pixie Ships are created with a type and/or texture
+	ShipPixie(int type, const std::string& textureFile); // Create a ShipPixie with both a type and a texture
+
+	static shared_ptr<ShipPixie> create(int type, const std::string& textureFile); // Create a ShipPixie with both a type and a texture
+
+	// Use the default Destructor and allow Shared pointer logic to handle the destruction of Pixies
 	virtual ~ShipPixie() = default;
-	ShipPixie(int type, const std::string& textureFile);
-	void shootMissile();
-	bool damagePixie(double amount);
-	void updateMissiles();
-	static shared_ptr<ShipPixie> create(int type, const std::string& textureFile);
+
+	void shootMissile(); // Fire a missile from the ShipPixie
+	bool damagePixie(double amount); // Damage the Pixie
+	void updateMissiles(); // Update all of the Missiles
 };

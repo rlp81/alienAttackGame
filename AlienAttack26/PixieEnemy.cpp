@@ -1,7 +1,7 @@
 #include "gameHeader.h"
 vector<int> EnemyPixie::enemies;
 
-EnemyPixie::EnemyPixie() : ShipPixie(3, DEFAULT_ENEMY_TEXTURE) {
+EnemyPixie::EnemyPixie() : ShipPixie(PIXIE_TYPE_ENEMY, DEFAULT_ENEMY_TEXTURE) {
 	health = DEFAULT_PIXIE_HEALTH;
 	damage = 3.4;
 	faction = "Glorps";

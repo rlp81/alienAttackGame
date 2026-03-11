@@ -1,15 +1,18 @@
 #include "gameHeader.h"
-int lastPixieDumpFrame = 0;
-int playerID = -1;
-int playerScore = 0;
 /*
 *  gameFunctions.cpp
 *     - The functions for the game program are in this file. 
 * 
 *  AUTHOR: Most of the work in this program was completed by Prof. Andy Harbert
 *          Prof. Pat Smith has made modifications (December 2021)
+*		   Cole lehl
 *
 */
+
+// Declare Global Variables
+int lastPixieDumpFrame = 0; // Last frame to dump deleted Pixies, deprecated
+int playerID = -1; // Stored ID of the Player
+int playerScore = 0; // Score of the Player
 
 // note: a Sprite represents an image on screen. A sprite knows and remembers its own position
 // ship.move(offsetX, offsetY) adds offsetX, offsetY to 
@@ -18,11 +21,11 @@ int playerScore = 0;
 // 0,0 is in the UPPER LEFT of the screen, y increases DOWN the screen
 
 /*
-*  moveShip - This function is called to handle a keyPress event. 
-*     Keyboard input is detected and ship is moved.
-*   ** Part of the lab is to also handle firing a missile **
-*  INPUT: The ship sprite is passed.  This merely a drawn object on the screen.
-*  RETURN: None
+*  DEPRECATED
+*  updateShip(Sprite& ship)
+*  Params: Sprite& ship - Sprite to update
+*  Return: None
+*  Desc: Updates the player ship based on player input
 */
 void updateShip(Sprite& ship)
 {

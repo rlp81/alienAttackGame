@@ -34,7 +34,7 @@ void MissilePixie::remove() {
 	owner->activeMissileCount--;
 }
 
-MissilePixie::MissilePixie(ShipPixie* owner) : Pixie(2, DEFAULT_MISSILE_TEXTURE) {
+MissilePixie::MissilePixie(ShipPixie* owner) : Pixie(PIXIE_TYPE_MISSILE, DEFAULT_MISSILE_TEXTURE) {
 	setSpeed(DEFAULT_MISSILE_SPEED);
 	this->owner = owner;
 	this->setPosition(owner->getPosition());
@@ -88,14 +88,14 @@ void MissilePixie::checkForCollisions() {
 				if (this->isCollidingWith(*pixie)) {
 					shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition());
 					if (pixieType == 3) {
-						shared_ptr<EnemyPixie> enemy = std::dynamic_pointer_cast<EnemyPixie>(pixie);
+						/*shared_ptr<EnemyPixie> enemy = std::dynamic_pointer_cast<EnemyPixie>(pixie);
 						if (enemy) {
 							if (bool died = enemy->damagePixie(damage)) {
 								if (this->owner->getPixieType() == 1) {
 									playerScore += 100;
 								}
 							}
-						}
+						}*/
 					}
 					this->remove();
 					break;

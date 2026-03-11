@@ -2,7 +2,7 @@
 
 
 vector<int> ExplosionPixie::explosionPixies;
-ExplosionPixie::ExplosionPixie(const string& baseTextureFile, int textureNums) : Pixie(4) {
+ExplosionPixie::ExplosionPixie(const string& baseTextureFile, int textureNums) : Pixie(PIXIE_TYPE_EXPLOSION) {
 	lastFrame = currentFrame+EXPLOSION_FRAMES;
 	startFrame = currentFrame;
 	this->baseTextureFile = baseTextureFile;

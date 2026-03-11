@@ -1,6 +1,6 @@
 #include "gameHeader.h"
 
-PlayerPixie::PlayerPixie() : ShipPixie(1, DEFAULT_SHIP_TEXTURE) {
+PlayerPixie::PlayerPixie() : ShipPixie(PIXIE_TYPE_PLAYER_SHIP, DEFAULT_SHIP_TEXTURE) {
 	setSpeed(DEFAULT_PIXIE_SPEED);
 	setScale(DEFAULT_PIXIE_SCALE, DEFAULT_PIXIE_SCALE);
 	ammo = DEFAULT_PLAYER_AMMO;
@@ -16,7 +16,10 @@ shared_ptr<PlayerPixie> PlayerPixie::create() {
 	return player;
 }
 
-bool MissilePixie::checkCollision() {
+bool MissilePixie::
+
+
+() {
 	for (const auto& pixie : Pixie::pixies) {
 		if (this->getPixieID() != pixie->getPixieID() && pixie->getPixieID() != owner->getPixieID()) {
 			if (this->isCollidingWith(*pixie)) {
