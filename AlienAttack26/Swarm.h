@@ -1,21 +1,31 @@
 #pragma once
 #include "gameHeader.h"
+/*
+* Swarm.h
+* Description: Header file for the Swarm Class and related constants
+* Author: Cole Lehl
+*/
 
-//TODO: Create enemy Swarm class functions and logic
-const int DEFAULT_PADDING = 10;
-const int PADDING_INCREMENT = 20;
+// Constants
 
+const int DEFAULT_PADDING = 10; // Default Orbit padding
+const int PADDING_INCREMENT = 20; // Padding added to each Enemy orbiting
+
+// Controller class for Enemy Pixies
 class Swarm {
 private:
-	vector<int> members;
-	int swarmSize;
-	int targetID;
-	int controllerID;
+	vector<int> members; // Active memebers of the Swarm
+	int swarmSize; // The size of the swarm
+	int targetID; // The Pixie the swarm is targeting
+	int controllerID; // The Pixie the swarm is controlled by
 public:
-	Swarm() = delete;
-	Swarm(int contollerID, vector<int> &members);
-	int findNewLeader(int lastLeader);
-	void changeLeader();
-	void updateSwarm();
+	// Constructors
+	Swarm() = delete; // Delete the default constructor
+	Swarm(int contollerID, vector<int> &members); // Create a new swarm and specify the leader and memebers
+
+	// Logic Functions
+	void updateSwarm(); // Update the swarm
+	void setupSwarm(); // Setup the swarm
+	int findNewLeader(int lastLeader); // Find a new swarm leader based on the previous leader
 	
 };

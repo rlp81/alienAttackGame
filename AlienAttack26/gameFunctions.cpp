@@ -119,75 +119,118 @@ void updateShip(Sprite& ship)
 	//cout << ship.getPosition().x << ", " << ship.getPosition().y << endl; 
 }
 
+
+/*
+* getSpriteCenter(const Sprite& sprite)
+* Params: Sprite& sprite - the sprite to get the center position of
+* Returns: Vector2f
+* Desc: Returns the center position of the sprite
+*/
 Vector2f getSpriteCenter(const Sprite& sprite)
 {
-	FloatRect bounds = sprite.getGlobalBounds();
-	return Vector2f(bounds.size.x / 2.0f, bounds.size.y / 2.0f);
+	FloatRect bounds = sprite.getGlobalBounds(); // The bounds of the sprite
+	return Vector2f(bounds.size.x / 2.0f, bounds.size.y / 2.0f); // Returns the center x and y position in vector2f
 }
 
+/*
+* getSpriteCenterPosition(const Sprite& sprite)
+* Params: Sprite& sprite - the sprite to get the center position of
+* Returns: Vector2f
+* Desc: Returns the center position of the sprite in terms
+*/
 Vector2f getSpriteCenterPosition(const Sprite& sprite)
 {
-	return sprite.getPosition() + getSpriteCenter(sprite);
+	return sprite.getPosition() + getSpriteCenter(sprite); // Add global and local position
 }
 
+/*
+* getSpriteCenterPosition(const Sprite& sprite)
+* Params: Sprite& sprite - the sprite to get the center position of
+* Returns: Vector2f
+* Desc: Returns the center position of the sprite in terms
+*/
 Vector2f getSpriteTopCenterPosition(const Sprite& sprite)
 {
-	FloatRect bounds = sprite.getGlobalBounds();
-	return sprite.getPosition() + Vector2f(bounds.size.x / 2.0f, 0.0f);
+	FloatRect bounds = sprite.getGlobalBounds(); // Get sprite position bounds
+	return sprite.getPosition() + Vector2f(bounds.size.x / 2.0f, 0.0f); // Get the top center of the position
 }
 
+/*
+* setSpriteCenterPosition(const Sprite& sprite)
+* Params: Sprite& sprite - the sprite to set the center position of
+* Returns: None
+* Desc: Sets the center position of the sprite in terms
+*/
 void setSpriteCenterPosition(Sprite& sprite, Vector2f centerPosition)
 {
-	sprite.setPosition(centerPosition - getSpriteCenter(sprite));
+	sprite.setPosition(centerPosition - getSpriteCenter(sprite)); // Set the position of the sprite to the given center
 }
 
+/*
+* isSpriteOffScreen(const Sprite& sprite)
+* Params: Sprite& sprite - the sprite to get the center position of
+* Returns: bool
+* Desc: Returns if the sprite is off screen
+*/
 bool isSpriteOffScreen(const Sprite& sprite)
 {
-	Vector2f position = sprite.getPosition();
-	FloatRect bounds = sprite.getGlobalBounds();
-	return position.x + bounds.size.x < 0 || position.x > WINDOW_WIDTH ||
+	Vector2f position = sprite.getPosition();  // Get the position of the sprite
+	FloatRect bounds = sprite.getGlobalBounds(); // get the bounds of the sprite
+	return position.x + bounds.size.x < 0 || position.x > WINDOW_WIDTH || // Return if the screen is off screen
 		position.y + bounds.size.y < 0 || position.y > WINDOW_HEIGHT;
 }
 
+/*
+* loadTexture(const string& fileName)
+* Params: string& fileName - file name of the texture to load
+* Returns: Texture
+* Desc: Returns a texture for a sprite to load
+*/
 Texture loadTexture(const string& fileName)
 {
-	Texture texture;
-	if (!texture.loadFromFile(fileName))
+	Texture texture; // Create the texture variable
+	if (!texture.loadFromFile(fileName)) // Try and load the texture from the file name, if it fails output an error and exit the program
 	{
 		cout << "Unable to load texture from file: " << fileName << endl;
 		exit(EXIT_FAILURE);
 	}
-	return texture;
+	return texture; // Return the texture
 }
 
+/*
+* loadTextureAsPointer(const string& fileName)
+* Params: string& fileName - file name of the texture to load
+* Returns: Texture*
+* Desc: Returns a texture for a sprite to load as a pointer
+*/
 Texture* loadTextureAsPointer(const string& fileName)
 {
-	Texture* texture = new Texture();
-	if (!texture->loadFromFile(fileName))
+	Texture* texture = new Texture(); // Create a new texture as a pointer
+	if (!texture->loadFromFile(fileName)) // Try and load the texture from the file name, if it fails output an error and exit the program
 	{
 		cout << "Unable to load texture from file: " << fileName << endl;
 		exit(EXIT_FAILURE);
 	}
-	return texture;
+	return texture; // Return the texture as a pointer
 }
 
+/*
+* checkCollision(const Sprite& sprite, Sprite& sprite2)
+* Params: Sprite& sprite1 - the 1st sprite to check for collision; Sprite& sprite2 - the 2nd sprite to check for collision 
+* Returns: bool
+* Desc: Returns if the two sprites are collisions
+*/
 bool checkCollision(const Sprite& sprite1, const Sprite& sprite2) {
-	if (!(&sprite1 && &sprite2) || &sprite1 == &sprite2) {
-		return false;
+	if (!(&sprite1 && &sprite2) || &sprite1 == &sprite2) { // Check if the two sprites don't exist and if they are the same
+		return false; // return false 
 	}
 	
-	FloatRect sBounds1 = sprite1.getGlobalBounds();
-	FloatRect sBounds2 = sprite2.getGlobalBounds();
-	bool result = false;
-	if (sBounds1.findIntersection(sBounds2))
+	FloatRect sBounds1 = sprite1.getGlobalBounds(); // First Sprite's bounds
+	FloatRect sBounds2 = sprite2.getGlobalBounds(); // Second Sprite's bounds
+	bool result = false; // The result
+	if (sBounds1.findIntersection(sBounds2)) // Check if the two sprite's intersect
 	{
-		result = true;
+		result = true; // Set the result to true
 	}
-	return result;
+	return result; // return the result
 }
-
-/*void newAlien() {
-	Alien* newAlien = new Alien("Blorg");
-	newAlien->setPosition(rand() % WINDOW_WIDTH, rand() % WINDOW_HEIGHT);
-	//aliens.push_back(newAlien);
-}*/
