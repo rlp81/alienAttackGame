@@ -19,6 +19,8 @@ int main() {
 	vector<int> swarmMembers; // Create a vector for enemy pixie IDs that will be controlled
 	shared_ptr<EnemyPixie> leader = EnemyPixie::create(playerPixie->getPixieID()); // Create the leader of the swarm
 	leader->setPosition(300, 300); // set the position of the leader to 300,300
+	leader->setPattern(2);
+	srand(time(0)); // Seed the random number generator with the current time
 
 	shared_ptr<EnemyPixie> enemy; // Make the generic enemy pixie variable to store each member created and placed into the swarm
 	swarmMembers.push_back(leader->getPixieID()); // place the leader into the swarm vector

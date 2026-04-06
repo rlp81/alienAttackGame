@@ -81,6 +81,19 @@ void ShipPixie::shootMissile() {
 }
 
 /*
+* removeMissiles()
+* Params: None
+* Returns: None
+* Desc: Remove all current missiles created by the Pixie
+*/
+void ShipPixie::removeMissiles() {
+	for (int id : missiles) {
+		Pixie::removePixieByID(id); // Remove the Pixie by its ID
+	}
+	missiles.clear(); // Clear the active missiles vector
+}
+
+/*
 * damagePixie(double amount)
 * Params: double amount - Amount of health to be redated from the ShipPixie
 * Returns: bool

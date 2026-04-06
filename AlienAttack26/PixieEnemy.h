@@ -6,6 +6,8 @@
 * Author: Cole Lehl
 */
 
+const int RANDOM_MOVE_COOLDOWN = 90;
+
 // Pixie controller for the game's enemies, based on the ShipPixie
 class EnemyPixie : public ShipPixie {
 private:
@@ -16,8 +18,10 @@ private:
 	int targetType; // The type of targeting the enemy will use
 	int orbitDirection; // The direction the enemy will orbit
 	shared_ptr<Pixie> target; // The Pixie pointer of the target
+	Vector2f randomPoint; // A random point for the Enemy to move to when using the moveRandomly function
 	int leader; // The ID of the leader of the swarm, if applicable
 	int followPadding; // The padding between the enemy and the leader
+	int lastRandomMoveFrame;
 	bool canFireMissile; // A boolean of whether the enemy can fire a missile
 public:
 	// Constructor
@@ -33,6 +37,7 @@ public:
 	void orbit(float radius, shared_ptr<Pixie> target); // Orbit the target with a predefined radius
 	void followTarget(); // Follow the selected target or leader
 	void shootMissile(); // Shoot a missile
+	void moveRandomly(); // Move to a random point
 	void followTarget(shared_ptr<Pixie> target); // Follow the a specified target 
 	void update(); // Update the enemy
 

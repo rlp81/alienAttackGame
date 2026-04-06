@@ -49,8 +49,7 @@ RayCast::RayCast(Vector2f origin, Angle direction, vector<int>& ignoreList) {
 		position.x += offsetX;
 		position.y += offsetY;
 		traveled += offsetX + offsetY;
-		foundID = Pixie::
-			(position);
+		foundID = Pixie::pixieAtPosition(position);
 		if (foundID != -1) {
 			for (int id : ignoreList) {
 				if (id == foundID) {

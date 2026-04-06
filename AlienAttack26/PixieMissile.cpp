@@ -146,17 +146,29 @@ void MissilePixie::checkForCollisions() {
 			int pixieType = pixie->getPixieType(); // Get the Pixie type
 			if (this->getPixieID() != pixie->getPixieID() && pixie->getPixieID() != owner->getPixieID() && pixie->pixieType != PIXIE_TYPE_BACKGROUND) { // Check if the Pixie is not itself, not the owner, and not the background
 				if (this->isCollidingWith(*pixie)) { // Check if the two Pixies are colliding
-					shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
 					if (pixieType == PIXIE_TYPE_ENEMY) { // If the Pixie is an Enemy Pixie
-						/*shared_ptr<EnemyPixie> enemy = std::dynamic_pointer_cast<EnemyPixie>(pixie);
-						if (enemy) {
-							if (bool died = enemy->damagePixie(damage)) {
-								if (this->owner->getPixieType() == 1) {
-									playerScore += 100;
+						try {
+							shared_ptr<EnemyPixie> enemy = std::dynamic_pointer_cast<EnemyPixie>(pixie);
+							if (enemy) {
+								if (this->owner->getPixieType() == PIXIE_TYPE_PLAYER_SHIP) {
+									shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
+									if (bool died = enemy->damagePixie(damage)) {
+										playerScore += 100;
+									}
+									this->remove(); // Remove the Missile Pixie
+									break;
+								}
+								else if (this->owner->getPixieType() == PIXIE_TYPE_ENEMY) {
+									break;
 								}
 							}
-						}*/
+
+						}
+						catch (const std::exception& ex) {
+							cout << "Pixie does not Exist\n";
+						}
 					}
+					shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
 					this->remove(); // Remove the Missile Pixie
 					break; // Stop the loop
 				}

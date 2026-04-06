@@ -37,4 +37,5 @@ public:
 	void shootMissile(); // Fire a missile from the ShipPixie
 	bool damagePixie(double amount); // Damage the Pixie
 	void updateMissiles(); // Update all of the Missiles
+	void removeMissiles(); // Removes all active missiles
 };

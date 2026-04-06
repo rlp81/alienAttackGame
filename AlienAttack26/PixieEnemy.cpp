@@ -6,7 +6,6 @@
 */
 
 vector<int> EnemyPixie::enemies; // Initialize the active enemies in the game
-
 // Constructors
 
 /*
@@ -28,6 +27,8 @@ EnemyPixie::EnemyPixie() : ShipPixie(PIXIE_TYPE_ENEMY, DEFAULT_ENEMY_TEXTURE) {
 	speed = DEFAULT_PIXIE_SPEED * 0.75f; // Set the speed to 75% of the default pixie speed
 	activeMissileCount = 0; // Set the active missile count to 0
 	canFireMissile = true; // Set the enemy to be able to fire
+	randomPoint = Vector2f(0, 0); // Set the default random point to (0,0)
+	lastRandomMoveFrame = -RANDOM_MOVE_COOLDOWN; // Set the last random move frame to 0
 }
 
 /*
@@ -55,6 +56,35 @@ shared_ptr<EnemyPixie> EnemyPixie::create(int targetID) {
 	enemy->target = Pixie::getPixieByID(targetID); // Set the target pixie to the selected Pixie's ID
 	pixies.push_back(enemy); // Place the EnemyPixie in the active Pixie vector
 	return enemy; // Return the shared pointer EnenmyPixie
+}
+
+void EnemyPixie::moveRandomly() {
+	bool shouldMoveRandomly = false;
+	// Check if the random point is the default (0,0) or if the Enemy has reached the random point
+	if ((randomPoint.x == 0 && randomPoint.y == 0) || ((this->getPosition() - randomPoint).length() <= 3)) {
+		if (lastRandomMoveFrame + RANDOM_MOVE_COOLDOWN < currentFrame) {
+			lastRandomMoveFrame = currentFrame;
+			int XRandom = (rand() % ((WINDOW_WIDTH + 1) - 100)) + 100;
+			int YRandom = (rand() % ((WINDOW_HEIGHT + 1) - 100)) + 100;
+			Vector2f randomPoint = Vector2f(XRandom, YRandom); // Create a random point to move towards
+			this->randomPoint = randomPoint; // Set the random point variable to the created random point
+			cout << "New random point: " << XRandom << ", " << YRandom << endl; // Print the new random point to the console for testing
+		}
+		else {
+			shouldMoveRandomly = false; // If the Enemy has reached the random point or the cooldown has not passed, do not move randomly
+		}
+	}
+	else {
+		shouldMoveRandomly = true; // If the Enemy has not reached the random point, move randomly
+	}
+	if (shouldMoveRandomly) {
+		Vector2f direction = randomPoint - this->getPosition(); // Get the direction from the Enemy to the random point
+		float length = direction.length();
+		if (length != 0) { // If the length isnt 0
+			direction /= length; // divide the alient direction by the length to get a unit vector
+		}
+		this->move(direction * speed); // Move the Enemy in the unit direction with the Pixie's speed
+	}
 }
 
 /*
@@ -165,6 +195,9 @@ void EnemyPixie::update() {
 	{
 		case 0: // If 0, follow target
 			followTarget();
+			break;
+		case 2: // If 2, move randomly
+			moveRandomly();
 			break;
 		default: // otherwise follow target
 			followTarget(); 

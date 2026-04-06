@@ -28,13 +28,16 @@ void Swarm::setupSwarm() {
 	//shared_ptr<Pixie> controller = Pixie::getPixieByID(controllerID);
 	int padding = DEFAULT_PADDING; // The default padding that the swarm members will orbit the leader by
 	for (int memberId : members) { // Iterate through the active swarm members
+		shared_ptr<EnemyPixie> member = dynamic_pointer_cast<EnemyPixie>(Pixie::getPixieByID(memberId)); // Get the member by their Pixie ID
 		if (memberId != controllerID) { // If the member is not the controller
-			shared_ptr<EnemyPixie> member = dynamic_pointer_cast<EnemyPixie>(Pixie::getPixieByID(memberId)); // Get the member by their Pixie ID
 			if (member == nullptr) { continue; } // Check if the member exists
 			member->leader = controllerID; // Set their leader to the controller
 			member->targetType = 2; // Set their targeting type
 			member->followPadding = padding; // Set their padding
 			padding += PADDING_INCREMENT; // Iterate the padding by a set amount
+		}
+		else {
+			member->movePattern = 2; // Set the controller's movement pattern to 2, which is a custom pattern for the controller that is based on the movement of the swarm members
 		}
 	}
 }

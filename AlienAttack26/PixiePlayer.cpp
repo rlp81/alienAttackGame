@@ -44,7 +44,8 @@ shared_ptr<PlayerPixie> PlayerPixie::create() {
 void PlayerPixie::update()
 {
 	// The x and y rotation of the player
-	int xRotation, yRotation = 0;
+	int xRotation = 0; 
+	int yRotation = 0;
 
 	// Check if the left or A key were pressed
 	if (Keyboard::isKeyPressed(Keyboard::Key::Left) || Keyboard::isKeyPressed(Keyboard::Key::A))
