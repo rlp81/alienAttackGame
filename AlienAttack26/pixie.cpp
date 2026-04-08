@@ -163,7 +163,6 @@ void Pixie::drawAll(RenderWindow& window) {
 			if (pixie->pixieType == PIXIE_TYPE_MISSILE) {
 				shared_ptr<MissilePixie> missile = dynamic_pointer_cast<MissilePixie>(pixie); // Cast the Pixie to a MissilePixie to access the MissilePixie's specific functions
 				if (missile) { // Check if the cast was successful
-					cout << "Missile ID: " << missile->getPixieID() << " Owner ID: " << missile->owner->getPixieID() << endl;
 					if (Pixie::getPixieByID(missile->owner->getPixieID()) == nullptr) {
 						Pixie::removePixieByID(missile->getPixieID()); // Remove the Missile Pixie if the owner doesn't exist
 						continue;
