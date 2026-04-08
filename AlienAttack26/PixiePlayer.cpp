@@ -17,8 +17,8 @@ PlayerPixie::PlayerPixie() : ShipPixie(PIXIE_TYPE_PLAYER_SHIP, DEFAULT_SHIP_TEXT
 	setSpeed(DEFAULT_PIXIE_SPEED);
 	setScale(DEFAULT_PIXIE_SCALE, DEFAULT_PIXIE_SCALE);
 	ammo = DEFAULT_PLAYER_AMMO;
-	health = DEFAULT_PIXIE_HEALTH;
-	damage = 10;
+	health = ENEMY_PIXIE_HEALTH;
+	damage = 1;
 	direction = 0;
 }
 

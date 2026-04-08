@@ -7,6 +7,7 @@
 */
 
 const int RANDOM_MOVE_COOLDOWN = 90;
+const int ENEMY_PIXIE_HEALTH = 1; // The health of the Enemy Pixie
 
 // Pixie controller for the game's enemies, based on the ShipPixie
 class EnemyPixie : public ShipPixie {

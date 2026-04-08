@@ -6,6 +6,9 @@
 * Author: Cole Lehl
 */
 
+// Player Pixie Constants
+const int PLAYER_PIXIE_HEALTH = 3; // The health of the Player Pixie
+
 // Pixie controller for a player controlled Pixie, inherets from ShipPixie
 class PlayerPixie : public ShipPixie {
 private:

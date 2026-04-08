@@ -8,6 +8,8 @@
 
 class MissilePixie : public Pixie {
 private:
+	friend class Pixie;
+
 	ShipPixie* owner; // The originator of the Missile
 	float direction; // The direction the missile is traveling
 	float damage; // The damage the missile willd deal

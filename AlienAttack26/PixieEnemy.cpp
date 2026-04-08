@@ -15,9 +15,9 @@ vector<int> EnemyPixie::enemies; // Initialize the active enemies in the game
 * Desc: Creates an EnemyPixie
 */
 EnemyPixie::EnemyPixie() : ShipPixie(PIXIE_TYPE_ENEMY, DEFAULT_ENEMY_TEXTURE) {
-	health = DEFAULT_PIXIE_HEALTH; // Set the health to the default Pixie Health
-	damage = 3.4; // Set the default damage to 3.4
-	faction = "Glorps"; // Set the damage to Glorps
+	health = ENEMY_PIXIE_HEALTH; // Set the health to the default Pixie Health
+	damage = 1; // Set the default damage to 3.4
+	faction = "Glorps"; // Set the faction to Glorps
 	enemyType = 0; // Set the enemy type to 0
 	orbitDirection = 1; // Set the default orbit direction to 1
 	movePattern = 0; // Set the move pattern to 0

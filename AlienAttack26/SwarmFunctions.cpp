@@ -37,6 +37,7 @@ void Swarm::setupSwarm() {
 			padding += PADDING_INCREMENT; // Iterate the padding by a set amount
 		}
 		else {
+			member->speed = DEFAULT_PIXIE_SPEED - 1.0f; // Set the controller's speed to be slower than the other members
 			member->movePattern = 2; // Set the controller's movement pattern to 2, which is a custom pattern for the controller that is based on the movement of the swarm members
 		}
 	}
