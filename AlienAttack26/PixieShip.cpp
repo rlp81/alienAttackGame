@@ -63,7 +63,7 @@ void ShipPixie::updateMissiles() {
 * Desc: Shoots a missile in the direction the ShipPixie is facing
 */
 void ShipPixie::shootMissile() {
-	if (!(currentFrame >= DEFAULT_FRAMES_TILL__NEXT_MISSILE + lastMissileFrame || lastMissileFrame == -1)) { // Check if the ShipPixie can fire a missile based on the current frame
+	if (!(currentFrame >= DEFAULT_FRAMES_TILL_NEXT_MISSILE + lastMissileFrame || lastMissileFrame == -1)) { // Check if the ShipPixie can fire a missile based on the current frame
 		return;
 	}
 	if (activeMissileCount >= MAX_ACTIVE_MISSILES) { // Check if there are max existing missiles

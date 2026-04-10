@@ -169,6 +169,9 @@ void Pixie::drawAll(RenderWindow& window) {
 					}
 				}
 			}
+			if (pixie->pixieType == PIXIE_TYPE_EXPLOSION) {
+				//cout << "Explosion Pixie ID: " << pixie->getPixieID() << " is active: " << pixie->active << endl;
+			}
 			pixie->draw(window); // Draw the Pixie
 		}
 	}

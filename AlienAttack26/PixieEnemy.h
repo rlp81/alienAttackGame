@@ -20,6 +20,7 @@ private:
 	int orbitDirection; // The direction the enemy will orbit
 	shared_ptr<Pixie> target; // The Pixie pointer of the target
 	Vector2f randomPoint; // A random point for the Enemy to move to when using the moveRandomly function
+	shared_ptr<Swarm> swarm; // The swarm the Enemy is a part of, if applicable
 	int leader; // The ID of the leader of the swarm, if applicable
 	int followPadding; // The padding between the enemy and the leader
 	int lastRandomMoveFrame;
@@ -34,6 +35,7 @@ public:
 	static vector<int> enemies; // Static vector of all active Enemy IDs
 
 	// Logic Functions
+	virtual bool damagePixie(double amount); // Damage the Pixie
 	void orbit(); // Orbit the selected target or leader
 	void orbit(float radius, shared_ptr<Pixie> target); // Orbit the target with a predefined radius
 	void followTarget(); // Follow the selected target or leader
@@ -48,4 +50,6 @@ public:
 	shared_ptr<Pixie> getTarget() const { return target; } // Get the selected target
 	void setPattern(int pattern) { movePattern = pattern; } // Set the move pattern of the EnemyPixie
 	void changeOrbitDirection() { orbitDirection *= -1; } // Change the direction the Enemy is orbiting
+	void setSwarm(shared_ptr<Swarm> newSwarm) { swarm = newSwarm; } // Set the swarm of the EnemyPixie
+	shared_ptr<Swarm> getSwarm() const { return swarm; } // Get the swarm of the EnemyPixie
 };

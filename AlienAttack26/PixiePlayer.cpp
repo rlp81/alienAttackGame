@@ -5,6 +5,8 @@
 * Author: Cole Lehl
 */
 
+const int PLAYER_FRAME_UNTIL_MISSILE = 60; // The amount of frames that must pass before the Player can fire another missile
+
 // Constructors
 
 /*
@@ -113,4 +115,28 @@ void PlayerPixie::update()
 	}
 	this->setRotation(degrees(direction)); // Set the PlayerPixie's Sprite's rotation to the result direction
 	updateMissiles(); // Update the player's active missiles
+}
+
+/*
+* shootMissile()
+* Params: None
+* Returns: None
+* Desc: Shoots a missile in the direction the ShipPixie is facing
+*/
+void PlayerPixie::shootMissile() {
+	if (!(currentFrame >= DEFAULT_FRAMES_TILL_NEXT_MISSILE + lastMissileFrame || lastMissileFrame == -1)) { // Check if the ShipPixie can fire a missile based on the current frame
+		return;
+	}
+	if (activeMissileCount >= MAX_ACTIVE_MISSILES) { // Check if there are max existing missiles
+		return;
+	}
+	if (ammo > 0) { // Check if the ShipPixie has enough Ammo
+		lastMissileFrame = currentFrame; // Set the last frame to shoot a missile to this frame
+		MissilePixie::create(this); // Create a new Missile and providing it the owner/ShipPixie object
+		activeMissileCount++; // Increase the active missile cound
+		ammo--; // Decrease the ShipPixie's ammo
+	}
+	else { // If the Pixie is out of Ammo
+		std::cout << "Out of ammo!" << std::endl; // Declare the ShipPixie is out of ammo
+	}
 }

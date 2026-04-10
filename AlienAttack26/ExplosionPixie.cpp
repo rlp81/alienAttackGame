@@ -52,6 +52,7 @@ void ExplosionPixie::updateAll() {
 
 void ExplosionPixie::update() {
 	if (currentFrame >= lastFrame) {
+		this->removePixieByID(this->getPixieID());
 		return;
 	}
 	else {

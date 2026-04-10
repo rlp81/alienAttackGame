@@ -20,5 +20,5 @@ public:
 
 	// Logic Functions
 	void update(); // Update the PlayerPixie
-
+	void shootMissile(); // Fire a missile from the Player
 };

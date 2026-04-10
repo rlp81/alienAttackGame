@@ -5,6 +5,8 @@
 * Author: Cole Lehl
 */
 
+vector<shared_ptr<Swarm>> Swarm::swarms; // Initialize the static vector of swarms
+
 /*
 * Swarm(int controllerID, vector<int> &members)
 * Params: int controllerID - The Pixie ID for the controlling enemy, vector<int> &members - The vector of the enemys to be added to the swarm
@@ -15,6 +17,12 @@ Swarm::Swarm(int controllerID, vector<int> &members) {
 	this->controllerID = controllerID; // Set the controller to the specified controller
 	this->members = members; // Add the Swarm's members to the swarm
 	setupSwarm(); // Finish setting up the swarm
+}
+
+shared_ptr<Swarm> Swarm::create(int controllerID, vector<int>& members) {
+	auto swarm = make_shared<Swarm>(controllerID, members);
+	swarms.push_back(swarm);
+	return swarm;
 }
 
 /*
@@ -88,4 +96,29 @@ void Swarm::updateSwarm() {
 		}
 
 	}
+}
+
+void Swarm::updateAllSwarms() {
+	for (shared_ptr<Swarm> swarm : swarms) { // Iterate through the existing swarms
+		swarm->updateSwarm(); // Update each swarm
+	}
+}
+
+void Swarm::removeEnemy(int enemyID) {
+	members.erase(std::remove(members.begin(), members.end(), enemyID), members.end()); // Remove the enemy from the swarm members vector
+	EnemyPixie::enemies.erase(std::remove(EnemyPixie::enemies.begin(), EnemyPixie::enemies.end(), enemyID), EnemyPixie::enemies.end()); // Remove the enemy from the active enemies vector
+}
+
+int Swarm::getTotalEnemyCount() {
+	int total = 0; // Initialize the total swarm count to 0
+	for (shared_ptr<Swarm> swarm : swarms) { // Iterate through the existing swarms
+		if (swarm) { // Check if the swarm exists
+			for (int member : swarm->members) { // Iterate through the members of the swarm
+				if (Pixie::getPixieByID(member)) { // Check if the member exists
+					total++; // Increment the total count
+				}
+			}
+		}
+	}
+	return total; // Return the total count
 }

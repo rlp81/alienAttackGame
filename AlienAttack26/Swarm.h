@@ -18,14 +18,19 @@ private:
 	int swarmSize; // The size of the swarm
 	int targetID; // The Pixie the swarm is targeting
 	int controllerID; // The Pixie the swarm is controlled by
+	static vector<std::shared_ptr<Swarm>> swarms; // Vector of all existing pixies
 public:
 	// Constructors
 	Swarm() = delete; // Delete the default constructor
 	Swarm(int contollerID, vector<int> &members); // Create a new swarm and specify the leader and memebers
-
+	static shared_ptr<Swarm> create(int controllerID, vector<int>& members);
 	// Logic Functions
+	void removeEnemy(int enemyID); // Remove an enemy from the swarm
 	void updateSwarm(); // Update the swarm
 	void setupSwarm(); // Setup the swarm
 	int findNewLeader(int lastLeader); // Find a new swarm leader based on the previous leader
+	static void updateAllSwarms(); // Update all existing swarms
 	
+	// Getters and Setters
+	static int getTotalEnemyCount(); // Get the total amount of swarms
 };

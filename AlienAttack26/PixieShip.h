@@ -34,8 +34,8 @@ public:
 	// Use the default Destructor and allow Shared pointer logic to handle the destruction of Pixies
 	virtual ~ShipPixie() = default;
 
-	void shootMissile(); // Fire a missile from the ShipPixie
-	bool damagePixie(double amount); // Damage the Pixie
+	virtual void shootMissile(); // Fire a missile from the ShipPixie
+	virtual bool damagePixie(double amount); // Damage the Pixie
 	void updateMissiles(); // Update all of the Missiles
 	void removeMissiles(); // Removes all active missiles
 };
