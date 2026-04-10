@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="ExplosionPixie.h" />
     <ClInclude Include="gameHeader.h" />
+    <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="pixie.h" />
     <ClInclude Include="PixieBackground.h" />
     <ClInclude Include="PixieEnemy.h" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="ExplosionPixie.cpp" />
     <ClCompile Include="gameFunctions.cpp" />
+    <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pixie.cpp" />
     <ClCompile Include="PixieBackground.cpp" />

@@ -28,6 +28,7 @@ using namespace sf; // Use the SFML namespace
 #include "ExplosionPixie.h" // Explosion Pixie Class | Parent: Pixie
 #include "Swarm.h" // Swarm Class to control Enemy Pixies
 #include "RayCast.h" // Raycast Class to handle occlusion and line of sight for the enemy pixies
+#include "LevelLoader.h"
 enable_shared_from_this<Pixie>; // Enable the use of shared pointers for the Pixie class and its children
 
 // Main Constants

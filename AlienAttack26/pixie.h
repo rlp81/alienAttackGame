@@ -32,6 +32,7 @@ private:
 	friend class MissilePixie;
 	friend class BackgroundPixie;
 	friend class ExplosionPixie;
+	friend class LevelLoader; // Friend the level loader so it can access private members of the Pixie class to load and clear levels
 
 	// Friend Swarm, a default built-in controller for Enemy Pixies
 	friend class Swarm;
