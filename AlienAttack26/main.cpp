@@ -12,6 +12,7 @@ int main() {
 	window.setFramerateLimit(60); // set the game framerate limit to 60 frames per second
 	LevelLoader levelLoader; // Create a level loader to load the levels of the game
 	levelLoader.loadLevel(); // Load the first level of the game
+
 	// Main Game loop that runs while the window is open
 	while (window.isOpen()) {
 		currentFrame++; // at every frame interate the current frame by 1

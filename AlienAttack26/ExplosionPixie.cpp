@@ -70,7 +70,7 @@ void ExplosionPixie::update() {
 			}
 			string textureFile = baseTextureFile + to_string(spriteNum) + ".png";
 			texture = new Texture();
-			if (!texture->loadFromFile(textureFile)) {
+			if (!texture->loadFromFile(ASSETS_PATH/textureFile)) {
 				std::cerr << "Failed to load texture from file: " << textureFile << std::endl;
 				exit(EXIT_FAILURE);
 			}

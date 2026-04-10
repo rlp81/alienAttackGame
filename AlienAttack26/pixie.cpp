@@ -11,6 +11,7 @@ int Pixie::nextPixieID = 0; // initialize the next Pixie ID to 0
 int Pixie::pixieCount = 0; // initialize the Pixie count to 0
 vector<std::shared_ptr <Pixie>> Pixie::pixies; // initialize the vector of pixies to be empty
 
+
 // Constructors
 
 /*
@@ -34,7 +35,7 @@ Pixie::Pixie(int type) {
 Pixie::Pixie(int type, const string& textureFile) {
 	pixieType = type; // Set the type
 	texture = new sf::Texture(); // Create a Texture pointer for the Pixie
-	if (!texture->loadFromFile(textureFile)) { // Try and load a the texture from the file, if not error to the console and exit the program
+	if (!texture->loadFromFile(ASSETS_PATH / textureFile)) { // Try and load a the texture from the file, if not error to the console and exit the program
 		std::cerr << "Failed to load texture from file: " << textureFile << std::endl;
 		exit(EXIT_FAILURE);
 	}
@@ -53,7 +54,7 @@ Pixie::Pixie(int type, const string& textureFile) {
 Pixie::Pixie(int type, const std::string& textureFile, bool useOriginalOrigin) {
 	pixieType = type; // Set the type
 	texture = new sf::Texture(); // Create a Texture pointer for the Pixie
-	if (!texture->loadFromFile(textureFile)) { // Try and load a the texture from the file, if not error to the console and exit the program
+	if (!texture->loadFromFile(ASSETS_PATH / textureFile)) { // Try and load a the texture from the file, if not error to the console and exit the program
 		std::cerr << "Failed to load texture from file: " << textureFile << std::endl;
 		exit(EXIT_FAILURE);
 	}

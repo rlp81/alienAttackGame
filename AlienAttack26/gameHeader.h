@@ -19,6 +19,7 @@ using namespace std; // Use the standard namespace
 
 using namespace sf; // Use the SFML namespace
 
+#include <filesystem>
 #include "pixie.h" // Basic Pixie Class
 #include "PixieShip.h" // Basic Ship Pixie/Controllable Class | Parent: Pixie
 #include "PixieBackground.h" // Background Pixie Class | Parent: Pixie
@@ -32,6 +33,7 @@ using namespace sf; // Use the SFML namespace
 enable_shared_from_this<Pixie>; // Enable the use of shared pointers for the Pixie class and its children
 
 // Main Constants
+const filesystem::path ASSETS_PATH = filesystem::current_path() /= "assets";
 const float DISTANCE = 5.0f; // Basic Pixie movement distance 
 const float MISSILE_SPEED = 10.0f; // When the missile moves it moves 10 pixels at a time.
 const int WINDOW_WIDTH = 800; // window is 800 pixels wide
