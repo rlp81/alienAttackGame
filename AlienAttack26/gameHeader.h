@@ -12,6 +12,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <map>
 using namespace std; // Use the standard namespace
 
 // SFML Graphics Library

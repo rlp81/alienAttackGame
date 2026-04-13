@@ -45,7 +45,7 @@ MissilePixie::MissilePixie(ShipPixie* owner, float angle) : Pixie(2, DEFAULT_MIS
 */
 shared_ptr<MissilePixie> MissilePixie::create(ShipPixie* owner) {
 	auto missile = make_shared<MissilePixie>(owner); // Create a shared pointer of a MissilePixie
-	pixies.push_back(missile); // Place the MissilePixie into the active Pixies vector
+	pixies[missile->pixieID] = missile; // Place the MissilePixie into the active Pixies vector
 	owner->missiles.push_back(missile->getPixieID()); // Add the MissilePixie's ID into the originator's active missile vector
 	return missile; // Return the MissilePixie
 }
@@ -58,7 +58,7 @@ shared_ptr<MissilePixie> MissilePixie::create(ShipPixie* owner) {
 */
 shared_ptr<MissilePixie> MissilePixie::create(ShipPixie* owner, float angle) {
 	auto missile = make_shared<MissilePixie>(owner, angle); // Create a shared pointer of a MissilePixie
-	pixies.push_back(missile); // Place the MissilePixie into the active Pixies vector
+	pixies[missile->pixieID] = missile; // Place the MissilePixie into the active Pixies vector
 	owner->missiles.push_back(missile->getPixieID()); // Add the MissilePixie's ID into the originator's active missile vector
 	return missile; // Return the MissilePixie
 }
@@ -118,7 +118,7 @@ void MissilePixie::remove() {
 * Desc: Check if the MissilePixie is colliding with any other Pixie
 */
 bool MissilePixie::checkCollision() {
-	for (const auto& pixie : Pixie::pixies) { // Incrememnt throug the active Pixie vector
+	for (const auto& [pID, pixie] : Pixie::pixies) { // Incrememnt throug the active Pixie vector
 		if (this->getPixieID() != pixie->getPixieID() && pixie->getPixieID() != owner->getPixieID()) { // Check if the Pixie does not equal it's originator or itself
 			if (this->isCollidingWith(*pixie)) { // Check if the two Pixie's are colliding
 				return true;
@@ -139,7 +139,7 @@ void MissilePixie::checkForCollisions() {
 		if (Pixie::getPixieByID(owner->getPixieID()) == nullptr) { // Check if the originator exists
 			return;
 		}
-		for (const auto& pixie : Pixie::pixies) { // Iterate through the active Pixies
+		for (const auto& [pID, pixie] : Pixie::pixies) { // Iterate through the active Pixies
 			if (pixie == nullptr || pixie->sprite == nullptr || pixie == NULL || pixie->sprite == NULL) { // Check if the Pixie exists
 				continue;
 			}
@@ -186,10 +186,14 @@ void MissilePixie::checkForCollisions() {
 * Desc: Get the MissilePixie by its ID
 */
 shared_ptr<MissilePixie> MissilePixie::getMissileByID(int id) {
-	for (const auto& pixie : Pixie::pixies) { // Iterate through the active Pixie vector
-		if (pixie->getPixieID() == id) { // Check if the Pixies have the same IDs
-			return std::dynamic_pointer_cast<MissilePixie>(pixie); // Morph the Pixie into a MissilePixie and return it
-		}
+	shared_ptr<Pixie> missile = Pixie::pixies[id]; // Create a shared pointer for the MissilePixie
+	if (missile != nullptr) { // Check if the MissilePixie exists
+		return dynamic_pointer_cast<MissilePixie>(missile); // Morph the Pixie into a MissilePixie and return it
 	}
+	//for (const auto& [pID, pixie] : Pixie::pixies) { // Iterate through the active Pixie vector
+	//	if (pixie->getPixieID() == id) { // Check if the Pixies have the same IDs
+	//		return std::dynamic_pointer_cast<MissilePixie>(pixie); // Morph the Pixie into a MissilePixie and return it
+	//	}
+	//}
 	return nullptr;
 }

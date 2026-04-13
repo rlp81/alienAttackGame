@@ -32,7 +32,7 @@ PlayerPixie::PlayerPixie() : ShipPixie(PIXIE_TYPE_PLAYER_SHIP, DEFAULT_SHIP_TEXT
 */
 shared_ptr<PlayerPixie> PlayerPixie::create() {
 	auto player = make_shared<PlayerPixie>(); // Create a PlayerPixie as a shared pointer
-	pixies.push_back(player); // add the player to the active Pixies vector
+	pixies[player->pixieID] = player; // add the player to the active Pixies vector
 	playerID = player->getPixieID(); // Set the global variable for the Player's ID to the PlayerPixie's ID
 	return player; // Return the PlayerPixie
 }

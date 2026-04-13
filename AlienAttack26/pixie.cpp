@@ -9,7 +9,7 @@
 
 int Pixie::nextPixieID = 0; // initialize the next Pixie ID to 0
 int Pixie::pixieCount = 0; // initialize the Pixie count to 0
-vector<std::shared_ptr <Pixie>> Pixie::pixies; // initialize the vector of pixies to be empty
+map<int, shared_ptr<Pixie>> Pixie::pixies; // initialize the vector of pixies to be empty
 
 
 // Constructors
@@ -74,7 +74,7 @@ Pixie::Pixie(int type, const std::string& textureFile, bool useOriginalOrigin) {
 */
 shared_ptr<Pixie> Pixie::create(int type, const std::string& textureFile) {
 	auto pixie = make_shared<Pixie>(type, textureFile); // Create a shared pointer of a Pixie using the type and texture constructor
-	pixies.push_back(pixie); // Add the Pixie to the vector of Pixies
+	pixies[pixie->pixieID] = pixie; // Add the Pixie to the vector of Pixies
 	return pixie; // return the shared pointer of the Pixie
 }
 
@@ -85,7 +85,7 @@ shared_ptr<Pixie> Pixie::create(int type, const std::string& textureFile) {
 */
 shared_ptr<Pixie> Pixie::create(int type, const std::string& textureFile, bool useOriginalOrigin) {
 	auto pixie = make_shared<Pixie>(type, textureFile, useOriginalOrigin); // Create a shared pointer of a Pixie using the type, texture, and useOriginalOrigin constructor
-	pixies.push_back(pixie); // Add the Pixie to the vector of Pixies
+	pixies[pixie->pixieID] = pixie; // Add the Pixie to the vector of Pixies
 	return pixie; // return the shared pointer of the Pixie
 }
 
@@ -185,12 +185,21 @@ void Pixie::drawAll(RenderWindow& window) {
 * Desc: returns a Pixie based on a given ID
 */
 shared_ptr<Pixie> Pixie::getPixieByID(int ID) {
-	for (shared_ptr<Pixie> pixie : Pixie::pixies) { // Iterate through existing Pixies
-		if (pixie->pixieID == ID) { // Check if the Pixie's ID matches the given ID
-			return pixie; // Return the Pixie
-		}
+
+	try {
+		shared_ptr<Pixie> pixie = nullptr;
+		pixie = pixies[ID]; // Try to get the Pixie from the vector of Pixies using the ID as the index
+		return pixie;
+	} catch (const out_of_range& e) { // Catch the error if the ID is out of range of the vector
+		return nullptr; // Return nullptr if it is out of range
 	}
-	return nullptr; // Return nullptr if it could not be found
+
+	//for (shared_ptr<Pixie> pixie : Pixie::pixies) { // Iterate through existing Pixies
+	//	if (pixie->pixieID == ID) { // Check if the Pixie's ID matches the given ID
+	//		return pixie; // Return the Pixie
+	//	}
+	//}
+	//return nullptr; // Return nullptr if it could not be found
 }
 
 /*
@@ -212,10 +221,11 @@ float Pixie::getDirectionTo(const Pixie& other) {
 * Desc: Remove a Pixie based on the ID provided
 */
 void Pixie::removePixieByID(int ID) {
-	auto it = std::find(pixies.begin(), pixies.end(), Pixie::getPixieByID(ID)); // Find the Pixie with getPixieByID and find it in the Pixies vector
-	if (it != pixies.end()) { // Check if the Pixie exists
-		pixies.erase(it); // Erase the Pixie from the Pixies vectors, automatically deleting it via the shared pointer logic
-	}
+	pixies.erase(ID); // Erase the Pixie from the Pixies vector, automatically deleting it via the shared pointer logic 
+	//auto it = find(pixies.begin(), pixies.end(), Pixie::getPixieByID(ID)); // Find the Pixie with getPixieByID and find it in the Pixies vector
+	//if (it != pixies.end()) { // Check if the Pixie exists
+	//	pixies.erase(it); // Erase the Pixie from the Pixies vectors, automatically deleting it via the shared pointer logic
+	//}
 
 }
 
@@ -226,7 +236,8 @@ void Pixie::removePixieByID(int ID) {
 * Desc: Get the Pixie ID of a Pixie at a position
 */
 int Pixie::pixieAtPosition(Vector2f pos) {
-	for (shared_ptr<Pixie> pixie : Pixie::pixies) { // Iterate through the existing Pixies
+	for (auto const [pID, pixie] : Pixie::pixies) { // Iterate through the existing Pixies
+		if (getPixieByID(pID) == nullptr || pixie == nullptr) { continue; }
 		if (pixie->pixieType == PIXIE_TYPE_BACKGROUND) { continue; } // If the Pixie is a background pixie then skip it
 		if (!pixie->sprite || pixie->sprite == nullptr || pixie->sprite == NULL) { continue; } // Check if the Pixie exists
 		if (pixie->sprite->getGlobalBounds().contains(pos)) { // Check if the Pixie exists at the position

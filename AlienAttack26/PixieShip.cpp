@@ -25,7 +25,7 @@ ShipPixie::ShipPixie(int type, const string& textureFile) : Pixie(type, textureF
 */
 shared_ptr<ShipPixie> ShipPixie::create(int type, const std::string& textureFile) {
 	auto pixie = make_shared<ShipPixie>(type, textureFile); // Create a Pixie with a type and texture
-	pixies.push_back(pixie); // Add it to the Pixies vector
+	pixies[pixie->pixieID] = pixie; // Add it to the Pixies vector
 	return pixie; // return the ShipPixie
 }
 

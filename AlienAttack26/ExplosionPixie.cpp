@@ -29,14 +29,14 @@ ExplosionPixie::ExplosionPixie(const string& baseTextureFile, int textureNums, s
 
 shared_ptr<ExplosionPixie> ExplosionPixie::create(int textureAmount, const string& textureFile, sf::Vector2f position) {
 	auto explosion = make_shared<ExplosionPixie>(textureFile, textureAmount, position);
-	pixies.push_back(explosion);
+	pixies[explosion->pixieID] = explosion;
 	explosionPixies.push_back(explosion->getPixieID());
 	return explosion;
 }
 
 shared_ptr<ExplosionPixie> ExplosionPixie::create(int textureAmount, const string& textureFile) {
 	auto explosion = make_shared<ExplosionPixie>(textureFile, textureAmount);
-	pixies.push_back(explosion);
+	pixies[explosion->pixieID] = explosion;
 	explosionPixies.push_back(explosion->getPixieID());
 	return explosion;
 }

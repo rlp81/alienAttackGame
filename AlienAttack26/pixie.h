@@ -39,7 +39,7 @@ private:
 	
 	// Static Variables
 	static int pixieCount; // Current Pixie count
-	static vector<std::shared_ptr<Pixie>> pixies; // Vector of all existing pixies
+	static map<int, shared_ptr<Pixie>> pixies; // Vector of all existing pixies
 	static int nextPixieID; // Next ID for a created Pixie
 
 	// Pointers

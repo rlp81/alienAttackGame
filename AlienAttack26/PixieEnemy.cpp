@@ -41,7 +41,7 @@ EnemyPixie::EnemyPixie() : ShipPixie(PIXIE_TYPE_ENEMY, DEFAULT_ENEMY_TEXTURE) {
 shared_ptr<EnemyPixie> EnemyPixie::create() {
 	auto enemy = make_shared<EnemyPixie>(); // Create an EnemyPixie as a shared pointer
 	enemies.push_back(enemy->pixieID); // Place the EnemyPixie's ID into the active enemy list
-	pixies.push_back(enemy); // Place the EnemyPixie in the active Pixie vector
+	pixies[enemy->pixieID] = enemy; // Place the EnemyPixie in the active Pixie vector
 	return enemy; // Return the shared pointer EnenmyPixie
 }
 
@@ -55,7 +55,7 @@ shared_ptr<EnemyPixie> EnemyPixie::create(int targetID) {
 	auto enemy = make_shared<EnemyPixie>(); // Create an EnemyPixie as a shared pointer
 	enemies.push_back(enemy->pixieID); // Place the EnemyPixie's ID into the active enemy list
 	enemy->target = Pixie::getPixieByID(targetID); // Set the target pixie to the selected Pixie's ID
-	pixies.push_back(enemy); // Place the EnemyPixie in the active Pixie vector
+	pixies[enemy->pixieID] = enemy; // Place the EnemyPixie in the active Pixie vector
 	return enemy; // Return the shared pointer EnenmyPixie
 }
 

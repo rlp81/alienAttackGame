@@ -30,7 +30,7 @@ public:
 	*/
 	static shared_ptr<BackgroundPixie> create(string textureFile) {
 		auto pixie = make_shared<BackgroundPixie>(textureFile); // Create the BackgroundPixie as a shared pointer
-		pixies.push_back(pixie); // Add the Pixie to the active Pixies vector
+		pixies[pixie->pixieID] = pixie; // Add the Pixie to the active Pixies vector
 		return pixie; // Return the created Pixie0
 	}
 };
