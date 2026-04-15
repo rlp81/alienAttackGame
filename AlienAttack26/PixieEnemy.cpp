@@ -4,7 +4,7 @@
 * Description: function C++ file for the PixieEnemy Class
 * Author: Cole Lehl
 */
-
+int EnemyPixie::enemyMissileCount = 0; // Initialize the active enemy missile count to 0
 vector<int> EnemyPixie::enemies; // Initialize the active enemies in the game
 // Constructors
 
@@ -25,7 +25,7 @@ EnemyPixie::EnemyPixie() : ShipPixie(PIXIE_TYPE_ENEMY, DEFAULT_ENEMY_TEXTURE) {
 	target = nullptr; // Set the target to the nullptr
 	targetType = 0; // Set the target type to 0
 	speed = DEFAULT_PIXIE_SPEED * 0.75f; // Set the speed to 75% of the default pixie speed
-	activeMissileCount = 0; // Set the active missile count to 0
+	//activeMissileCount = 0; // Set the active missile count to 0
 	canFireMissile = true; // Set the enemy to be able to fire
 	randomPoint = Vector2f(0, 0); // Set the default random point to (0,0)
 	swarm = nullptr; // Set the swarm to nullptr, the Enemy is not in a swarm by default
@@ -164,8 +164,8 @@ void EnemyPixie::shootMissile() {
 	if (!(currentFrame >= DEFAULT_FRAMES_TILL_NEXT_MISSILE + lastMissileFrame || lastMissileFrame == -1)) { // Check if the Enemy Pixie can fire a Missile via time from last missile launch
 		return; // Quit the function
 	}
-	if (activeMissileCount >= MAX_ACTIVE_MISSILES) { // Check if there are too many ative missiles
-		std::cout << "Maximum active missiles reached!" << std::endl; // Return and error
+	if (enemyMissileCount > MAX_ACTIVE_MISSILES) { // Check if there are too many ative missiles
+		//std::cout << "Maximum active missiles reached!" << std::endl; // Return and error
 		return; // Quit the function
 	}
 	if (ammo > 0) { // Check if the Enemy has any ammo
@@ -176,7 +176,6 @@ void EnemyPixie::shootMissile() {
 			lastMissileFrame = currentFrame; // Set the last frame to fire a missile to the current frame
 			shared_ptr<MissilePixie> missile = MissilePixie::create(this); // Create a shared pointer of a missile
 
-			activeMissileCount++; // Increment the active missile count
 			ammo--; // Remove one ammo
 		}
 	}

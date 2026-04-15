@@ -19,6 +19,10 @@ MissilePixie::MissilePixie(ShipPixie* owner) : Pixie(PIXIE_TYPE_MISSILE, DEFAULT
 	this->setPosition(owner->getPosition()); // Set the position and rotation of the missile to that of the owner
 	this->setRotation(owner->getRotation());
 	this->damage = owner->damage; // Set the Missile's damage to the damage of the owner
+	this->ownerType = this->owner->pixieType; // Set the owner type to the type of the owner, used to determine what the missile can damage
+	if (ownerType == PIXIE_TYPE_ENEMY) {
+		EnemyPixie::enemyMissileCount++; // Increment the Enemy Missile Count if the owner is an Enemy Pixie
+	}
 }
 
 /*
@@ -34,6 +38,10 @@ MissilePixie::MissilePixie(ShipPixie* owner, float angle) : Pixie(2, DEFAULT_MIS
 	direction = angle; // Set the direction for the PixieMissile to travel to the provided angle
 	this->setRotation(degrees(direction)); // Angle the PixieMissile to the provided angle
 	this->damage = owner->damage; // Set the Missile's damage to the damage of the owner
+	this->ownerType = this->owner->pixieType; // Set the owner type to the type of the owner, used to determine what the missile can damage
+	if (ownerType == PIXIE_TYPE_ENEMY) {
+		EnemyPixie::enemyMissileCount++; // Increment the Enemy Missile Count if the owner is an Enemy Pixie
+	}
 }
 
 
@@ -109,6 +117,9 @@ void MissilePixie::remove() {
 	owner->missiles.erase(std::remove(owner->missiles.begin(), owner->missiles.end(), id), owner->missiles.end()); // Remove the MissilePixie from the active Missiles vector
 	Pixie::removePixieByID(id); // Remove the Pixie
 	owner->activeMissileCount--; // deinrement the active missile count
+	if (ownerType == PIXIE_TYPE_ENEMY) {
+		EnemyPixie::enemyMissileCount--; // Increment the Enemy Missile Count if the owner is an Enemy Pixie
+	}
 }
 
 /*
@@ -137,6 +148,7 @@ bool MissilePixie::checkCollision() {
 void MissilePixie::checkForCollisions() {
 	{
 		if (Pixie::getPixieByID(owner->getPixieID()) == nullptr) { // Check if the originator exists
+			this->remove(); // Remove the MissilePixie if the originator doesn't exist
 			return;
 		}
 		for (const auto& [pID, pixie] : Pixie::pixies) { // Iterate through the active Pixies
@@ -151,7 +163,7 @@ void MissilePixie::checkForCollisions() {
 							shared_ptr<EnemyPixie> enemy = std::dynamic_pointer_cast<EnemyPixie>(pixie);
 							if (enemy) {
 								if (this->owner->getPixieType() == PIXIE_TYPE_PLAYER_SHIP) {
-									shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
+									//shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
 									if (bool died = enemy->damagePixie(damage)) {
 										playerScore += 100;
 									}
@@ -168,7 +180,7 @@ void MissilePixie::checkForCollisions() {
 							cout << "Pixie does not Exist\n";
 						}
 					}
-					shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
+					//shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
 					this->remove(); // Remove the Missile Pixie
 					break; // Stop the loop
 				}

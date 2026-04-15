@@ -13,6 +13,7 @@ private:
 	ShipPixie* owner; // The originator of the Missile
 	float direction; // The direction the missile is traveling
 	float damage; // The damage the missile willd deal
+	int ownerType; // The type of the owner, used to determine what the missile can damage
 public:
 	// Constructors
 	MissilePixie(ShipPixie* owner); // Create a MissilePixie

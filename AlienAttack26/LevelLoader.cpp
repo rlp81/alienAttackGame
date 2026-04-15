@@ -16,10 +16,10 @@ void LevelLoader::loadLevel() {
 	clearLevel(); // Clear the level of all existing pixies
 	srand(time(0));
 	int lastLevel = level++; // Increment the level
-	int enemiesPerSwarm = 2 + (rand() % level);
+	int enemiesPerSwarm = 10;
 	currentFrame = 0; // Reset the current frame to 0 for the new level
 	loadDefaults(); // Load the default pixies for the level, such as the background and player pixie
-	loadEnemies(level, enemiesPerSwarm); // Load the enemies for the level, the amount of swarms and enemies per swarm is based on the current level
+	loadEnemies(1, enemiesPerSwarm); // Load the enemies for the level, the amount of swarms and enemies per swarm is based on the current level
 	loaded = true; // Set the level to be loaded
 }
 

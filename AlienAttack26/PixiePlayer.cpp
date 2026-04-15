@@ -127,9 +127,9 @@ void PlayerPixie::shootMissile() {
 	if (!(currentFrame >= DEFAULT_FRAMES_TILL_NEXT_MISSILE + lastMissileFrame || lastMissileFrame == -1)) { // Check if the ShipPixie can fire a missile based on the current frame
 		return;
 	}
-	if (activeMissileCount >= MAX_ACTIVE_MISSILES) { // Check if there are max existing missiles
-		return;
-	}
+	//if (activeMissileCount >= MAX_ACTIVE_MISSILES) { // Check if there are max existing missiles
+	//	return;
+	//}
 	if (ammo > 0) { // Check if the ShipPixie has enough Ammo
 		lastMissileFrame = currentFrame; // Set the last frame to shoot a missile to this frame
 		MissilePixie::create(this); // Create a new Missile and providing it the owner/ShipPixie object

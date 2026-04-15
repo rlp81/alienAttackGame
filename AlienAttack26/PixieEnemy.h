@@ -5,7 +5,6 @@
 * Description: Header file for the PixieEnemy Class and it's related constants
 * Author: Cole Lehl
 */
-
 const int RANDOM_MOVE_COOLDOWN = 90;
 const int ENEMY_PIXIE_HEALTH = 1; // The health of the Enemy Pixie
 
@@ -13,6 +12,9 @@ const int ENEMY_PIXIE_HEALTH = 1; // The health of the Enemy Pixie
 class EnemyPixie : public ShipPixie {
 private:
 	friend class Swarm; // Friend the class swarm so it can access private members
+	friend class MissilePixie; // Friend the Missile Pixie so it can access private members
+	friend class ShipPixie; // Friend the Ship Pixie so it can access private members
+	static int enemyMissileCount; // Static variable to track the amount of active enemy missiles, used to limit the amount of active enemy missiles
 	string faction; // Faction the enemie is a part of, unused
 	int enemyType; // The type of enemy
 	int movePattern; // The pattern of movement the enemy follows

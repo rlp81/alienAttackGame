@@ -13,7 +13,7 @@ const int DEFAULT_PIXIE_HEALTH = 10; // Default pixie health
 const int DEFAULT_PLAYER_AMMO = 99; // Default player ammo
 const float DEFAULT_MISSILE_SPEED = 6.0f; // Default missile speed
 const int DEFAULT_FRAMES_TILL_NEXT_MISSILE = 90; // Default frames until a ShipPixie can fire another missile
-const int MAX_ACTIVE_MISSILES = 3; // Max active missiles for a given ShipPixie
+const int MAX_ACTIVE_MISSILES = 4; // Max active missiles for a given ShipPixie
 
 // Constants - Pixie Types
 const int PIXIE_TYPE_BACKGROUND = 0; // ID For a Pixie Background
