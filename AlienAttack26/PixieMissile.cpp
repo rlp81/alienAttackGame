@@ -56,7 +56,8 @@ shared_ptr<MissilePixie> MissilePixie::create(ShipPixie* owner) {
 	}
 	auto missile = make_shared<MissilePixie>(owner); // Create a shared pointer of a MissilePixie
 	pixies[missile->pixieID] = missile; // Place the MissilePixie into the active Pixies vector
-	owner->missiles.push_back(missile->getPixieID()); // Add the MissilePixie's ID into the originator's active missile vector
+	ShipPixie::globalMissiles.push_back(missile); // Place the MissilePixie into the global active missile vector
+	owner->missiles.push_back(missile); // Add the MissilePixie's ID into the originator's active missile vector
 	return missile; // Return the MissilePixie
 }
 
@@ -69,7 +70,8 @@ shared_ptr<MissilePixie> MissilePixie::create(ShipPixie* owner) {
 shared_ptr<MissilePixie> MissilePixie::create(ShipPixie* owner, float angle) {
 	auto missile = make_shared<MissilePixie>(owner, angle); // Create a shared pointer of a MissilePixie
 	pixies[missile->pixieID] = missile; // Place the MissilePixie into the active Pixies vector
-	owner->missiles.push_back(missile->getPixieID()); // Add the MissilePixie's ID into the originator's active missile vector
+	ShipPixie::globalMissiles.push_back(missile); // Place the MissilePixie into the global active missile vector
+	owner->missiles.push_back(missile); // Add the MissilePixie's ID into the originator's active missile vector
 	return missile; // Return the MissilePixie
 }
 
@@ -116,7 +118,15 @@ void::MissilePixie::update() {
 */
 void MissilePixie::remove() {
 	int id = this->getPixieID(); // Get the ID of the MissilePixie
-	owner->missiles.erase(std::remove(owner->missiles.begin(), owner->missiles.end(), id), owner->missiles.end()); // Remove the MissilePixie from the active Missiles vector
+	//owner->missiles.erase(
+	//	std::remove_if(owner->missiles.begin(), owner->missiles.end(),
+	//		[id](weak_ptr<MissilePixie>& wp) {
+	//			if (shared_ptr<MissilePixie> sp = wp.lock())
+	//				return sp->pixieID == id; // True if IDs match
+	//		}),
+	//	owner->missiles.end()
+	//);
+	// Remove the MissilePixie from the active Missiles vector
 	Pixie::removePixieByID(id); // Remove the Pixie
 	owner->activeMissileCount--; // deinrement the active missile count
 	if (ownerType == PIXIE_TYPE_ENEMY) {
@@ -170,6 +180,7 @@ void MissilePixie::checkForCollisions() {
 										playerScore += 100;
 									}
 									this->remove(); // Remove the Missile Pixie
+
 									break;
 								}
 								else if (this->owner->getPixieType() == PIXIE_TYPE_ENEMY) {

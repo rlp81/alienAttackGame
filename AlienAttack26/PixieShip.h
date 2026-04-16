@@ -15,6 +15,7 @@ private:
 
 	// Friend Missile Pixie; Integrates directly with Ship Pixie and it's children
 	friend class MissilePixie;
+	friend class Levelloader;
 	
 	// Variables
 	double health; // Health of the Pixie Ship
@@ -23,7 +24,8 @@ private:
 	int lastMissileFrame; // Last frame the Ship fired a missile
 	int ammo; // Amount of ammo the Pixie has
 	float direction; // Direction the Ship is pointing
-	vector<int> missiles; // Vector of the ShipPixie's active missile IDs 
+	vector<weak_ptr<MissilePixie>> missiles; // Vector of the ShipPixie's active missile IDs 
+	static vector<weak_ptr<MissilePixie>> globalMissiles;
 public:
 	// Constructors
 	ShipPixie() = delete; // Delete the default constructor, all Pixie Ships are created with a type and/or texture
@@ -36,6 +38,6 @@ public:
 
 	virtual void shootMissile(); // Fire a missile from the ShipPixie
 	virtual bool damagePixie(double amount); // Damage the Pixie
-	void updateMissiles(); // Update all of the Missiles
+	static void updateAllMissiles(); // Update all of the Missiles
 	void removeMissiles(); // Removes all active missiles
 };

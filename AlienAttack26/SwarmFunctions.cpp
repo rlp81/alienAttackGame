@@ -13,14 +13,14 @@ vector<shared_ptr<Swarm>> Swarm::swarms; // Initialize the static vector of swar
 * Returns: None
 * Desc: Creates an Swarm
 */
-Swarm::Swarm(int controllerID, vector<weak_ptr<EnemyPixie>> &members) {
-	this->controllerID = controllerID; // Set the controller to the specified controller
+Swarm::Swarm(shared_ptr<EnemyPixie> controller, vector<weak_ptr<EnemyPixie>> &members) {
+	this->controller = controller; // Set the controller to the specified controller
 	this->members = members; // Add the Swarm's members to the swarm
 	setupSwarm(); // Finish setting up the swarm
 }
 
-shared_ptr<Swarm> Swarm::create(int controllerID, vector<weak_ptr<EnemyPixie>>& members) {
-	auto swarm = make_shared<Swarm>(controllerID, members);
+shared_ptr<Swarm> Swarm::create(shared_ptr<EnemyPixie> controller, vector<weak_ptr<EnemyPixie>>& members) {
+	auto swarm = make_shared<Swarm>(controller, members);
 	swarms.push_back(swarm);
 	return swarm;
 }
@@ -35,8 +35,10 @@ Changes the swarm's leader based on the next enemy after the controller in the s
 void Swarm::setupSwarm() {
 	//shared_ptr<Pixie> controller = Pixie::getPixieByID(controllerID);
 	int padding = DEFAULT_PADDING; // The default padding that the swarm members will orbit the leader by
+	int controllerID = controller.lock()->pixieID;
 	for (auto memberP : members) { // Iterate through the active swarm members
 		shared_ptr<EnemyPixie> member = memberP.lock();
+		
 		if (member == nullptr || member == NULL) { continue; } // Check if the member exists
 		if (member->pixieID != controllerID) { // If the member is not the controller
 			member->leader = controllerID; // Set their leader to the controller
@@ -56,20 +58,15 @@ void Swarm::setupSwarm() {
 * Returns: int
 * Desc: Changes the swarm's leader based on the next enemy after the controller in the swarm members vector
 */
-int Swarm::findNewLeader(int lastLeaderID) {
-	auto it = std::find_if(members.begin(), members.end(),
-		[lastLeaderID](const std::weak_ptr<EnemyPixie>& wp) {
-			auto sp = wp.lock();
-			return sp && sp->getPixieID() == lastLeaderID;
-		});
-	if (it != members.end()) {
-		++it;
-		while (it != members.end()) {
-			auto sp = it->lock();
-			if (sp) {
-				return sp->getPixieID();
-			}
-			++it;
+int Swarm::findNewLeader(int index) {
+	if (members.size() > 0 && members.size() > index) {
+		auto newLeader = members[index].lock(); // Get the first member of the swarm
+		if (newLeader) {
+			return newLeader->pixieID; // Return the new leader's ID
+
+		}
+		else {
+			return findNewLeader(index + 1);
 		}
 	}
 	return -1;
@@ -82,17 +79,30 @@ int Swarm::findNewLeader(int lastLeaderID) {
 * Desc: Updates the Swarm
 */
 void Swarm::updateSwarm() {
+	auto sp = controller.lock();
+	if (!sp) { // Check if the member is the controller
+		if(findNewLeader(0) != -1) {
+			controller = dynamic_pointer_cast<EnemyPixie>(Pixie::getPixieByID(findNewLeader(0))); // Set the controller to the new leader
+			setupSwarm(); // Setup the new swarm configuration
+		}
+		else {
+			swarms.erase(
+				std::remove_if(swarms.begin(), swarms.end(),
+					[this](const std::shared_ptr<Swarm>& swarm) {
+						return swarm.get() == this; // True if the swarm is this swarm
+					}),
+				swarms.end()
+			);
+			return; // If there are no more members in the swarm then return
+		}
+	}
 	for (auto en : members) { // Iterate through the members of the swarm
 		shared_ptr<EnemyPixie> enemy = en.lock(); // Get the Pixie of the swarm member
-		if (enemy == nullptr || enemy == NULL) { continue; } // Check if the member exists
+		if (enemy == nullptr) { continue; } // Check if the member exists
 		if (enemy) { // Check if the member exists
 			enemy->update(); // Update the member
 		}
 		else { // If the member doesn't exist
-			if (this->controllerID == enemy->pixieID) { // Check if the member is the controller
-				controllerID = findNewLeader(enemy->pixieID); // Find a new controller
-				setupSwarm(); // Setup the new swarm configuration
-			}
 			EnemyPixie::enemies.erase(
 				std::remove_if(EnemyPixie::enemies.begin(), EnemyPixie::enemies.end(),
 					[](const std::weak_ptr<EnemyPixie>& wp) {

@@ -18,18 +18,18 @@ private:
 	vector<weak_ptr<EnemyPixie>> members; // Active memebers of the Swarm
 	int swarmSize; // The size of the swarm
 	int targetID; // The Pixie the swarm is targeting
-	int controllerID; // The Pixie the swarm is controlled by
+	weak_ptr<EnemyPixie> controller; // The Pixie the swarm is controlled by
 	static vector<std::shared_ptr<Swarm>> swarms; // Vector of all existing pixies
 public:
 	// Constructors
 	Swarm() = delete; // Delete the default constructor
-	Swarm(int contollerID, vector<weak_ptr<EnemyPixie>>& members); // Create a new swarm and specify the leader and memebers
-	static shared_ptr<Swarm> create(int controllerID, vector<weak_ptr<EnemyPixie>>& members);
+	Swarm(shared_ptr<EnemyPixie> controller, vector<weak_ptr<EnemyPixie>>& members); // Create a new swarm and specify the leader and memebers
+	static shared_ptr<Swarm> create(shared_ptr<EnemyPixie> controller, vector<weak_ptr<EnemyPixie>>& members);
 	// Logic Functions
 	void removeEnemy(int enemyID); // Remove an enemy from the swarm
 	void updateSwarm(); // Update the swarm
 	void setupSwarm(); // Setup the swarm
-	int findNewLeader(int lastLeader); // Find a new swarm leader based on the previous leader
+	int findNewLeader(int index); // Find a new swarm leader based on the previous leader
 	static void updateAllSwarms(); // Update all existing swarms
 	
 	// Getters and Setters

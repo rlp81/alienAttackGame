@@ -1,7 +1,7 @@
 #include "gameHeader.h"
 
 LevelLoader::LevelLoader() {
-	level = 0;
+	level = 4;
 	player = nullptr;
 	loaded = false;
 }
@@ -16,10 +16,10 @@ void LevelLoader::loadLevel() {
 	clearLevel(); // Clear the level of all existing pixies
 	srand(time(0));
 	int lastLevel = level++; // Increment the level
-	int enemiesPerSwarm = 10;
+	//int enemiesPerSwarm = 5 + (rand() % lastLevel);
 	currentFrame = 0; // Reset the current frame to 0 for the new level
 	loadDefaults(); // Load the default pixies for the level, such as the background and player pixie
-	loadEnemies(1, enemiesPerSwarm); // Load the enemies for the level, the amount of swarms and enemies per swarm is based on the current level
+	loadEnemies(2, 5); // Load the enemies for the level, the amount of swarms and enemies per swarm is based on the current level
 	loaded = true; // Set the level to be loaded
 }
 
@@ -52,7 +52,7 @@ void LevelLoader::loadEnemies(int swarms, int enemiesPerSwarm) {
 			swarmMembers.push_back(enemy); // place the enemy pixie's ID into the swarm vector
 		}
 
-		Swarm::create(leader->getPixieID(), swarmMembers); // Create the swarm class with the leader's ID and the vector of the swarm member IDs
+		Swarm::create(leader, swarmMembers); // Create the swarm class with the leader's ID and the vector of the swarm member IDs
 	}
 }
 
@@ -61,7 +61,9 @@ void LevelLoader::updateLevel() {
 		throw runtime_error("Level is not loaded, cannot update level"); // Check if the level is loaded, throw an error if it is not
 	player->update(); // Update the player pixie
 	//ExplosionPixie::updateAll(); // Update all the explosion pixies
-	Swarm::swarms[0]->updateSwarm(); // Update all the swarms, this will update the leaders and all 
+	//Swarm::swarms[0]->updateSwarm(); // Update all the swarms, this will update the leaders and all 
+	Swarm::updateAllSwarms();
+	ShipPixie::updateAllMissiles(); // Update all the missiles, this will move the missiles and check for collisions
 	if (Swarm::getTotalEnemyCount() <= 0) { // Check if there are no more enemies in the level
 		loaded = false;
 		loadLevel(); // Load the next level if there are no more enemies

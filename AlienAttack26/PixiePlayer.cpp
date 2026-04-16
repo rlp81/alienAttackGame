@@ -114,7 +114,6 @@ void PlayerPixie::update()
 			direction = yRotation; // Set the direction to the yRotation
 	}
 	this->setRotation(degrees(direction)); // Set the PlayerPixie's Sprite's rotation to the result direction
-	updateMissiles(); // Update the player's active missiles
 }
 
 /*

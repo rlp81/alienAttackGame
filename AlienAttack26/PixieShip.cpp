@@ -5,6 +5,8 @@
 * Author: Cole Lehl
 */
 
+vector<weak_ptr<MissilePixie>> ShipPixie::globalMissiles;
+
 /*
 * ShipPixie(int type, const string& textureFile)
 * Params: int type - Type of Pixie to create, string& textureFile - Texture of the Pixie
@@ -35,10 +37,10 @@ shared_ptr<ShipPixie> ShipPixie::create(int type, const std::string& textureFile
 * Returns: None
 * Desc: Updates each missiles position based on it's direction
 */
-void ShipPixie::updateMissiles() {
+void ShipPixie::updateAllMissiles() {
 
-	for (int id : missiles) { // Iterate through the ShipPixie's Missiles 
-		shared_ptr<MissilePixie> missile = MissilePixie::getMissileByID(id); // Get the Missile by it's ID
+	for (auto it = globalMissiles.begin(); it != globalMissiles.end();) { // Iterate through the ShipPixie's Missiles 
+		shared_ptr<MissilePixie> missile = it->lock(); // Get the Missile by it's ID
 		if (missile) // Check if the Missile exists
 		{
 			bool off = missile->isOffScreen(); // Check if it is offscreen
@@ -49,9 +51,10 @@ void ShipPixie::updateMissiles() {
 				missile->update(); // Update the MissilePixie
 				missile->checkForCollisions(); // Check if it is colliding with any other Pixie
 			}
+			++it;
 		}
 		else {
-			missiles.erase(std::remove(missiles.begin(), missiles.end(), id), missiles.end()); // Erase the ID from the Vector if the Missile doesn't exist
+			it = globalMissiles.erase(it);
 		}
 	}
 }
@@ -87,8 +90,11 @@ void ShipPixie::shootMissile() {
 * Desc: Remove all current missiles created by the Pixie
 */
 void ShipPixie::removeMissiles() {
-	for (int id : missiles) {
-		Pixie::removePixieByID(id); // Remove the Pixie by its ID
+
+	for (auto it = missiles.begin(); it != missiles.end();) {
+		if (auto missile = it->lock()) { // Get the Missile by it's ID
+			missile->remove();
+		}
 	}
 	missiles.clear(); // Clear the active missiles vector
 }

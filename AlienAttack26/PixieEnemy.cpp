@@ -209,7 +209,7 @@ void EnemyPixie::update() {
 		float degs = rads * 180 / 3.14159265f - 90; // Correctly orientate the Enemy
 		this->setRotation(degrees(degs)); // Set the rotation to previous direciton
 		shootMissile(); // Try and shoot a missile
-		updateMissiles(); // Update all of the Enemy's Missiles
+
 	}
 	else {
 		this->setRotation(degrees(0)); // If the target doesn't exist set the rotation to 0
