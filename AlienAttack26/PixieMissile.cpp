@@ -21,7 +21,7 @@ MissilePixie::MissilePixie(ShipPixie* owner) : Pixie(PIXIE_TYPE_MISSILE, DEFAULT
 	this->damage = owner->damage; // Set the Missile's damage to the damage of the owner
 	this->ownerType = this->owner->pixieType; // Set the owner type to the type of the owner, used to determine what the missile can damage
 	if (ownerType == PIXIE_TYPE_ENEMY) {
-		EnemyPixie::enemyMissileCount++; // Increment the Enemy Missile Count if the owner is an Enemy Pixie
+		EnemyPixie::enemyMissileCount+=1; // Increment the Enemy Missile Count if the owner is an Enemy Pixie
 	}
 }
 
@@ -40,10 +40,9 @@ MissilePixie::MissilePixie(ShipPixie* owner, float angle) : Pixie(2, DEFAULT_MIS
 	this->damage = owner->damage; // Set the Missile's damage to the damage of the owner
 	this->ownerType = this->owner->pixieType; // Set the owner type to the type of the owner, used to determine what the missile can damage
 	if (ownerType == PIXIE_TYPE_ENEMY) {
-		EnemyPixie::enemyMissileCount++; // Increment the Enemy Missile Count if the owner is an Enemy Pixie
+		EnemyPixie::enemyMissileCount+=1; // Increment the Enemy Missile Count if the owner is an Enemy Pixie
 	}
 }
-
 
 /*
 * create(ShipPixie* owner)
@@ -52,6 +51,9 @@ MissilePixie::MissilePixie(ShipPixie* owner, float angle) : Pixie(2, DEFAULT_MIS
 * Desc: Creates an MissilePixie and adds it to the active missile and pixie vectors
 */
 shared_ptr<MissilePixie> MissilePixie::create(ShipPixie* owner) {
+	if (owner->pixieType == PIXIE_TYPE_ENEMY && EnemyPixie::enemyMissileCount >= MAX_ACTIVE_MISSILES) { // Check if the owner is an Enemy Pixie and if the active enemy missile count is at the max
+		return nullptr; // Return a nullptr if the Enemy cannot fire a missile
+	}
 	auto missile = make_shared<MissilePixie>(owner); // Create a shared pointer of a MissilePixie
 	pixies[missile->pixieID] = missile; // Place the MissilePixie into the active Pixies vector
 	owner->missiles.push_back(missile->getPixieID()); // Add the MissilePixie's ID into the originator's active missile vector
@@ -118,7 +120,7 @@ void MissilePixie::remove() {
 	Pixie::removePixieByID(id); // Remove the Pixie
 	owner->activeMissileCount--; // deinrement the active missile count
 	if (ownerType == PIXIE_TYPE_ENEMY) {
-		EnemyPixie::enemyMissileCount--; // Increment the Enemy Missile Count if the owner is an Enemy Pixie
+		EnemyPixie::enemyMissileCount-=1; // Increment the Enemy Missile Count if the owner is an Enemy Pixie
 	}
 }
 
@@ -160,7 +162,7 @@ void MissilePixie::checkForCollisions() {
 				if (this->isCollidingWith(*pixie)) { // Check if the two Pixies are colliding
 					if (pixieType == PIXIE_TYPE_ENEMY) { // If the Pixie is an Enemy Pixie
 						try {
-							shared_ptr<EnemyPixie> enemy = std::dynamic_pointer_cast<EnemyPixie>(pixie);
+							shared_ptr<EnemyPixie> enemy = dynamic_pointer_cast<EnemyPixie>(pixie);
 							if (enemy) {
 								if (this->owner->getPixieType() == PIXIE_TYPE_PLAYER_SHIP) {
 									//shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie

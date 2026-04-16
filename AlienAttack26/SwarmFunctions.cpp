@@ -13,13 +13,13 @@ vector<shared_ptr<Swarm>> Swarm::swarms; // Initialize the static vector of swar
 * Returns: None
 * Desc: Creates an Swarm
 */
-Swarm::Swarm(int controllerID, vector<int> &members) {
+Swarm::Swarm(int controllerID, vector<weak_ptr<EnemyPixie>> &members) {
 	this->controllerID = controllerID; // Set the controller to the specified controller
 	this->members = members; // Add the Swarm's members to the swarm
 	setupSwarm(); // Finish setting up the swarm
 }
 
-shared_ptr<Swarm> Swarm::create(int controllerID, vector<int>& members) {
+shared_ptr<Swarm> Swarm::create(int controllerID, vector<weak_ptr<EnemyPixie>>& members) {
 	auto swarm = make_shared<Swarm>(controllerID, members);
 	swarms.push_back(swarm);
 	return swarm;
@@ -35,10 +35,10 @@ Changes the swarm's leader based on the next enemy after the controller in the s
 void Swarm::setupSwarm() {
 	//shared_ptr<Pixie> controller = Pixie::getPixieByID(controllerID);
 	int padding = DEFAULT_PADDING; // The default padding that the swarm members will orbit the leader by
-	for (int memberId : members) { // Iterate through the active swarm members
-		shared_ptr<EnemyPixie> member = dynamic_pointer_cast<EnemyPixie>(Pixie::getPixieByID(memberId)); // Get the member by their Pixie ID
-		if (memberId != controllerID) { // If the member is not the controller
-			if (member == nullptr) { continue; } // Check if the member exists
+	for (auto memberP : members) { // Iterate through the active swarm members
+		shared_ptr<EnemyPixie> member = memberP.lock();
+		if (member == nullptr || member == NULL) { continue; } // Check if the member exists
+		if (member->pixieID != controllerID) { // If the member is not the controller
 			member->leader = controllerID; // Set their leader to the controller
 			member->targetType = 2; // Set their targeting type
 			member->followPadding = padding; // Set their padding
@@ -56,22 +56,23 @@ void Swarm::setupSwarm() {
 * Returns: int
 * Desc: Changes the swarm's leader based on the next enemy after the controller in the swarm members vector
 */
-int Swarm::findNewLeader(int lastLeader) {
-	vector<int>::iterator it = std::find(members.begin(), members.end(), lastLeader) + 1; // Get the next member inline of the controller
-	if (it != members.end()) { // Check if the member exists
-		int index = std::distance(members.begin(), it); // get the index of the new leader
-		shared_ptr<EnemyPixie> newLeader = dynamic_pointer_cast<EnemyPixie>(Pixie::getPixieByID(members[index])); // get the Pixie of the new leader
-		if (newLeader && newLeader != nullptr) { // Check if the new leader exists
-			return members[index]; // return ID of the new leader
-		}
-		else {
-			return findNewLeader(members[index]); // If the new leader does not exist, find the next in line
+int Swarm::findNewLeader(int lastLeaderID) {
+	auto it = std::find_if(members.begin(), members.end(),
+		[lastLeaderID](const std::weak_ptr<EnemyPixie>& wp) {
+			auto sp = wp.lock();
+			return sp && sp->getPixieID() == lastLeaderID;
+		});
+	if (it != members.end()) {
+		++it;
+		while (it != members.end()) {
+			auto sp = it->lock();
+			if (sp) {
+				return sp->getPixieID();
+			}
+			++it;
 		}
 	}
-	else {
-		return -1; // Return -1 if no new leader could be found
-
-	}
+	return -1;
 }
 
 /*
@@ -81,18 +82,31 @@ int Swarm::findNewLeader(int lastLeader) {
 * Desc: Updates the Swarm
 */
 void Swarm::updateSwarm() {
-	for (int en : members) { // Iterate through the members of the swarm
-		shared_ptr<EnemyPixie> enemy = dynamic_pointer_cast<EnemyPixie>(Pixie::getPixieByID(en)); // Get the Pixie of the swarm member
+	for (auto en : members) { // Iterate through the members of the swarm
+		shared_ptr<EnemyPixie> enemy = en.lock(); // Get the Pixie of the swarm member
+		if (enemy == nullptr || enemy == NULL) { continue; } // Check if the member exists
 		if (enemy) { // Check if the member exists
 			enemy->update(); // Update the member
 		}
 		else { // If the member doesn't exist
-			if (this->controllerID == en) { // Check if the member is the controller
-				controllerID = findNewLeader(en); // Find a new controller
+			if (this->controllerID == enemy->pixieID) { // Check if the member is the controller
+				controllerID = findNewLeader(enemy->pixieID); // Find a new controller
 				setupSwarm(); // Setup the new swarm configuration
 			}
-			EnemyPixie::enemies.erase(std::remove(EnemyPixie::enemies.begin(), EnemyPixie::enemies.end(), en), EnemyPixie::enemies.end()); // Erase the old leader from the active enemies vector
-			members.erase(std::remove(members.begin(), members.end(), en), members.end()); // remove the old leader from the swarm members vector
+			EnemyPixie::enemies.erase(
+				std::remove_if(EnemyPixie::enemies.begin(), EnemyPixie::enemies.end(),
+					[](const std::weak_ptr<EnemyPixie>& wp) {
+						return wp.expired(); // True if the shared_ptr is dead
+					}),
+				EnemyPixie::enemies.end()
+			);;
+			members.erase(
+				std::remove_if(members.begin(), members.end(),
+					[](const std::weak_ptr<EnemyPixie>& wp) {
+						return wp.expired(); // True if the shared_ptr is dead
+					}),
+				members.end()
+			);
 		}
 
 	}
@@ -105,16 +119,32 @@ void Swarm::updateAllSwarms() {
 }
 
 void Swarm::removeEnemy(int enemyID) {
-	members.erase(std::remove(members.begin(), members.end(), enemyID), members.end()); // Remove the enemy from the swarm members vector
-	EnemyPixie::enemies.erase(std::remove(EnemyPixie::enemies.begin(), EnemyPixie::enemies.end(), enemyID), EnemyPixie::enemies.end()); // Remove the enemy from the active enemies vector
+	EnemyPixie::enemies.erase(
+		std::remove_if(EnemyPixie::enemies.begin(), EnemyPixie::enemies.end(),
+			[enemyID](weak_ptr<EnemyPixie>& wp) {
+				if (shared_ptr<EnemyPixie> sp = wp.lock())
+					return sp->pixieID == enemyID; // True if IDs match
+			}),
+		EnemyPixie::enemies.end()
+	);
+
+	members.erase(
+		std::remove_if(members.begin(), members.end(),
+			[enemyID](weak_ptr<EnemyPixie>& wp) {
+				if (shared_ptr<EnemyPixie> sp = wp.lock())
+					return sp->pixieID == enemyID; // True if IDs match
+			}),
+		members.end()
+	);
+	
 }
 
 int Swarm::getTotalEnemyCount() {
 	int total = 0; // Initialize the total swarm count to 0
 	for (shared_ptr<Swarm> swarm : swarms) { // Iterate through the existing swarms
 		if (swarm) { // Check if the swarm exists
-			for (int member : swarm->members) { // Iterate through the members of the swarm
-				if (Pixie::getPixieByID(member)) { // Check if the member exists
+			for (auto member : swarm->members) { // Iterate through the members of the swarm
+				if (member.lock()) { // Check if the member exists
 					total++; // Increment the total count
 				}
 			}

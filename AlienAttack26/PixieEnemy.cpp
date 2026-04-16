@@ -5,7 +5,7 @@
 * Author: Cole Lehl
 */
 int EnemyPixie::enemyMissileCount = 0; // Initialize the active enemy missile count to 0
-vector<int> EnemyPixie::enemies; // Initialize the active enemies in the game
+vector<weak_ptr<EnemyPixie>> EnemyPixie::enemies; // Initialize the active enemies in the game
 // Constructors
 
 /*
@@ -40,7 +40,7 @@ EnemyPixie::EnemyPixie() : ShipPixie(PIXIE_TYPE_ENEMY, DEFAULT_ENEMY_TEXTURE) {
 */
 shared_ptr<EnemyPixie> EnemyPixie::create() {
 	auto enemy = make_shared<EnemyPixie>(); // Create an EnemyPixie as a shared pointer
-	enemies.push_back(enemy->pixieID); // Place the EnemyPixie's ID into the active enemy list
+	enemies.push_back(enemy); // Place the EnemyPixie's ID into the active enemy list
 	pixies[enemy->pixieID] = enemy; // Place the EnemyPixie in the active Pixie vector
 	return enemy; // Return the shared pointer EnenmyPixie
 }
@@ -53,7 +53,7 @@ shared_ptr<EnemyPixie> EnemyPixie::create() {
 */
 shared_ptr<EnemyPixie> EnemyPixie::create(int targetID) {
 	auto enemy = make_shared<EnemyPixie>(); // Create an EnemyPixie as a shared pointer
-	enemies.push_back(enemy->pixieID); // Place the EnemyPixie's ID into the active enemy list
+	enemies.push_back(enemy); // Place the EnemyPixie's ID into the active enemy list
 	enemy->target = Pixie::getPixieByID(targetID); // Set the target pixie to the selected Pixie's ID
 	pixies[enemy->pixieID] = enemy; // Place the EnemyPixie in the active Pixie vector
 	return enemy; // Return the shared pointer EnenmyPixie
@@ -175,8 +175,9 @@ void EnemyPixie::shootMissile() {
 			cout << "Shooting missile! Ammo left: " << ammo << endl; // Print that the Enemy is shooting a missile
 			lastMissileFrame = currentFrame; // Set the last frame to fire a missile to the current frame
 			shared_ptr<MissilePixie> missile = MissilePixie::create(this); // Create a shared pointer of a missile
-
-			ammo--; // Remove one ammo
+			if (missile) { // Check if the missile was created successfully
+				ammo--; // Add one to the active enemy missile count
+			}
 		}
 	}
 	else {

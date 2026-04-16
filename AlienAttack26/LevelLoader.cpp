@@ -37,19 +37,19 @@ void LevelLoader::loadEnemies(int swarms, int enemiesPerSwarm) {
 	if (swarms <= 0 || enemiesPerSwarm <= 0)
 		throw invalid_argument("Swarms and enemies per swarm must be greater than 0"); // Check if the amount of swarms and enemies per swarm is valid, throw an error if not
 	for (int i = 0; i < swarms; i++) {
-		vector<int> swarmMembers; // Create a vector for enemy pixie IDs that will be controlled
+		vector<weak_ptr<EnemyPixie>> swarmMembers; // Create a vector for enemy pixie IDs that will be controlled
 		shared_ptr<EnemyPixie> leader = EnemyPixie::create(playerID); // Create the leader of the swarm
 		leader->setPosition(300, 300); // set the position of the leader to 300,300
 		leader->setPattern(2);
 
 		shared_ptr<EnemyPixie> enemy; // Make the generic enemy pixie variable to store each member created and placed into the swarm
-		swarmMembers.push_back(leader->getPixieID()); // place the leader into the swarm vector
+		swarmMembers.push_back(leader); // place the leader into the swarm vector
 		for (int i = 0; i < enemiesPerSwarm; i++) { // create 6 enemy pixies
 			enemy = EnemyPixie::create(playerID); // Create a new enemy pixie and set the player as its target
 			if (i % 2 == 0) { // Check if the pixie is an even or odd number in the loop
 				enemy->changeOrbitDirection(); // Change the orbit direction if it is even
 			}
-			swarmMembers.push_back(enemy->getPixieID()); // place the enemy pixie's ID into the swarm vector
+			swarmMembers.push_back(enemy); // place the enemy pixie's ID into the swarm vector
 		}
 
 		Swarm::create(leader->getPixieID(), swarmMembers); // Create the swarm class with the leader's ID and the vector of the swarm member IDs
@@ -60,8 +60,8 @@ void LevelLoader::updateLevel() {
 	if (!loaded)
 		throw runtime_error("Level is not loaded, cannot update level"); // Check if the level is loaded, throw an error if it is not
 	player->update(); // Update the player pixie
-	ExplosionPixie::updateAll(); // Update all the explosion pixies
-	Swarm::updateAllSwarms(); // Update all the swarms, this will update the leaders and all members of the swarms
+	//ExplosionPixie::updateAll(); // Update all the explosion pixies
+	Swarm::swarms[0]->updateSwarm(); // Update all the swarms, this will update the leaders and all 
 	if (Swarm::getTotalEnemyCount() <= 0) { // Check if there are no more enemies in the level
 		loaded = false;
 		loadLevel(); // Load the next level if there are no more enemies

@@ -34,7 +34,7 @@ public:
 	// Static Functions
 	static shared_ptr<EnemyPixie> create(); // Create a shared pointer EnemyPixie and add it to the Pixie vector
 	static shared_ptr<EnemyPixie> create(int targetID); // Create a shared pointer EnemyPixie with a target and add it to the Pixie vector
-	static vector<int> enemies; // Static vector of all active Enemy IDs
+	static vector<weak_ptr<EnemyPixie>> enemies; // Static vector of all active Enemy IDs
 
 	// Logic Functions
 	virtual bool damagePixie(double amount); // Damage the Pixie
