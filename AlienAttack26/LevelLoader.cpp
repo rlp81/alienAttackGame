@@ -13,6 +13,7 @@ void LevelLoader::clearLevel() {
 }
 
 void LevelLoader::loadLevel() {
+	UI_Controller = &(this->uiController); // Reset the UI controller to clear the UI of the previous level
 	clearLevel(); // Clear the level of all existing pixies
 	srand(time(0));
 	int lastLevel = level++; // Increment the level
@@ -61,7 +62,8 @@ void LevelLoader::updateLevel() {
 		throw runtime_error("Level is not loaded, cannot update level"); // Check if the level is loaded, throw an error if it is not
 	player->update(); // Update the player pixie
 	//ExplosionPixie::updateAll(); // Update all the explosion pixies
-	//Swarm::swarms[0]->updateSwarm(); // Update all the swarms, this will update the leaders and all 
+	//Swarm::swarms[0]->updateSwarm(); // Update all the swarms, this will update the leaders and all
+	uiController.updateUI(playerScore, player->health, player->ammo); // Update the UI with the player's current score, health, and ammo
 	Swarm::updateAllSwarms();
 	ShipPixie::updateAllMissiles(); // Update all the missiles, this will move the missiles and check for collisions
 	if (Swarm::getTotalEnemyCount() <= 0) { // Check if there are no more enemies in the level

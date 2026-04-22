@@ -27,6 +27,7 @@ private:
 	void loadDefaults();
 	void loadEnemies(int swarms, int enemiesPerSwarm);
 public:
+	UIController uiController;
 	bool isLoaded() const { return loaded; }
 	static void checkForWindowEvents(RenderWindow& window);
 	LevelLoader();

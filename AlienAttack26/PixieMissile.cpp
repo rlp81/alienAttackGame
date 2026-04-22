@@ -178,6 +178,7 @@ void MissilePixie::checkForCollisions() {
 									//shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
 									if (bool died = enemy->damagePixie(damage)) {
 										playerScore += 100;
+										UI_Controller->addDisposableText("100", enemy->getPosition(), 30); // Add a temporary text to the UI to show the score gained from killing the enemy
 									}
 									this->remove(); // Remove the Missile Pixie
 

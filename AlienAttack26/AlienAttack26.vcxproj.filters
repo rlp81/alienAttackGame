@@ -51,6 +51,9 @@
     <ClCompile Include="LevelLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UIController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameHeader.h">
@@ -86,33 +89,48 @@
     <ClInclude Include="LevelLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UIController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="alien.bmp">
+    <Image Include="assets\alienCannon.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="missile.bmp">
+    <Image Include="assets\enemy.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="stars.jpg">
+    <Image Include="assets\explosionf1.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="missile.png">
+    <Image Include="assets\explosionf1.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="ship.png">
+    <Image Include="assets\explosionf2.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="explosionf1.png">
+    <Image Include="assets\explosionf2.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="explosionf2.png">
+    <Image Include="assets\explosionf3.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="explosionf3.png">
+    <Image Include="assets\explosionf3.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="trail.bmp">
+    <Image Include="assets\missile.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\missile.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\ship.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\stars.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\trail.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

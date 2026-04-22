@@ -25,6 +25,7 @@ public:
 	Swarm() = delete; // Delete the default constructor
 	Swarm(shared_ptr<EnemyPixie> controller, vector<weak_ptr<EnemyPixie>>& members); // Create a new swarm and specify the leader and memebers
 	static shared_ptr<Swarm> create(shared_ptr<EnemyPixie> controller, vector<weak_ptr<EnemyPixie>>& members);
+
 	// Logic Functions
 	void removeEnemy(int enemyID); // Remove an enemy from the swarm
 	void updateSwarm(); // Update the swarm

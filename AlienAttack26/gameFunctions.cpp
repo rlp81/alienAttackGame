@@ -13,6 +13,7 @@
 int lastPixieDumpFrame = 0; // Last frame to dump deleted Pixies, deprecated
 int playerID = -1; // Stored ID of the Player
 int playerScore = 0; // Score of the Player
+UIController* UI_Controller = nullptr; // The UIController for the game, used to manage the UI elements of the game
 
 // note: a Sprite represents an image on screen. A sprite knows and remembers its own position
 // ship.move(offsetX, offsetY) adds offsetX, offsetY to 

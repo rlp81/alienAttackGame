@@ -13,6 +13,7 @@
 #include <vector>
 #include <memory>
 #include <map>
+#include <sstream>
 using namespace std; // Use the standard namespace
 
 // SFML Graphics Library
@@ -21,6 +22,7 @@ using namespace std; // Use the standard namespace
 using namespace sf; // Use the SFML namespace
 
 #include <filesystem>
+#include "UIController.h"
 #include "pixie.h" // Basic Pixie Class
 #include "PixieShip.h" // Basic Ship Pixie/Controllable Class | Parent: Pixie
 #include "PixieBackground.h" // Background Pixie Class | Parent: Pixie
@@ -39,6 +41,7 @@ const float DISTANCE = 5.0f; // Basic Pixie movement distance
 const float MISSILE_SPEED = 10.0f; // When the missile moves it moves 10 pixels at a time.
 const int WINDOW_WIDTH = 800; // window is 800 pixels wide
 const int WINDOW_HEIGHT = 600;// window is 600 pixels vertically "high"
+const string MAIN_FONT = "ARIAL.TTF";
 const string DEFAULT_ENEMY_TEXTURE = "enemy.bmp"; // Default Enemy Texture file name
 const string DEFAULT_SHIP_TEXTURE = "ship.bmp"; // Default Player Ship Texture file name
 const string DEFAULT_MISSILE_TEXTURE = "missile.png"; // Default Missile Texture file name
@@ -48,6 +51,7 @@ extern int lastPixieDumpFrame; // Deprecated constant
 extern int currentFrame; // Current window frame displayed to the user
 extern int playerScore; // Current player score, unused
 extern int playerID; // The player's PixieID
+extern UIController* UI_Controller; // The UIController for the game, used to manage the UI elements of the game
 
 
 // Game Functions

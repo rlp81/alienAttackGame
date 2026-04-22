@@ -12,10 +12,10 @@ private:
 	// Friend children; Pixies are designed to act as though they are all part of the same class
 	friend class PlayerPixie;
 	friend class EnemyPixie;
+	friend class LevelLoader;
 
 	// Friend Missile Pixie; Integrates directly with Ship Pixie and it's children
 	friend class MissilePixie;
-	friend class Levelloader;
 	
 	// Variables
 	double health; // Health of the Pixie Ship

@@ -143,6 +143,7 @@
     <ClInclude Include="PixieShip.h" />
     <ClInclude Include="RayCast.h" />
     <ClInclude Include="Swarm.h" />
+    <ClInclude Include="UIController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ExplosionPixie.cpp" />
@@ -157,17 +158,22 @@
     <ClCompile Include="PixieShip.cpp" />
     <ClCompile Include="RayCast.cpp" />
     <ClCompile Include="SwarmFunctions.cpp" />
+    <ClCompile Include="UIController.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="alien.bmp" />
-    <Image Include="explosionf1.png" />
-    <Image Include="explosionf2.png" />
-    <Image Include="explosionf3.png" />
-    <Image Include="missile.bmp" />
-    <Image Include="missile.png" />
-    <Image Include="ship.png" />
-    <Image Include="stars.jpg" />
-    <Image Include="trail.bmp" />
+    <Image Include="assets\alienCannon.png" />
+    <Image Include="assets\enemy.bmp" />
+    <Image Include="assets\explosionf1.bmp" />
+    <Image Include="assets\explosionf1.png" />
+    <Image Include="assets\explosionf2.bmp" />
+    <Image Include="assets\explosionf2.png" />
+    <Image Include="assets\explosionf3.bmp" />
+    <Image Include="assets\explosionf3.png" />
+    <Image Include="assets\missile.bmp" />
+    <Image Include="assets\missile.png" />
+    <Image Include="assets\ship.bmp" />
+    <Image Include="assets\stars.jpg" />
+    <Image Include="assets\trail.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

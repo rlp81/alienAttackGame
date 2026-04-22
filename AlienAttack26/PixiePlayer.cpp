@@ -18,8 +18,8 @@ const int PLAYER_FRAME_UNTIL_MISSILE = 60; // The amount of frames that must pas
 PlayerPixie::PlayerPixie() : ShipPixie(PIXIE_TYPE_PLAYER_SHIP, DEFAULT_SHIP_TEXTURE) {
 	setSpeed(DEFAULT_PIXIE_SPEED);
 	setScale(DEFAULT_PIXIE_SCALE, DEFAULT_PIXIE_SCALE);
-	ammo = DEFAULT_PLAYER_AMMO;
-	health = ENEMY_PIXIE_HEALTH;
+	ammo = 20;
+	health = 10;
 	damage = 1;
 	direction = 0;
 }
