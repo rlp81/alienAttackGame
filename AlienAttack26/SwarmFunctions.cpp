@@ -44,9 +44,11 @@ void Swarm::setupSwarm() {
 			member->leader = controllerID; // Set their leader to the controller
 			member->targetType = 2; // Set their targeting type
 			member->followPadding = padding; // Set their padding
+			member->scoreWorth = 100*3;
 			padding += PADDING_INCREMENT; // Iterate the padding by a set amount
 		}
 		else {
+			member->scoreWorth = 100;
 			member->speed = DEFAULT_PIXIE_SPEED - 1.0f; // Set the controller's speed to be slower than the other members
 			member->movePattern = 2; // Set the controller's movement pattern to 2, which is a custom pattern for the controller that is based on the movement of the swarm members
 		}

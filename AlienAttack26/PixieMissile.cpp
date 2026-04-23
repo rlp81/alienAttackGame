@@ -118,15 +118,6 @@ void::MissilePixie::update() {
 */
 void MissilePixie::remove() {
 	int id = this->getPixieID(); // Get the ID of the MissilePixie
-	//owner->missiles.erase(
-	//	std::remove_if(owner->missiles.begin(), owner->missiles.end(),
-	//		[id](weak_ptr<MissilePixie>& wp) {
-	//			if (shared_ptr<MissilePixie> sp = wp.lock())
-	//				return sp->pixieID == id; // True if IDs match
-	//		}),
-	//	owner->missiles.end()
-	//);
-	// Remove the MissilePixie from the active Missiles vector
 	Pixie::removePixieByID(id); // Remove the Pixie
 	owner->activeMissileCount--; // deinrement the active missile count
 	if (ownerType == PIXIE_TYPE_ENEMY) {
@@ -177,8 +168,8 @@ void MissilePixie::checkForCollisions() {
 								if (this->owner->getPixieType() == PIXIE_TYPE_PLAYER_SHIP) {
 									//shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
 									if (bool died = enemy->damagePixie(damage)) {
-										playerScore += 100;
-										UI_Controller->addDisposableText("100", enemy->getPosition(), 30); // Add a temporary text to the UI to show the score gained from killing the enemy
+										playerScore += enemy->scoreWorth;
+										UI_Controller->addDisposableText("+"+to_string(enemy->scoreWorth), enemy->getPosition(), 30); // Add a temporary text to the UI to show the score gained from killing the enemy
 									}
 									this->remove(); // Remove the Missile Pixie
 

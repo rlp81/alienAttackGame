@@ -67,6 +67,8 @@ void LevelLoader::updateLevel() {
 	Swarm::updateAllSwarms();
 	ShipPixie::updateAllMissiles(); // Update all the missiles, this will move the missiles and check for collisions
 	if (Swarm::getTotalEnemyCount() <= 0) { // Check if there are no more enemies in the level
+		playerScore += 1000;
+		UI_Controller->addDisposableText("+1000", { WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 }, 60);
 		loaded = false;
 		loadLevel(); // Load the next level if there are no more enemies
 	}

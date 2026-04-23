@@ -15,6 +15,7 @@ vector<weak_ptr<EnemyPixie>> EnemyPixie::enemies; // Initialize the active enemi
 * Desc: Creates an EnemyPixie
 */
 EnemyPixie::EnemyPixie() : ShipPixie(PIXIE_TYPE_ENEMY, DEFAULT_ENEMY_TEXTURE) {
+	scoreWorth = 100;
 	health = ENEMY_PIXIE_HEALTH; // Set the health to the default Pixie Health
 	damage = 1; // Set the default damage to 3.4
 	faction = "Glorps"; // Set the faction to Glorps

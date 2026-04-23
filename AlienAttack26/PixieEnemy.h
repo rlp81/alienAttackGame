@@ -16,6 +16,7 @@ private:
 	friend class ShipPixie; // Friend the Ship Pixie so it can access private members
 	static int enemyMissileCount; // Static variable to track the amount of active enemy missiles, used to limit the amount of active enemy missiles
 	string faction; // Faction the enemie is a part of, unused
+	int scoreWorth;
 	int enemyType; // The type of enemy
 	int movePattern; // The pattern of movement the enemy follows
 	int targetType; // The type of targeting the enemy will use
