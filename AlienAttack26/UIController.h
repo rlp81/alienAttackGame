@@ -29,6 +29,7 @@ public:
 class DisposableText {
 private:
 	friend class UIController;
+	friend class LevelLoader; // Friend the level loader so it can clear the disposable texts when a new level is loaded
 	static vector<shared_ptr<DisposableText>> disposableTexts; // Vector of temporary texts that will be displayed on the UI
 	Text* text; // The text to be displayed
 	int lifetime;

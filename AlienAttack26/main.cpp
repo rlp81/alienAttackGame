@@ -22,7 +22,7 @@ int main() {
 		}
 		window.clear(); // Clear the old frame before this frame
 		Pixie::drawAll(window); // Draw the new frame
-		levelLoader.uiController.draw(window); // Update the UI for the new frame
+		UI_Controller->draw(window);
 		DisposableText::drawAll(window);
 		window.display(); // Display the new frame
 	}

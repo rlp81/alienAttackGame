@@ -61,7 +61,7 @@ public:
 	Pixie(int type, const std::string& textureFile); // Create a Pixie with both a type and a texture
 	Pixie(int type, const std::string& textureFile, bool useOriginalOrigin); // Create a Pixie with a type, texture, and allows the Pixie to use the original origin (0,0)
 	// Use the default Destructor and allow Shared pointer logic to handle the destruction of Pixies
-	virtual ~Pixie() = default;
+	virtual ~Pixie();
 	
 	// Static Functions
 	static shared_ptr<Pixie> getPixieByID(int ID); // return a shared pointer of a Pixie by the ID associated with it

@@ -103,11 +103,10 @@ void::MissilePixie::update() {
 	}*/
 
 	float degs = this->getRotation().asDegrees(); // Get the MissilePixie's angle as degrees 
-	//float degs = rads * 180 / 3.14159265f; // 
 	float rads = degrees(degs+90).asRadians(); // Add a 90 deg offset
-	float offsetX = std::cos(rads) * -speed; // Convert the unit vector coordinates to a normalized vector with the magnitude of the PixieMissile's speed
-	float offsetY = std::sin(rads) * -speed;
-	this->move(offsetX, offsetY); // Move the PixieMissile by the create offsets
+	float offsetX = cos(rads) * -speed; // Convert the unit vector coordinates to a normalized vector with the magnitude of the PixieMissile's speed
+	float offsetY = sin(rads) * -speed;
+	this->move(offsetX, offsetY); // Move the PixieMissile by the created offsets
 }
 
 /*
@@ -166,7 +165,7 @@ void MissilePixie::checkForCollisions() {
 							shared_ptr<EnemyPixie> enemy = dynamic_pointer_cast<EnemyPixie>(pixie);
 							if (enemy) {
 								if (this->owner->getPixieType() == PIXIE_TYPE_PLAYER_SHIP) {
-									//shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
+									shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
 									if (bool died = enemy->damagePixie(damage)) {
 										playerScore += enemy->scoreWorth;
 										UI_Controller->addDisposableText("+"+to_string(enemy->scoreWorth), enemy->getPosition(), 30); // Add a temporary text to the UI to show the score gained from killing the enemy
@@ -185,7 +184,24 @@ void MissilePixie::checkForCollisions() {
 							cout << "Pixie does not Exist\n";
 						}
 					}
-					//shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
+					else if (pixieType == PIXIE_TYPE_PLAYER_SHIP) { // If the Pixie is a Player Ship Pixie
+						shared_ptr<PlayerPixie> player = dynamic_pointer_cast<PlayerPixie>(pixie);
+						if (player) {
+							if (this->owner->getPixieType() == PIXIE_TYPE_ENEMY) {
+								shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
+								bool died = player->damagePixie(damage);
+								if (!died) {
+									UI_Controller->addDisposableText("-"+to_string((int)damage), player->getPosition(), 30); // Add a temporary text to the UI to show the damage taken from the missile
+								}
+								this->remove(); // Remove the Missile Pixie
+								break;
+							}
+							else if (this->owner->getPixieType() == PIXIE_TYPE_PLAYER_SHIP) {
+								break;
+							}
+						}
+					}
+					shared_ptr<ExplosionPixie> exp = ExplosionPixie::create(3, DEFAULT_EXPLOSION_TEXTURE, this->sprite->getPosition()); // Create an ExplostionPixie
 					this->remove(); // Remove the Missile Pixie
 					break; // Stop the loop
 				}

@@ -95,11 +95,11 @@ shared_ptr<Pixie> Pixie::create(int type, const std::string& textureFile, bool u
 * Params: None
 * Desc: Custom destructor for the Pixie class, Unused
 */
-/*Pixie::~Pixie() {
+Pixie::~Pixie() {
 	cout << "Destroying Pixie ID: " << pixieID << endl;
 	delete this->sprite;
 	delete this->texture;
-}*/
+}
 
 // Functions
 

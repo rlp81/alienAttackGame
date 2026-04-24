@@ -9,6 +9,10 @@ LevelLoader::LevelLoader() {
 void LevelLoader::clearLevel() {
 	loaded = false;
 	Pixie::pixies.clear(); // Clear the vector of pixies to remove all existing pixies from the level
+	EnemyPixie::enemies.clear(); // Clear the vector of enemy pixies to remove all existing enemy pixies from the level
+	ShipPixie::globalMissiles.clear(); // Clear the vector of active missiles to remove all existing missiles from the level
+	Swarm::swarms.clear(); // Clear the vector of swarms to remove all existing swarms from the level
+	DisposableText::disposableTexts.clear(); // Clear the vector of disposable texts to remove all existing disposable texts from the level
 	Pixie::nextPixieID = 0; // Reset the next Pixie ID to 0
 }
 
@@ -58,10 +62,12 @@ void LevelLoader::loadEnemies(int swarms, int enemiesPerSwarm) {
 }
 
 void LevelLoader::updateLevel() {
-	if (!loaded)
+	if (loaded == false) {
 		throw runtime_error("Level is not loaded, cannot update level"); // Check if the level is loaded, throw an error if it is not
+		return;
+	}
 	player->update(); // Update the player pixie
-	//ExplosionPixie::updateAll(); // Update all the explosion pixies
+	ExplosionPixie::updateAll(); // Update all the explosion pixies
 	//Swarm::swarms[0]->updateSwarm(); // Update all the swarms, this will update the leaders and all
 	uiController.updateUI(playerScore, player->health, player->ammo); // Update the UI with the player's current score, health, and ammo
 	Swarm::updateAllSwarms();
@@ -71,6 +77,13 @@ void LevelLoader::updateLevel() {
 		UI_Controller->addDisposableText("+1000", { WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 }, 60);
 		loaded = false;
 		loadLevel(); // Load the next level if there are no more enemies
+	}
+	else if (player->health <= 0) { // Check if the player has no more health
+		loaded = false;
+		UI_Controller->addDisposableText("Game Over", { WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 }, 30);
+		level = 1; // Reset the level to 1
+		playerScore = 0; // Reset the player's score to 0
+		loadLevel(); // Load the first level
 	}
 }
 
