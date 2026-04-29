@@ -72,12 +72,17 @@ This loop ensures a dynamic and responsive gameplay experience, with clear separ
 - **Library**: [SFML 3.0](https://www.sfml-dev.org/) or higher.
 - **Platform**: Windows (Visual Studio solution provided).
 
+### Downloading
+1. Download the latest release.
+2. Unzip the file.
+3. Ensure that the assets/ directory is in the same directory as the executable.
+
 ### Building
 1. Clone the repository.
 2. Ensure SFML 3.0 is installed and your environment variables are configured.
 3. Open `AlienAttack26.sln` in Visual Studio.
 4. Verify that the project's **Include Directories** and **Library Directories** point to your SFML installation.
-5. Build in **Debug** or **Release** mode for `x64`.
+5. Build in **Debug** or **Release** mode for `x86`.
 
 ## 📝 Authors
 - **Original Work**: Prof. Andy Harbert
