@@ -3,7 +3,7 @@
 /*
 * main.cpp
 * Description: Main File for Generic Alien Attack Game 2026 Edition, this file calls the main game loop and handles the basic events and functions
-* Author: Cole Lehl
+* Author: Cole
 */
 int currentFrame = 0; // Current window frame displayed to the user
 
