@@ -69,7 +69,7 @@ This loop ensures a dynamic and responsive gameplay experience, with clear separ
 
 ### Prerequisites
 - **Compiler**: C++20 compliant compiler (MSVC 2022 recommended).
-- **Library**: [SFML 3.0](https://www.sfml-dev.org/) or higher.
+- **Library**: [SFML 3.0.2]([https://www.sfml-dev.org/](https://www.sfml-dev.org/download/sfml/3.0.2/)).
 - **Platform**: Windows (Visual Studio solution provided).
 
 ### Downloading
