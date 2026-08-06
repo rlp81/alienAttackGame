@@ -2,7 +2,7 @@
 /*
 * ShipPixie.cpp
 * Description: function C++ file for the ShipPixie Class
-* Author: Cole Lehl
+* Author: Cole
 */
 
 vector<weak_ptr<MissilePixie>> ShipPixie::globalMissiles;
