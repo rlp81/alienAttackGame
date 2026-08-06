@@ -2,7 +2,7 @@
 /*
 * pixie.cpp
 * Description: function C++ file for the Pixie Class and it's related static variables
-* Author: Cole Lehl
+* Author: Cole
 */
 
 // Static Variable Initialization
