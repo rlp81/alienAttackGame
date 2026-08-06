@@ -3,7 +3,7 @@
 /*
 * PixieMissile.h
 * Description: Header file for the MissilePixie Class
-* Author: Cole Lehl
+* Author: Cole
 */
 
 class MissilePixie : public Pixie {
