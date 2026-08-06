@@ -2,7 +2,7 @@
 /*
 * PixieMissile.cpp
 * Description: function C++ file for the PixieMissile Class
-* Author: Cole Lehl
+* Author: Cole
 */
 
 // Constructors
