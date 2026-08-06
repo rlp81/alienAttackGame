@@ -2,11 +2,6 @@
 /*
 *  gameFunctions.cpp
 *     - The functions for the game program are in this file. 
-* 
-*  AUTHOR: Most of the work in this program was completed by Prof. Andy Harbert
-*          Prof. Pat Smith has made modifications (December 2021)
-*		   Cole lehl
-*
 */
 
 // Declare Global Variables
