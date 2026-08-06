@@ -3,7 +3,7 @@
 /*
 * pixie.h
 * Description: Header file for the ShipPixie Class and it's related constants
-* Author: Cole Lehl
+* Author: Cole
 */
 
 // Pixie Ship Class, The main class for intelligent Pixies i.e. player controlled or enemies
