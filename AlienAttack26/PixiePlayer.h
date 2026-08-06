@@ -3,7 +3,7 @@
 /*
 * PixiePlayer.h
 * Description: Header file for the PixiePlayer Class
-* Author: Cole Lehl
+* Author: Cole
 */
 
 // Player Pixie Constants
