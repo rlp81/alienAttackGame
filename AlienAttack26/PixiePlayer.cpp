@@ -2,7 +2,7 @@
 /*
 * PixiePlayer.cpp
 * Description: function C++ file for the PlayerPixie Class
-* Author: Cole Lehl
+* Author: Cole
 */
 
 const int PLAYER_FRAME_UNTIL_MISSILE = 60; // The amount of frames that must pass before the Player can fire another missile
