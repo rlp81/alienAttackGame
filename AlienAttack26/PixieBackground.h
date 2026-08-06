@@ -3,7 +3,7 @@
 /*
 * BackgroundPixie.h
 * Description: Header file for the BackgroundPixie class
-* Author: Cole Lehl
+* Author: Cole
 */
 
 // The basic Pixie class for the game's background
