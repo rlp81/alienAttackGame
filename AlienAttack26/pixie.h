@@ -3,7 +3,7 @@
 /*
 * pixie.h
 * Description: Header file for the Pixie Class and it's related constants
-* Author: Cole Lehl
+* Author: Cole
 */
 
 // Constants
