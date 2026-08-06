@@ -2,7 +2,7 @@
 /*
 * PixieEnemy.cpp
 * Description: function C++ file for the PixieEnemy Class
-* Author: Cole Lehl
+* Author: Cole
 */
 int EnemyPixie::enemyMissileCount = 0; // Initialize the active enemy missile count to 0
 vector<weak_ptr<EnemyPixie>> EnemyPixie::enemies; // Initialize the active enemies in the game
