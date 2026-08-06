@@ -3,7 +3,7 @@
 /*
 * Swarm.h
 * Description: Header file for the Swarm Class and related constants
-* Author: Cole Lehl
+* Author: Cole
 */
 
 // Constants
